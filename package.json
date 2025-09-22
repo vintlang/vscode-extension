@@ -23,13 +23,6 @@
         "configuration": "./language-configuration.json"
       }
     ],
-    "iconThemes": [
-      {
-        "id": "vintIcons",
-        "label": "Vint Icons",
-        "path": "./file-icons.json"
-      }
-    ],
     "grammars": [
       {
         "language": "vint",
