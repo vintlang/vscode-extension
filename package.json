@@ -6,7 +6,7 @@
   "publisher": "tacheraSasi",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vintlang/vintlang.git"
+    "url": "https://github.com/vintlang/vscode-extension.git"
   },
   "engines": {
     "vscode": "^1.74.0"
