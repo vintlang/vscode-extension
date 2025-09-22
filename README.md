@@ -72,7 +72,7 @@ To configure these settings, navigate to `File > Preferences > Settings` (or `Co
 - Snippets may not appear in non-Vint files.
 - Some advanced code patterns might require manual adjustments.
 
-If you encounter issues, please report them in the [GitHub issues](https://github.com/your-repo/vint/issues) section of the project.
+If you encounter issues, please report them in the [GitHub issues](https://github.com/vintlang/vscode-extension/issues) section of the project.
 
 ## Release Notes
 
