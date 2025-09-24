@@ -1,106 +1,339 @@
 {
     "Function": {
-      "prefix": "func",
-      "body": [
-        "let $1 = func($2) {",
-        "\t$3",
-        "}"
-      ],
-      "description": "Create a function"
+        "prefix": "func",
+        "body": [
+            "let ${1:functionName} = func(${2:params}) {",
+            "\t${3:// function body}",
+            "\treturn ${4:value}",
+            "}"
+        ],
+        "description": "Create a function definition"
     },
-    "IfStatement": {
-      "prefix": "if",
-      "body": [
-        "if ($1) {",
-        "\t$2",
-        "}"
-      ],
-      "description": "Create an if statement"
+    "Anonymous Function": {
+        "prefix": "afunc",
+        "body": [
+            "func(${1:params}) {",
+            "\t${2:// function body}",
+            "\treturn ${3:value}",
+            "}"
+        ],
+        "description": "Create an anonymous function"
     },
-    "ElseStatement": {
-      "prefix": "else",
-      "body": [
-        "else {",
-        "\t$1",
-        "}"
-      ],
-      "description": "Create an else statement"
+    "If Statement": {
+        "prefix": "if",
+        "body": [
+            "if (${1:condition}) {",
+            "\t${2:// code}",
+            "}"
+        ],
+        "description": "Create an if statement"
     },
-    "ForLoop": {
-      "prefix": "for",
-      "body": [
-        "for ($1 in $2) {",
-        "\t$3",
-        "}"
-      ],
-      "description": "Create a for loop"
+    "If-Else Statement": {
+        "prefix": "ifelse",
+        "body": [
+            "if (${1:condition}) {",
+            "\t${2:// code}",
+            "} else {",
+            "\t${3:// alternative code}",
+            "}"
+        ],
+        "description": "Create an if-else statement"
     },
-    "WhileLoop": {
-      "prefix": "while",
-      "body": [
-        "while ($1) {",
-        "\t$2",
-        "}"
-      ],
-      "description": "Create a while loop"
+    "If-Elif-Else Statement": {
+        "prefix": "ifelif",
+        "body": [
+            "if (${1:condition1}) {",
+            "\t${2:// code}",
+            "} elif (${3:condition2}) {",
+            "\t${4:// code}",
+            "} else {",
+            "\t${5:// alternative code}",
+            "}"
+        ],
+        "description": "Create an if-elif-else statement"
     },
-    "SwitchCase": {
-      "prefix": "switch",
-      "body": [
-        "switch ($1) {",
-        "\tcase $2:",
-        "\t\t$3",
-        "\t\tbreak;",
-        "\tdefault:",
-        "\t\t$4",
-        "}"
-      ],
-      "description": "Create a switch-case statement"
+    "For Loop": {
+        "prefix": "for",
+        "body": [
+            "for ${1:item} in ${2:collection} {",
+            "\t${3:// code}",
+            "}"
+        ],
+        "description": "Create a for loop"
     },
-    "VariableDeclaration": {
-      "prefix": "let",
-      "body": [
-        "let $1 = $2"
-      ],
-      "description": "Declare a variable"
+    "While Loop": {
+        "prefix": "while",
+        "body": [
+            "while (${1:condition}) {",
+            "\t${2:// code}",
+            "}"
+        ],
+        "description": "Create a while loop"
     },
-    "PrintStatement": {
-      "prefix": "print",
-      "body": [
-        "print($1)"
-      ],
-      "description": "Print a value"
+    "Switch Case": {
+        "prefix": "switch",
+        "body": [
+            "switch (${1:expression}) {",
+            "\tcase ${2:value1}:",
+            "\t\t${3:// code}",
+            "\t\tbreak",
+            "\tcase ${4:value2}:",
+            "\t\t${5:// code}",
+            "\t\tbreak",
+            "\tdefault:",
+            "\t\t${6:// default code}",
+            "}"
+        ],
+        "description": "Create a switch-case statement"
     },
-    "ImportStatement": {
-      "prefix": "import",
-      "body": [
-        "import $1"
-      ],
-      "description": "Import a module"
+    "Try-Catch": {
+        "prefix": "try",
+        "body": [
+            "try {",
+            "\t${1:// code that might throw}",
+            "} catch (${2:error}) {",
+            "\t${3:// error handling}",
+            "}"
+        ],
+        "description": "Create a try-catch block"
     },
-    "PackageDeclaration": {
-      "prefix": "package",
-      "body": [
-        "package $1 {",
-        "\t$2",
-        "}"
-      ],
-      "description": "Declare a package"
+    "Try-Catch-Finally": {
+        "prefix": "tryfinally",
+        "body": [
+            "try {",
+            "\t${1:// code that might throw}",
+            "} catch (${2:error}) {",
+            "\t${3:// error handling}",
+            "} finally {",
+            "\t${4:// cleanup code}",
+            "}"
+        ],
+        "description": "Create a try-catch-finally block"
     },
-    "PrintlnStatement": {
-      "prefix": "println",
-      "body": [
-        "println($1)"
-      ],
-      "description": "Print a value with newline"
+    "Variable Declaration": {
+        "prefix": "let",
+        "body": [
+            "let ${1:variableName} = ${2:value}"
+        ],
+        "description": "Declare a variable"
     },
-    "ConvertStatement": {
-      "prefix": "convert",
-      "body": [
-        "convert($1, \"$2\")"
-      ],
-      "description": "Convert a value to a specific type"
+    "Print Statement": {
+        "prefix": "print",
+        "body": [
+            "print(${1:value})"
+        ],
+        "description": "Print a value"
+    },
+    "Println Statement": {
+        "prefix": "println",
+        "body": [
+            "println(${1:value})"
+        ],
+        "description": "Print a value with newline"
+    },
+    "Import Statement": {
+        "prefix": "import",
+        "body": [
+            "import ${1:module}"
+        ],
+        "description": "Import a module"
+    },
+    "Multiple Imports": {
+        "prefix": "imports",
+        "body": [
+            "import ${1:module1}",
+            "import ${2:module2}",
+            "import ${3:module3}"
+        ],
+        "description": "Import multiple modules"
+    },
+    "Package Declaration": {
+        "prefix": "package",
+        "body": [
+            "package ${1:packageName} {",
+            "\t${2:// package content}",
+            "}"
+        ],
+        "description": "Declare a package"
+    },
+    "Convert Statement": {
+        "prefix": "convert",
+        "body": [
+            "convert(${1:value}, \"${2:TYPE}\")"
+        ],
+        "description": "Convert a value to a specific type"
+    },
+    "Type Check": {
+        "prefix": "type",
+        "body": [
+            "type(${1:value})"
+        ],
+        "description": "Get the type of a value"
+    },
+    "Array Declaration": {
+        "prefix": "array",
+        "body": [
+            "let ${1:arrayName} = [${2:elements}]"
+        ],
+        "description": "Declare an array"
+    },
+    "Object Declaration": {
+        "prefix": "object",
+        "body": [
+            "let ${1:objectName} = {",
+            "\t${2:key}: ${3:value}",
+            "}"
+        ],
+        "description": "Declare an object"
+    },
+    "HTTP GET Request": {
+        "prefix": "httpget",
+        "body": [
+            "import net",
+            "",
+            "let ${1:response} = net.get(\"${2:url}\")",
+            "print(${1:response})"
+        ],
+        "description": "Make an HTTP GET request"
+    },
+    "HTTP POST Request": {
+        "prefix": "httppost",
+        "body": [
+            "import net",
+            "",
+            "let ${1:data} = {${2:key}: \"${3:value}\"}",
+            "let ${4:response} = net.post(\"${5:url}\", ${1:data})",
+            "print(${4:response})"
+        ],
+        "description": "Make an HTTP POST request"
+    },
+    "JSON Parse": {
+        "prefix": "jsonparse",
+        "body": [
+            "import json",
+            "",
+            "let ${1:data} = json.parse(${2:jsonString})"
+        ],
+        "description": "Parse JSON string"
+    },
+    "JSON Stringify": {
+        "prefix": "jsonstringify",
+        "body": [
+            "import json",
+            "",
+            "let ${1:jsonString} = json.stringify(${2:object})"
+        ],
+        "description": "Convert object to JSON string"
+    },
+    "Time Now": {
+        "prefix": "timenow",
+        "body": [
+            "import time",
+            "",
+            "let ${1:now} = time.now()",
+            "print(${1:now})"
+        ],
+        "description": "Get current timestamp"
+    },
+    "File Read": {
+        "prefix": "fileread",
+        "body": [
+            "import os",
+            "",
+            "let ${1:content} = os.readFile(\"${2:filename}\")",
+            "print(${1:content})"
+        ],
+        "description": "Read a file"
+    },
+    "File Write": {
+        "prefix": "filewrite",
+        "body": [
+            "import os",
+            "",
+            "os.writeFile(\"${1:filename}\", \"${2:content}\")"
+        ],
+        "description": "Write to a file"
+    },
+    "Defer Statement": {
+        "prefix": "defer",
+        "body": [
+            "defer ${1:expression}"
+        ],
+        "description": "Defer execution until function returns"
+    },
+    "Range Loop": {
+        "prefix": "range",
+        "body": [
+            "for ${1:i} in range(${2:start}, ${3:end}) {",
+            "\t${4:// code}",
+            "}"
+        ],
+        "description": "Create a range-based for loop"
+    },
+    "String Split": {
+        "prefix": "split",
+        "body": [
+            "let ${1:parts} = ${2:string}.split(\"${3:delimiter}\")"
+        ],
+        "description": "Split a string"
+    },
+    "Array Join": {
+        "prefix": "join",
+        "body": [
+            "let ${1:result} = ${2:array}.join(\"${3:separator}\")"
+        ],
+        "description": "Join array elements into a string"
+    },
+    "Error Handling": {
+        "prefix": "error",
+        "body": [
+            "if (${1:errorCondition}) {",
+            "\tthrow \"${2:Error message}\"",
+            "}"
+        ],
+        "description": "Create error handling"
+    },
+    "Class-like Structure": {
+        "prefix": "class",
+        "body": [
+            "let ${1:ClassName} = func(${2:params}) {",
+            "\tlet self = {}",
+            "\t",
+            "\t// Properties",
+            "\tself.${3:property} = ${4:value}",
+            "\t",
+            "\t// Methods",
+            "\tself.${5:method} = func() {",
+            "\t\t${6:// method body}",
+            "\t}",
+            "\t",
+            "\treturn self",
+            "}"
+        ],
+        "description": "Create a class-like structure"
+    },
+    "Main Function": {
+        "prefix": "main",
+        "body": [
+            "let main = func() {",
+            "\t${1:// main program logic}",
+            "}",
+            "",
+            "main()"
+        ],
+        "description": "Create a main function"
+    },
+    "Comment Block": {
+        "prefix": "comment",
+        "body": [
+            "/*",
+            " * ${1:Description}",
+            " * ",
+            " * @param {${2:type}} ${3:param} - ${4:description}",
+            " * @return {${5:type}} ${6:description}",
+            " */"
+        ],
+        "description": "Create a documentation comment block"
     }
-    
-  }
+}
   
