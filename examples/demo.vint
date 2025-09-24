@@ -1,0 +1,114 @@
+// VintLang LSP Demo File
+// This file demonstrates the language server features
+
+import time
+import net
+import json
+
+// Variable declarations
+let appName = "VintLang LSP Demo"
+let version = "0.2.0"
+let author = "VintLang Team"
+
+// Function to demonstrate LSP features
+let greetUser = func(userName, isAdmin) {
+    println("Welcome to " + appName + "!")
+    println("Hello, " + userName)
+    
+    if (isAdmin) {
+        println("You have admin privileges")
+    } else {
+        println("You have regular user privileges")
+    }
+    
+    return "User greeted successfully"
+}
+
+// Array operations
+let skills = ["JavaScript", "Python", "VintLang", "Go"]
+println("Available skills:")
+
+for skill in skills {
+    println("- " + skill)
+}
+
+// HTTP request example
+let fetchUserData = func(userId) {
+    try {
+        let apiUrl = "https://jsonplaceholder.typicode.com/users/" + userId
+        let response = net.get(apiUrl)
+        let userData = json.parse(response)
+        
+        println("User data fetched:")
+        println("Name: " + userData.name)
+        println("Email: " + userData.email)
+        
+        return userData
+    } catch (error) {
+        println("Error fetching user data: " + error)
+        return null
+    }
+}
+
+// Time operations
+let getCurrentTimeInfo = func() {
+    let currentTime = time.now()
+    let formattedTime = time.format(currentTime, "2006-01-02 15:04:05")
+    
+    println("Current time: " + formattedTime)
+    
+    let futureTime = time.add(currentTime, "1h30m")
+    let futureFormatted = time.format(futureTime, "2006-01-02 15:04:05")
+    
+    println("Future time (+1h30m): " + futureFormatted)
+    
+    return {
+        current: currentTime,
+        future: futureTime
+    }
+}
+
+// Main execution
+let main = func() {
+    defer println("Program execution completed")
+    
+    println("Starting " + appName + " v" + version)
+    println("Created by: " + author)
+    
+    // Test function calls
+    let result = greetUser("Alice", true)
+    println("Greeting result: " + result)
+    
+    // Test time functions
+    let timeInfo = getCurrentTimeInfo()
+    
+    // Test HTTP request (commented out to avoid network calls)
+    // let userData = fetchUserData("1")
+    
+    // Convert and type checking
+    let numStr = "42"
+    convert(numStr, "INTEGER")
+    println("Converted value: " + numStr + " (type: " + type(numStr) + ")")
+    
+    // Loop with range
+    println("Counting to 5:")
+    for i in range(1, 6) {
+        println("Count: " + i)
+    }
+    
+    println("Demo completed successfully!")
+}
+
+// Call main function
+main()
+
+/*
+ * This file demonstrates:
+ * - Syntax highlighting
+ * - Code completion
+ * - Error detection
+ * - Symbol navigation
+ * - Hover documentation
+ * - Code folding
+ * - Auto-formatting
+ */

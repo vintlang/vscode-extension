@@ -10,7 +10,9 @@ const {
     CompletionItemKind,
     TextDocumentPositionParams,
     TextDocumentSyncKind,
-    InitializeResult
+    InitializeResult,
+    SymbolKind,
+    FoldingRangeKind
 } = require('vscode-languageserver/node');
 
 const { TextDocument } = require('vscode-languageserver-textdocument');
@@ -368,6 +370,173 @@ function getHoverDocumentation(word) {
 
     return docs[word] || null;
 }
+
+// Document symbol provider
+connection.onDocumentSymbol(params => {
+    const document = documents.get(params.textDocument.uri);
+    if (!document) {
+        return [];
+    }
+
+    const text = document.getText();
+    const symbols = [];
+    const lines = text.split('\n');
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        // Function definitions
+        const funcMatch = line.match(/let\s+(\w+)\s*=\s*func/);
+        if (funcMatch) {
+            symbols.push({
+                name: funcMatch[1],
+                kind: SymbolKind.Function,
+                range: {
+                    start: { line: i, character: 0 },
+                    end: { line: i, character: line.length }
+                },
+                selectionRange: {
+                    start: { line: i, character: funcMatch.index + 4 },
+                    end: { line: i, character: funcMatch.index + 4 + funcMatch[1].length }
+                }
+            });
+        }
+
+        // Variable declarations
+        const varMatch = line.match(/let\s+(\w+)\s*=/);
+        if (varMatch && !funcMatch) {
+            symbols.push({
+                name: varMatch[1],
+                kind: SymbolKind.Variable,
+                range: {
+                    start: { line: i, character: 0 },
+                    end: { line: i, character: line.length }
+                },
+                selectionRange: {
+                    start: { line: i, character: varMatch.index + 4 },
+                    end: { line: i, character: varMatch.index + 4 + varMatch[1].length }
+                }
+            });
+        }
+
+        // Import statements
+        const importMatch = line.match(/import\s+(\w+)/);
+        if (importMatch) {
+            symbols.push({
+                name: importMatch[1],
+                kind: SymbolKind.Module,
+                range: {
+                    start: { line: i, character: 0 },
+                    end: { line: i, character: line.length }
+                },
+                selectionRange: {
+                    start: { line: i, character: importMatch.index + 7 },
+                    end: { line: i, character: importMatch.index + 7 + importMatch[1].length }
+                }
+            });
+        }
+    }
+
+    return symbols;
+});
+
+// Folding range provider
+connection.onFoldingRanges(params => {
+    const document = documents.get(params.textDocument.uri);
+    if (!document) {
+        return [];
+    }
+
+    const text = document.getText();
+    const lines = text.split('\n');
+    const foldingRanges = [];
+    const braceStack = [];
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        // Track braces for folding
+        for (let j = 0; j < line.length; j++) {
+            if (line[j] === '{') {
+                braceStack.push(i);
+            } else if (line[j] === '}' && braceStack.length > 0) {
+                const startLine = braceStack.pop();
+                if (i > startLine) {
+                    foldingRanges.push({
+                        startLine: startLine,
+                        endLine: i,
+                        kind: FoldingRangeKind.Region
+                    });
+                }
+            }
+        }
+
+        // Multi-line comments
+        if (line.includes('/*')) {
+            const commentStart = i;
+            let commentEnd = i;
+            
+            // Find the end of the comment
+            for (let k = i; k < lines.length; k++) {
+                if (lines[k].includes('*/')) {
+                    commentEnd = k;
+                    break;
+                }
+            }
+            
+            if (commentEnd > commentStart) {
+                foldingRanges.push({
+                    startLine: commentStart,
+                    endLine: commentEnd,
+                    kind: FoldingRangeKind.Comment
+                });
+            }
+        }
+    }
+
+    return foldingRanges;
+});
+
+// Document formatting provider
+connection.onDocumentFormatting(params => {
+    const document = documents.get(params.textDocument.uri);
+    if (!document) {
+        return [];
+    }
+
+    const text = document.getText();
+    const lines = text.split('\n');
+    const formattedLines = [];
+    let indentLevel = 0;
+
+    for (let line of lines) {
+        const trimmedLine = line.trim();
+        
+        // Decrease indent for closing braces
+        if (trimmedLine.startsWith('}')) {
+            indentLevel = Math.max(0, indentLevel - 1);
+        }
+
+        // Apply indentation
+        const indentedLine = '    '.repeat(indentLevel) + trimmedLine;
+        formattedLines.push(indentedLine);
+
+        // Increase indent for opening braces
+        if (trimmedLine.endsWith('{')) {
+            indentLevel++;
+        }
+    }
+
+    const formattedText = formattedLines.join('\n');
+    
+    return [{
+        range: {
+            start: { line: 0, character: 0 },
+            end: { line: lines.length - 1, character: lines[lines.length - 1].length }
+        },
+        newText: formattedText
+    }];
+});
 
 // Make the text document manager listen on the connection
 // for open, change and close text document events
