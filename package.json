@@ -1,8 +1,8 @@
 {
   "name": "vint",
   "displayName": "VintLang",
-  "description": "The official Vint language support extension",
-  "version": "0.1.0",
+  "description": "The official Vint language support extension with full LSP features",
+  "version": "0.2.0",
   "publisher": "tacheraSasi",
   "repository": {
     "type": "git",
@@ -14,13 +14,21 @@
   "categories": [
     "Programming Languages"
   ],
+  "main": "./src/extension.js",
+  "activationEvents": [
+    "onLanguage:vint"
+  ],
   "contributes": {
     "languages": [
       {
         "id": "vint",
         "aliases": ["Vint", "VintLang"],
         "extensions": [".vint"],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/vint-light.png",
+          "dark": "./icons/vint-dark.png"
+        }
       }
     ],
     "grammars": [
@@ -35,6 +43,69 @@
         "language": "vint",
         "path": "./snippets/vint.json"
       }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "VintLang",
+      "properties": {
+        "vintlang.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable VintLang language server"
+        },
+        "vintlang.trace.server": {
+          "type": "string",
+          "enum": ["off", "messages", "verbose"],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the language server"
+        },
+        "vintlang.maxNumberOfProblems": {
+          "type": "number",
+          "default": 100,
+          "description": "Controls the maximum number of problems produced by the server"
+        },
+        "vintlang.format.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable auto-formatting for VintLang files"
+        },
+        "vintlang.completion.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable intelligent code completion"
+        },
+        "vintlang.diagnostics.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable real-time error diagnostics"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "vintlang.restartServer",
+        "title": "Restart Language Server",
+        "category": "VintLang"
+      },
+      {
+        "command": "vintlang.showReferences",
+        "title": "Show References",
+        "category": "VintLang"
+      }
     ]
+  },
+  "scripts": {
+    "compile": "node src/extension.js",
+    "watch": "nodemon src/extension.js",
+    "test": "node test/runTest.js"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^8.1.0",
+    "vscode-languageserver": "^8.1.0",
+    "vscode-languageserver-textdocument": "^1.0.8"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "nodemon": "^2.0.20"
   }
 }

@@ -1,19 +1,12 @@
+// This file is deprecated - completion is now handled by the Language Server Protocol (LSP)
+// See src/extension.js and src/server.js for the new implementation
+
 const vscode = require("vscode");
 
+// Legacy completion provider - kept for backward compatibility
+// The main extension now uses LSP for much better completion
 function activate(context) {
-  let provider = vscode.languages.registerCompletionItemProvider("vint", {
-    provideCompletionItems(document, position, token, context) {
-      const keywords = [
-        "func", "return", "if", "else", "while", "for", "switch", "case", "default", "break", "continue"
-      ];
-      return keywords.map(keyword => {
-        let item = new vscode.CompletionItem(keyword, vscode.CompletionItemKind.Keyword);
-        return item;
-      });
-    }
-  });
-
-  context.subscriptions.push(provider);
+  console.log('Legacy completion provider loaded - LSP provides better completion now');
 }
 
 exports.activate = activate;
