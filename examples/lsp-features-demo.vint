@@ -1,0 +1,195 @@
+// VintLang Extension - Modern LSP Features Test File
+// This file demonstrates all the advanced features of the extension
+
+import time
+import net
+import json
+
+// ==================== SEMANTIC HIGHLIGHTING ====================
+// Keywords, built-ins, and modules should have distinct colors
+
+// Built-in functions (special highlighting)
+print("Testing print function")
+println("Testing println function")
+
+// User-defined function (different from built-ins)
+let calculateSum = func(a, b) {
+    return a + b
+}
+
+// ==================== INLAY HINTS ====================
+// Should show parameter names and type hints
+
+let userName = "Alice"        // Hint: : string
+let userAge = 30              // Hint: : int
+let userScore = 95.5          // Hint: : float
+let isActive = true           // Hint: : bool
+let items = [1, 2, 3]         // Hint: : array
+let config = { key: "value" } // Hint: : map
+
+// Parameter hints for function calls
+let result = convert("123", "INTEGER")  // Hints: value:, type:
+let parts = split("a,b,c", ",")         // Hints: string:, delimiter:
+let text = join(["x", "y"], "-")        // Hints: array:, separator:
+
+// ==================== DIAGNOSTICS & QUICK FIXES ====================
+
+// ❌ This should show an error (invalid function syntax)
+// Uncomment to test:
+// func badFunction() {
+//     print("error")
+// }
+
+// ⚠️ This should show a warning (missing 'let')
+// Uncomment to test quick fix:
+// myVariable = "test"
+
+// ⚠️ This should show hint (unused variable)
+// Uncomment to test:
+// let unusedVariable = "not used"
+
+// ✅ Properly declared and used
+let usedVariable = "I am used"
+print(usedVariable)
+
+// ==================== RENAME REFACTORING ====================
+// Place cursor on 'oldName' and press F2 to rename
+
+let oldName = func(x) {
+    return x * 2
+}
+
+let value1 = oldName(5)
+let value2 = oldName(10)
+// All 'oldName' references will update when renamed
+
+// ==================== GO TO DEFINITION & REFERENCES ====================
+// F12 on function call jumps to definition
+// Shift+F12 shows all references
+
+let helperFunction = func(data) {
+    return data + " processed"
+}
+
+let result1 = helperFunction("test1")  // F12 here jumps to definition
+let result2 = helperFunction("test2")  // Shift+F12 shows all 3 references
+let result3 = helperFunction("test3")
+
+// ==================== DOCUMENT HIGHLIGHT ====================
+// Click on 'counter' to see all occurrences highlighted
+
+let counter = 0
+
+let increment = func() {
+    counter = counter + 1
+}
+
+let decrement = func() {
+    counter = counter - 1
+}
+
+let resetCounter = func() {
+    counter = 0
+}
+
+// ==================== CALL HIERARCHY ====================
+// Right-click on any function and select "Show Call Hierarchy"
+
+let utilityFunction = func() {
+    return 42
+}
+
+let processData = func() {
+    let value = utilityFunction()  // Outgoing call
+    return value + 10
+}
+
+let mainLogic = func() {
+    let data = processData()       // Outgoing call
+    let util = utilityFunction()   // Outgoing call
+    return data + util
+}
+
+mainLogic()  // Incoming call to mainLogic
+
+// ==================== SIGNATURE HELP ====================
+// Start typing these to see parameter hints:
+// convert(
+// split(
+// range(
+
+// ==================== SELECTION RANGES ====================
+// Place cursor anywhere in this function and press Alt+Shift+Right
+// Watch selection expand: word → line → block → function
+
+let fibonacci = func(n) {
+    if (n <= 1) {
+        return n
+    }
+    return fibonacci(n-1) + fibonacci(n-2)
+}
+
+// ==================== DOCUMENT LINKS ====================
+// Ctrl+Click on module names to open documentation
+// Already imported at top: time, net, json
+
+// URLs in comments are clickable:
+// Documentation: https://vintlang.ekilie.com/docs
+// API Reference: https://api.example.com/vintlang
+
+// ==================== WORKSPACE SYMBOLS ====================
+// Press Ctrl+T and type 'func' to search for functions across files
+
+// ==================== DOCUMENT SYMBOLS ====================
+// Press Ctrl+Shift+O to see document outline
+
+// ==================== CODE FOLDING ====================
+// Click the fold icon next to braces to collapse/expand
+
+let complexFunction = func(input) {
+    // This block can be folded
+    if (input > 0) {
+        // Nested block can also be folded
+        for item in range(0, input) {
+            print(item)
+        }
+    } else {
+        print("Non-positive input")
+    }
+    return input
+}
+
+/* 
+ * Multi-line comments can be folded too
+ * This is useful for long documentation blocks
+ * Try folding this comment!
+ */
+
+// ==================== DECLARATIVE STATEMENTS ====================
+// Special highlighting for declarative keywords
+
+todo "Implement error handling"
+warn "This function is deprecated"
+info "Current version: 1.0.0"
+debug "Variable value:", counter
+error "Critical issue detected"
+
+// Capitalized versions also supported
+Todo "Add unit tests"
+Warn "Breaking change in next version"
+Info "Processing started"
+
+// ==================== FORMATTING ====================
+// Press Shift+Alt+F to format the document
+// All indentation will be corrected automatically
+
+// ==================== STATUS BAR ====================
+// Look at the bottom right corner for VintLang status
+// Click it to see extension status and options
+
+// ==================== TEST COMPLETE ====================
+
+print("All LSP features demonstrated!")
+println("Check the FEATURES.md file for detailed documentation")
+
+// End of test file
