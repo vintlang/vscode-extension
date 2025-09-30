@@ -4,6 +4,68 @@ All notable changes to the VintLang VS Code extension will be documented in this
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.5.0] - 2024-12-XX (Enhanced Features Release)
+
+### 🎉 New Features
+
+#### Code Lens Support
+- **Reference Counts** - Shows number of references for each function inline
+- **Interactive Actions** - Click on code lens to navigate to references
+- **Configurable** - Enable/disable via `vintlang.codeLens.enable` setting
+
+#### Color Decorators
+- **Color Preview** - Visual color decorators for hex colors (#RGB, #RRGGBB)
+- **RGB Support** - Detects rgb() and rgba() color values
+- **Color Picker** - Edit colors with built-in VS Code color picker
+- **Multiple Formats** - Convert between hex, RGB, and RGBA formats
+- **Configurable** - Enable/disable via `vintlang.colorDecorators.enable` setting
+
+#### New Built-in Functions
+
+**File I/O Operations:**
+- `readFile(path)` - Read file contents
+- `writeFile(path, content)` - Write to file
+- `appendFile(path, content)` - Append to file
+- `deleteFile(path)` - Delete a file
+- `fileExists(path)` - Check file existence
+- `readDir(path)` - Read directory contents
+- `makeDir(path)` - Create directory
+
+**Enhanced Math Functions:**
+- `sin(x)`, `cos(x)`, `tan(x)` - Trigonometric functions
+- `log(x)` - Natural logarithm
+- `exp(x)` - Exponential function
+- `toFixed(number, digits)` - Format number to fixed decimals
+- `parseInt(string)` - Parse integer from string
+- `parseFloat(string)` - Parse float from string
+
+**Utility Functions:**
+- `keys(map)` - Get array of map keys
+- `values(map)` - Get array of map values
+- `entries(map)` - Get array of [key, value] pairs
+- `merge(map1, map2)` - Merge two maps
+- `clone(value)` - Deep copy of value
+- `freeze(object)` - Freeze object to prevent modifications
+- `seal(object)` - Seal object to prevent adding properties
+
+### Enhanced
+
+- **Hover Documentation** - Added documentation for all new built-in functions
+- **Signature Help** - Extended to include file I/O, math, and utility functions
+- **Code Completion** - All new functions available in IntelliSense
+- **Snippets** - Added 14 new snippets for new built-in functions
+  - File I/O: readfile, writefile, appendfile, fileexists, readdir, makedir
+  - Parsing: parseint, parsefloat, tofixed
+  - Utilities: keys, values, merge, clone
+- **Configuration** - Two new settings for code lens and color decorators
+
+### Documentation
+
+- Updated README with new features and functions
+- Added code lens and color decorator documentation
+- Enhanced configuration table with new settings
+- Updated examples to showcase new capabilities
+
 ## [0.4.0] - 2024-12-XX (Modern LSP Features Release)
 
 ### 🚀 Major Features

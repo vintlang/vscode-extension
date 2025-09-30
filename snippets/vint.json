@@ -334,6 +334,99 @@
             " */"
         ],
         "description": "Create a documentation comment block"
+    },
+    "Read File": {
+        "prefix": "readfile",
+        "body": [
+            "let ${1:content} = readFile(\"${2:path/to/file.txt}\")"
+        ],
+        "description": "Read contents from a file"
+    },
+    "Write File": {
+        "prefix": "writefile",
+        "body": [
+            "writeFile(\"${1:path/to/file.txt}\", ${2:content})"
+        ],
+        "description": "Write content to a file"
+    },
+    "Append to File": {
+        "prefix": "appendfile",
+        "body": [
+            "appendFile(\"${1:path/to/file.txt}\", ${2:content})"
+        ],
+        "description": "Append content to a file"
+    },
+    "Check File Exists": {
+        "prefix": "fileexists",
+        "body": [
+            "if (fileExists(\"${1:path/to/file.txt}\")) {",
+            "\t${2:// file exists}",
+            "}"
+        ],
+        "description": "Check if a file exists"
+    },
+    "Read Directory": {
+        "prefix": "readdir",
+        "body": [
+            "let ${1:files} = readDir(\"${2:path/to/directory}\")"
+        ],
+        "description": "Read directory contents"
+    },
+    "Make Directory": {
+        "prefix": "makedir",
+        "body": [
+            "makeDir(\"${1:path/to/directory}\")"
+        ],
+        "description": "Create a directory"
+    },
+    "Parse Integer": {
+        "prefix": "parseint",
+        "body": [
+            "let ${1:number} = parseInt(${2:string})"
+        ],
+        "description": "Parse string to integer"
+    },
+    "Parse Float": {
+        "prefix": "parsefloat",
+        "body": [
+            "let ${1:number} = parseFloat(${2:string})"
+        ],
+        "description": "Parse string to float"
+    },
+    "To Fixed Decimals": {
+        "prefix": "tofixed",
+        "body": [
+            "let ${1:formatted} = toFixed(${2:number}, ${3:2})"
+        ],
+        "description": "Format number to fixed decimal places"
+    },
+    "Get Map Keys": {
+        "prefix": "keys",
+        "body": [
+            "let ${1:keyArray} = keys(${2:map})"
+        ],
+        "description": "Get array of map keys"
+    },
+    "Get Map Values": {
+        "prefix": "values",
+        "body": [
+            "let ${1:valueArray} = values(${2:map})"
+        ],
+        "description": "Get array of map values"
+    },
+    "Merge Maps": {
+        "prefix": "merge",
+        "body": [
+            "let ${1:merged} = merge(${2:map1}, ${3:map2})"
+        ],
+        "description": "Merge two maps"
+    },
+    "Clone Object": {
+        "prefix": "clone",
+        "body": [
+            "let ${1:copy} = clone(${2:original})"
+        ],
+        "description": "Create a deep copy of an object"
     }
 }
   

@@ -14,6 +14,9 @@ This document showcases all the modern Language Server Protocol features impleme
 8. [Signature Help](#signature-help)
 9. [Document Links](#document-links)
 10. [Selection Ranges](#selection-ranges)
+11. [Code Lens](#code-lens)
+12. [Color Decorators](#color-decorators)
+13. [New Built-in Functions](#new-built-in-functions)
 
 ---
 
@@ -381,6 +384,170 @@ let helperFunction = func() {
 
 ---
 
+## Code Lens
+
+**NEW in v0.5.0** - Code lens provides inline actionable information above functions.
+
+### Reference Counts
+
+The extension shows how many times each function is called:
+
+```vint
+let greet = func(name) {  // Shows: "2 references" above the function
+    println("Hello, " + name)
+}
+
+greet("Alice")
+greet("Bob")
+```
+
+### Features
+
+- **Automatic Counting** - Counts all function calls across the document
+- **Click to Navigate** - Click the code lens to see all references
+- **Real-time Updates** - Updates automatically as you code
+- **Configuration** - Toggle via `vintlang.codeLens.enable` setting
+
+---
+
+## Color Decorators
+
+**NEW in v0.5.0** - Visual decorators for color values in your code.
+
+### Supported Formats
+
+The extension recognizes and decorates multiple color formats:
+
+```vint
+// Hex colors
+let primary = "#FF5733"      // Full hex (6 digits)
+let accent = "#f00"          // Short hex (3 digits)
+
+// RGB colors
+let background = "rgb(255, 255, 255)"
+let foreground = "rgb(33, 33, 33)"
+
+// RGBA colors with transparency
+let overlay = "rgba(0, 0, 0, 0.5)"
+```
+
+### Features
+
+- **Visual Preview** - See the actual color inline next to the value
+- **Color Picker** - Click to edit colors with VS Code's built-in color picker
+- **Format Conversion** - Convert between hex, RGB, and RGBA formats
+- **Real-time Updates** - Changes reflect immediately in decorators
+- **Configuration** - Toggle via `vintlang.colorDecorators.enable` setting
+
+---
+
+## New Built-in Functions
+
+**NEW in v0.5.0** - Extended built-in function library.
+
+### File I/O Functions
+
+Comprehensive file system operations:
+
+```vint
+// Read file contents
+let config = readFile("config.json")
+
+// Write to file
+writeFile("output.txt", "Hello, World!")
+
+// Append to file
+appendFile("log.txt", "New entry\n")
+
+// Check if file exists
+if (fileExists("data.txt")) {
+    println("File found!")
+}
+
+// Delete file
+deleteFile("temp.txt")
+
+// Directory operations
+let files = readDir("./src")
+makeDir("output")
+```
+
+**Available Functions:**
+- `readFile(path)` - Read file contents as string
+- `writeFile(path, content)` - Write content to file
+- `appendFile(path, content)` - Append to existing file
+- `deleteFile(path)` - Delete a file
+- `fileExists(path)` - Check if file exists
+- `readDir(path)` - List directory contents
+- `makeDir(path)` - Create directory
+
+### Enhanced Math Functions
+
+Advanced mathematical operations:
+
+```vint
+// Trigonometric functions (radians)
+let s = sin(3.14159 / 4)    // 45 degrees
+let c = cos(0)
+let t = tan(0.785398)
+
+// Logarithmic and exponential
+let ln = log(10)            // Natural log
+let e = exp(2)              // e^2
+
+// Number formatting
+let formatted = toFixed(3.14159, 2)  // "3.14"
+
+// Parsing
+let num = parseInt("42")
+let decimal = parseFloat("3.14")
+```
+
+**Available Functions:**
+- `sin(x)`, `cos(x)`, `tan(x)` - Trigonometric functions
+- `log(x)` - Natural logarithm
+- `exp(x)` - Exponential (e^x)
+- `toFixed(number, digits)` - Format to fixed decimals
+- `parseInt(string)` - Parse integer from string
+- `parseFloat(string)` - Parse float from string
+
+### Utility Functions
+
+Helpful utilities for common operations:
+
+```vint
+// Map operations
+let user = {"name": "John", "age": 30}
+
+let userKeys = keys(user)        // ["name", "age"]
+let userValues = values(user)    // ["John", 30]
+let userEntries = entries(user)  // [["name", "John"], ["age", 30]]
+
+// Merge maps
+let defaults = {"theme": "dark"}
+let settings = {"theme": "light", "fontSize": 14}
+let merged = merge(defaults, settings)  // {"theme": "light", "fontSize": 14}
+
+// Deep cloning
+let original = {"data": [1, 2, 3]}
+let copy = clone(original)
+
+// Object protection
+freeze(constants)  // Prevent modifications
+seal(config)       // Prevent adding properties
+```
+
+**Available Functions:**
+- `keys(map)` - Get array of map keys
+- `values(map)` - Get array of map values
+- `entries(map)` - Get array of [key, value] pairs
+- `merge(map1, map2)` - Merge two maps (map2 overwrites)
+- `clone(value)` - Deep copy of any value
+- `freeze(object)` - Freeze object to prevent changes
+- `seal(object)` - Seal object to prevent new properties
+
+---
+
 ## Configuration
 
 Control features via settings:
@@ -397,6 +564,8 @@ Control features via settings:
     "vintlang.inlayHints.enable": true,
     "vintlang.semanticHighlighting.enable": true,
     "vintlang.codeActions.enable": true,
+    "vintlang.codeLens.enable": true,
+    "vintlang.colorDecorators.enable": true,
     
     // Debug
     "vintlang.trace.server": "off",  // or "messages", "verbose"
