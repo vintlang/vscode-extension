@@ -1,0 +1,37 @@
+# Build artifacts
+node_modules/
+.vscode-test/
+out/test/
+src/**/*.map
+
+# Development files
+.gitignore
+.git
+.github
+.eslintrc.json
+.prettierrc.json
+tsconfig.json
+.DS_Store
+*.vsix
+
+# Documentation (keep README.md, CHANGELOG.md)
+DEVELOPMENT.md
+CONTRIBUTING.md
+vsc-extension-quickstart.md
+
+# Test files
+test/
+examples/
+*.test.js
+*.spec.js
+test.vint
+
+# Lock files
+package-lock.json
+bun.lock
+yarn.lock
+
+# Misc
+*.log
+.env
+.env.local
