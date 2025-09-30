@@ -233,7 +233,7 @@ async function validateTextDocument(textDocument) {
     connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
-function validateLine(line: string, lineNumber: number, document: TextDocument, diagnostics: Diagnostic[]) {
+function validateLine(line, lineNumber, document, diagnostics) {
     // Check for unmatched braces
     const openBraces = (line.match(/\{/g) || []).length;
     const closeBraces = (line.match(/\}/g) || []).length;
@@ -382,7 +382,7 @@ connection.onHover(params => {
     return null;
 });
 
-function getWordRangeAtPosition(text: string, offset: number) {
+function getWordRangeAtPosition(text, offset) {
     let start = offset;
     let end = offset;
     
