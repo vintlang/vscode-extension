@@ -2,7 +2,11 @@
 
 ![VintLang Logo](./icons/vint-dark.png)
 
-The **official** VS Code extension for VintLang programming language with full Language Server Protocol (LSP) support. This extension provides comprehensive language support including intelligent code completion, real-time error checking, syntax highlighting, and much more.
+[![CI](https://github.com/vintlang/vscode-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/vintlang/vscode-extension/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/visual-studio-marketplace/v/tacheraSasi.vint)](https://marketplace.visualstudio.com/items?itemName=tacheraSasi.vint)
+
+The **official** production-ready VS Code extension for VintLang programming language with full Language Server Protocol (LSP) support. This extension provides comprehensive language support including intelligent code completion, real-time error checking, syntax highlighting, and much more.
 
 ## ✨ Features
 
@@ -197,21 +201,32 @@ This extension follows a comprehensive roadmap to become a fully-featured modern
 - [x] Symbol navigation
 - [x] Signature help
 
-### 🚧 Phase 3: Advanced Features (In Progress)
+### ✅ Phase 3: Production Ready (Complete - v0.3.0)
+- [x] ESLint integration for code quality
+- [x] Prettier formatting
+- [x] CI/CD with GitHub Actions
+- [x] Comprehensive error handling
+- [x] JSDoc type annotations
+- [x] Security vulnerability fixes
+- [x] MIT License
+- [x] Contributing guidelines
+- [x] VS Code workspace configuration
+
+### 🚧 Phase 4: Advanced Features (In Progress)
 - [ ] Real-time semantic validation
-- [ ] Advanced code folding
-- [ ] Document formatting
+- [ ] Advanced code folding (basic support complete)
+- [ ] Document formatting (basic support complete)
 - [ ] Code actions and quick fixes
 - [ ] Rename refactoring
 
-### 📋 Phase 4: Developer Experience (Planned)
+### 📋 Phase 5: Developer Experience (Planned)
 - [ ] Debugger integration
 - [ ] Import/module resolution
 - [ ] Workspace-wide refactoring
 - [ ] Integration with VintLang compiler
 - [ ] Testing framework integration
 
-### 🎯 Phase 5: Modern LSP Features (Future)
+### 🎯 Phase 6: Modern LSP Features (Future)
 - [ ] Call hierarchy
 - [ ] Type hints and inference
 - [ ] Code lens
@@ -238,11 +253,29 @@ cd vscode-extension
 # Install dependencies
 npm install
 
+# Run linting
+npm run lint
+
+# Format code
+npm run format
+
 # Open in VS Code
 code .
 
 # Press F5 to launch extension development host
 ```
+
+### Development Scripts
+
+- `npm run lint` - Check code quality with ESLint
+- `npm run lint:fix` - Automatically fix linting issues
+- `npm run format` - Format code with Prettier
+- `npm run format:check` - Check if code is formatted
+- `npm test` - Run tests
+- `npm run package` - Create VSIX package
+- `npm run publish` - Publish to marketplace
+
+For detailed contributing guidelines, see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## 📖 VintLang Resources
 

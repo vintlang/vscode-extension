@@ -1,1 +1,41 @@
+# Dependencies
 /node_modules
+node_modules/
+
+# Build artifacts
+*.vsix
+out/
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE (keep important VS Code workspace settings)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Lock files (keep package-lock.json only)
+bun.lock
+yarn.lock
+pnpm-lock.yaml
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Environment
+.env
+.env.local

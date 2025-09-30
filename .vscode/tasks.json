@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "lint",
+            "problemMatcher": ["$eslint-stylish"],
+            "label": "npm: lint",
+            "detail": "Run ESLint on source files"
+        },
+        {
+            "type": "npm",
+            "script": "format",
+            "problemMatcher": [],
+            "label": "npm: format",
+            "detail": "Format source files with Prettier"
+        },
+        {
+            "type": "npm",
+            "script": "test",
+            "problemMatcher": [],
+            "label": "npm: test",
+            "detail": "Run tests"
+        }
+    ]
+}

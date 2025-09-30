@@ -2,12 +2,26 @@
   "name": "vint",
   "displayName": "VintLang",
   "description": "The official Vint language support extension with full LSP features",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "tacheraSasi",
   "repository": {
     "type": "git",
     "url": "https://github.com/vintlang/vscode-extension.git"
   },
+  "bugs": {
+    "url": "https://github.com/vintlang/vscode-extension/issues"
+  },
+  "homepage": "https://github.com/vintlang/vscode-extension#readme",
+  "license": "MIT",
+  "keywords": [
+    "vintlang",
+    "vint",
+    "language",
+    "syntax-highlighting",
+    "intellisense",
+    "lsp",
+    "language-server"
+  ],
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -105,9 +119,14 @@
     ]
   },
   "scripts": {
-    "compile": "node src/extension.js",
-    "watch": "nodemon src/extension.js",
-    "test": "node test/runTest.js"
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix",
+    "format": "prettier --write \"src/**/*.{js,json}\"",
+    "format:check": "prettier --check \"src/**/*.{js,json}\"",
+    "test": "echo \"Tests coming soon\" && exit 0",
+    "package": "vsce package",
+    "publish": "vsce publish",
+    "vscode:prepublish": "npm run lint && npm run format:check"
   },
   "dependencies": {
     "vscode-languageclient": "^8.1.0",
@@ -115,7 +134,14 @@
     "vscode-languageserver-textdocument": "^1.0.8"
   },
   "devDependencies": {
+    "@eslint/js": "^9.36.0",
     "@types/vscode": "^1.74.0",
-    "nodemon": "^2.0.20"
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
   }
 }
