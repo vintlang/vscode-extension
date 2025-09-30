@@ -90,16 +90,33 @@ Features:
 - Module name completion
 - Trigger characters: `.`, `(`, `{`, `[`
 
-### 2. Diagnostics
+### 2. Diagnostics with Symbol Table
 
-**Location**: `src/server.js` - `validateTextDocument()`
+**Location**: `src/server.js` - `validateTextDocument()`, `SymbolTable` class
 
-Current validations:
-- Function syntax checking (`let name = func()` pattern)
-- Variable declaration warnings
-- Basic syntax error detection
+Advanced validation system:
+- **Two-pass analysis**: 
+  - First pass: Collect all symbol definitions (functions, variables, imports)
+  - Second pass: Validate references and track usage
+- **Symbol tracking**: Each document has its own symbol table
+- **Unused detection**: Identifies unused variables and functions
+- **Diagnostic codes**: All diagnostics include codes for quick fixes
+  - `missing-let` - Variable declared without 'let'
+  - `unused-symbol` - Unused variable or function
+  - `invalid-function-syntax` - Incorrect function syntax
+  - `unmatched-brace` - Unmatched closing brace
+  - `unmatched-paren` - Unmatched parentheses
 
-### 3. Hover Information
+### 3. Code Actions & Quick Fixes
+
+**Location**: `src/server.js` - `connection.onCodeAction()`
+
+Provides contextual quick fixes:
+- **Add 'let'**: Automatically insert 'let' keyword
+- **Remove unused**: Remove unused variable/function declarations
+- **Documentation**: Open relevant VintLang documentation
+
+### 4. Hover Information
 
 **Location**: `src/server.js` - `connection.onHover()`
 
@@ -107,8 +124,9 @@ Provides rich documentation for:
 - Keywords with usage examples
 - Built-in functions with syntax
 - Modules with function lists
+- Enhanced with more built-in functions
 
-### 4. Document Symbols
+### 5. Document Symbols
 
 **Location**: `src/server.js` - `connection.onDocumentSymbol()`
 
@@ -117,7 +135,95 @@ Extracts symbols:
 - Variable declarations
 - Import statements
 
-### 5. Code Folding
+### 6. Navigation Features
+
+**Locations**: 
+- `connection.onDefinition()` - Go to definition
+- `connection.onReferences()` - Find all references
+- `connection.onDocumentHighlight()` - Highlight symbol occurrences
+
+Features:
+- Navigate to function and variable definitions
+- Find all usages across document
+- Automatic highlighting of current symbol
+
+### 7. Rename Refactoring
+
+**Location**: `src/server.js` - `connection.onPrepareRename()`, `connection.onRenameRequest()`
+
+Safe renaming:
+- Validates renameable symbols (not keywords/builtins)
+- Updates all references across document
+- Provides placeholder with current name
+
+### 8. Signature Help
+
+**Location**: `src/server.js` - `connection.onSignatureHelp()`
+
+Parameter hints for built-in functions:
+- Shows function signature
+- Highlights active parameter
+- Displays parameter documentation
+- Supports: print, println, type, convert, len, range, split, join
+
+### 9. Semantic Tokens
+
+**Location**: `src/server.js` - `connection.onSemanticTokens()`
+
+Enhanced syntax highlighting with 22 token types:
+- **Keywords**: if, else, for, while, etc.
+- **Built-in functions**: Marked as default library
+- **Modules**: Namespaces for import statements
+- **Variables**: Declaration highlighting
+- **Functions**: User-defined functions
+- **Literals**: Strings, numbers, booleans
+- **Operators**: Arithmetic and logical
+- **Comments**: Line and block comments
+- **Declarative statements**: todo, warn, error, etc.
+
+### 10. Inlay Hints
+
+**Location**: `src/server.js` - `connection.onInlayHint()`
+
+Inline information display:
+- **Parameter names**: Shows parameter names for function calls
+- **Type hints**: Inferred types for variable declarations
+  - string, int, float, bool, array, map, function
+
+### 11. Call Hierarchy
+
+**Location**: `src/server.js` - `connection.onPrepareCallHierarchy()`, `connection.onCallHierarchyIncomingCalls()`, `connection.onCallHierarchyOutgoingCalls()`
+
+Function call navigation:
+- **Incoming calls**: Shows which functions call the current function
+- **Outgoing calls**: Shows which functions the current function calls
+- Visualizes function call relationships
+
+### 12. Document Links
+
+**Location**: `src/server.js` - `connection.onDocumentLinks()`
+
+Clickable links:
+- Import statements → Module documentation
+- URLs in comments → External links
+
+### 13. Selection Ranges
+
+**Location**: `src/server.js` - `connection.onSelectionRanges()`
+
+Smart expand/shrink selection:
+- Word level → Line level → Block level
+- Supports Alt+Shift+Left/Right shortcuts
+
+### 14. Workspace Symbols
+
+**Location**: `src/server.js` - `connection.onWorkspaceSymbol()`
+
+Search symbols across all files:
+- Functions, variables, and imports
+- Query-based filtering
+
+### 15. Code Folding
 
 **Location**: `src/server.js` - `connection.onFoldingRanges()`
 
@@ -125,7 +231,7 @@ Supports folding:
 - Code blocks (braces)
 - Multi-line comments
 
-### 6. Document Formatting
+### 16. Document Formatting
 
 **Location**: `src/server.js` - `connection.onDocumentFormatting()`
 
@@ -174,7 +280,7 @@ The syntax highlighting is defined in `syntaxes/vint.tmLanguage.json` using Text
    code --extensionDevelopmentPath=. test-workspace/
    ```
 
-2. **Test Features**
+2. **Test Core Features**
    - Create a `.vint` file
    - Test code completion (Ctrl+Space)
    - Test hover information
@@ -182,7 +288,52 @@ The syntax highlighting is defined in `syntaxes/vint.tmLanguage.json` using Text
    - Test document symbols (Ctrl+Shift+O)
    - Test formatting (Shift+Alt+F)
 
-3. **Test Error Scenarios**
+3. **Test Advanced Features**
+   
+   **Semantic Tokens**:
+   - Open a .vint file and observe syntax highlighting
+   - Built-in functions should be highlighted differently
+   - Keywords, operators, strings should have distinct colors
+   
+   **Inlay Hints**:
+   - Declare a variable: `let x = 42`
+   - Should see `: int` hint after variable name
+   - Call a function: `convert("123", "INTEGER")`
+   - Should see `value:` and `type:` hints before arguments
+   
+   **Code Actions**:
+   - Write: `x = 5` (without let)
+   - Lightbulb should appear with "Add 'let'" quick fix
+   - Declare unused variable: `let unused = "test"`
+   - Should get hint with "Remove unused" quick fix
+   
+   **Rename Refactoring**:
+   - Right-click a function/variable name
+   - Select "Rename Symbol" (F2)
+   - Type new name and press Enter
+   - All references should update
+   
+   **Call Hierarchy**:
+   - Right-click a function name
+   - Select "Show Call Hierarchy"
+   - Should see incoming and outgoing calls
+   
+   **Document Highlight**:
+   - Click on a variable/function name
+   - All occurrences should highlight automatically
+   
+   **Selection Ranges**:
+   - Place cursor in code
+   - Press Alt+Shift+Right repeatedly
+   - Selection should expand: word → line → block
+   
+   **Document Links**:
+   - Write: `import time`
+   - "time" should be underlined (Ctrl+click to open docs)
+   - Add URL in comment
+   - URL should be clickable
+
+4. **Test Error Scenarios**
    ```vint
    // Test function syntax error
    func myFunction() {  // Should show error
@@ -190,8 +341,56 @@ The syntax highlighting is defined in `syntaxes/vint.tmLanguage.json` using Text
    }
    
    // Test variable warning
-   myVar = "test"  // Should show warning
+   myVar = "test"  // Should show warning about missing 'let'
+   
+   // Test unused variable
+   let unused = "value"  // Should show hint (unused)
+   
+   // Test unmatched braces
+   if (true) {
+       print("test")
+   }}  // Should show error
    ```
+
+5. **Test Status Bar**
+   - Click status bar item (bottom right)
+   - Should show extension status dialog
+   - Test "Open Settings" and "Restart Server" actions
+
+### Performance Testing
+
+1. **Large Files**
+   - Create a .vint file with 1000+ lines
+   - Test completion response time
+   - Test diagnostics update speed
+   - Monitor CPU usage
+
+2. **Multiple Files**
+   - Create workspace with 10+ .vint files
+   - Test workspace symbol search
+   - Test find all references across files
+   - Check memory usage
+
+### Automated Testing
+
+Currently manual testing only. Automated tests to be added:
+
+```javascript
+// Future test structure
+suite('VintLang Extension Tests', () => {
+    test('Activation', () => {
+        // Test extension activates
+    });
+    
+    test('Completion Provider', () => {
+        // Test completions are provided
+    });
+    
+    test('Diagnostics', () => {
+        // Test diagnostics are reported
+    });
+});
+```
 
 ### Automated Testing
 
@@ -398,23 +597,51 @@ Extension settings are defined in `package.json`:
 
 ## 📈 Roadmap Implementation
 
-### Phase 3: Advanced Features
-- [ ] Semantic highlighting
-- [ ] Code actions (quick fixes)
-- [ ] Rename refactoring
-- [ ] Document range formatting
+### ✅ Phase 1-5: Complete (v0.4.0)
 
-### Phase 4: Developer Experience
+All planned LSP features have been implemented:
+
+- [x] **Enhanced Diagnostics**
+  - [x] Symbol table with scope tracking
+  - [x] Unused variable/function detection
+  - [x] Diagnostic codes for all errors
+  - [x] Brace/parenthesis matching
+
+- [x] **Code Actions**
+  - [x] Quick fixes for common issues
+  - [x] Add 'let' keyword
+  - [x] Remove unused symbols
+  - [x] Documentation links
+
+- [x] **Advanced Navigation**
+  - [x] Semantic highlighting (22 token types)
+  - [x] Rename refactoring
+  - [x] Document highlight
+  - [x] Go to definition
+  - [x] Find all references
+  - [x] Call hierarchy
+  - [x] Workspace symbols
+
+- [x] **Code Intelligence**
+  - [x] Signature help with parameter docs
+  - [x] Inlay hints (parameters and types)
+  - [x] Enhanced hover information
+  - [x] Document links
+
+- [x] **Developer Experience**
+  - [x] Status bar integration
+  - [x] Selection ranges (smart select)
+  - [x] Enhanced configuration
+  - [x] Better error reporting
+
+### Phase 6: Future Enhancements
+
 - [ ] Debugger integration
-- [ ] Module resolution
-- [ ] Workspace-wide refactoring
-- [ ] Build task integration
-
-### Phase 5: Modern LSP Features
-- [ ] Call hierarchy
-- [ ] Type hints
-- [ ] Code lens
-- [ ] Inline hints
+- [ ] Module resolution and validation
+- [ ] Integration with VintLang compiler
+- [ ] Testing framework integration
+- [ ] Code lens for inline actions
+- [ ] Workspace-wide refactoring operations
 
 ## 🤝 Contributing Guidelines
 
