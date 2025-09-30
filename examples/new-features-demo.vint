@@ -23,7 +23,7 @@ let result = greet("Charlie")
 // Color values are now decorated with visual color swatches
 // Click on a color to edit it with the color picker
 
-let primaryColor = "#FF5733"  // Hex color with decorator
+let primaryColor = "#873826ff"  // Hex color with decorator
 let secondaryColor = "#3498db"  // Another hex color
 let tertiaryColor = "#2ecc71"
 
