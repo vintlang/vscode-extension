@@ -24,6 +24,14 @@ The **official** production-ready VS Code extension for VintLang programming lan
 - **Symbol Navigation** - Document outline and workspace-wide symbol search
 - **Signature Help** - Parameter hints for function calls
 - **Code Folding** - Collapse functions, blocks, and comments for better navigation
+- **Rename Refactoring** - Safely rename symbols across your codebase
+- **Document Highlight** - Highlight all occurrences of the symbol under cursor
+- **Code Actions** - Quick fixes for common issues (missing 'let', unused variables)
+- **Semantic Highlighting** - Advanced syntax highlighting based on semantic analysis
+- **Inlay Hints** - Inline parameter names and type information
+- **Call Hierarchy** - Navigate function call relationships
+- **Document Links** - Clickable links for imports and URLs in comments
+- **Selection Ranges** - Smart expand/shrink selection (Alt+Shift+Left/Right)
 
 ### 📝 Smart Snippets
 Over 30 pre-built code snippets for common VintLang patterns:
@@ -123,6 +131,9 @@ The extension supports various configuration options:
 | `vintlang.format.enable` | boolean | `true` | Enable auto-formatting |
 | `vintlang.completion.enable` | boolean | `true` | Enable intelligent code completion |
 | `vintlang.diagnostics.enable` | boolean | `true` | Enable real-time error diagnostics |
+| `vintlang.inlayHints.enable` | boolean | `true` | Enable inlay hints for parameters and types |
+| `vintlang.semanticHighlighting.enable` | boolean | `true` | Enable semantic syntax highlighting |
+| `vintlang.codeActions.enable` | boolean | `true` | Enable code actions and quick fixes |
 
 ## 🎯 Language Features
 
@@ -163,6 +174,7 @@ Access these commands via Command Palette (Ctrl+Shift+P):
 
 - **VintLang: Restart Language Server** - Restart the language server
 - **VintLang: Show References** - Find all references to symbol under cursor
+- **VintLang: Show Extension Status** - Display extension and server status
 
 ## 🐛 Troubleshooting
 
@@ -212,27 +224,33 @@ This extension follows a comprehensive roadmap to become a fully-featured modern
 - [x] Contributing guidelines
 - [x] VS Code workspace configuration
 
-### 🚧 Phase 4: Advanced Features (In Progress)
-- [ ] Real-time semantic validation
-- [ ] Advanced code folding (basic support complete)
-- [ ] Document formatting (basic support complete)
-- [ ] Code actions and quick fixes
-- [ ] Rename refactoring
+### 🚧 Phase 4: Advanced Features (Complete - v0.4.0)
+- [x] Real-time semantic validation with symbol tracking
+- [x] Advanced code folding for all block types
+- [x] Document formatting with smart indentation
+- [x] Code actions and quick fixes
+- [x] Rename refactoring with prepare rename
+- [x] Document highlight for symbol occurrences
+- [x] Semantic tokens for enhanced highlighting
+- [x] Inlay hints for parameters and types
+- [x] Call hierarchy navigation
 
-### 📋 Phase 5: Developer Experience (Planned)
-- [ ] Debugger integration
-- [ ] Import/module resolution
-- [ ] Workspace-wide refactoring
-- [ ] Integration with VintLang compiler
-- [ ] Testing framework integration
+### 📋 Phase 5: Developer Experience (Complete - v0.4.0)
+- [x] Status bar integration
+- [x] Enhanced configuration options
+- [x] Document links for imports and URLs
+- [x] Selection ranges (smart select)
+- [x] Workspace symbol search
+- [x] Improved error messages with diagnostic codes
 
 ### 🎯 Phase 6: Modern LSP Features (Future)
-- [ ] Call hierarchy
-- [ ] Type hints and inference
-- [ ] Code lens
-- [ ] Inline hints
-- [ ] Semantic tokens
-- [ ] Document links
+- [ ] Debugger integration
+- [ ] Import/module resolution and validation
+- [ ] Integration with VintLang compiler
+- [ ] Testing framework integration
+- [ ] Code lens for inline actions
+- [ ] Type inference improvements
+- [ ] Workspace-wide refactoring operations
 
 ## 🤝 Contributing
 

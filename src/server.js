@@ -13,6 +13,9 @@ const {
     InitializeResult,
     SymbolKind,
     FoldingRangeKind,
+    SemanticTokensBuilder,
+    SemanticTokenTypes,
+    SemanticTokenModifiers,
 } = require('vscode-languageserver/node');
 
 const { TextDocument } = require('vscode-languageserver-textdocument');
@@ -74,6 +77,45 @@ class SymbolTable {
 
 // Document-specific symbol tables
 const documentSymbols = new Map();
+
+// Semantic token legend
+const tokenTypes = [
+    SemanticTokenTypes.namespace, // 0 - modules
+    SemanticTokenTypes.type, // 1 - types
+    SemanticTokenTypes.class, // 2 - classes
+    SemanticTokenTypes.enum, // 3 - enums
+    SemanticTokenTypes.interface, // 4 - interfaces
+    SemanticTokenTypes.struct, // 5 - structs
+    SemanticTokenTypes.typeParameter, // 6 - type parameters
+    SemanticTokenTypes.parameter, // 7 - parameters
+    SemanticTokenTypes.variable, // 8 - variables
+    SemanticTokenTypes.property, // 9 - properties
+    SemanticTokenTypes.enumMember, // 10 - enum members
+    SemanticTokenTypes.event, // 11 - events
+    SemanticTokenTypes.function, // 12 - functions
+    SemanticTokenTypes.method, // 13 - methods
+    SemanticTokenTypes.macro, // 14 - macros
+    SemanticTokenTypes.keyword, // 15 - keywords
+    SemanticTokenTypes.modifier, // 16 - modifiers
+    SemanticTokenTypes.comment, // 17 - comments
+    SemanticTokenTypes.string, // 18 - strings
+    SemanticTokenTypes.number, // 19 - numbers
+    SemanticTokenTypes.regexp, // 20 - regular expressions
+    SemanticTokenTypes.operator, // 21 - operators
+];
+
+const tokenModifiers = [
+    SemanticTokenModifiers.declaration, // 0
+    SemanticTokenModifiers.definition, // 1
+    SemanticTokenModifiers.readonly, // 2
+    SemanticTokenModifiers.static, // 3
+    SemanticTokenModifiers.deprecated, // 4
+    SemanticTokenModifiers.abstract, // 5
+    SemanticTokenModifiers.async, // 6
+    SemanticTokenModifiers.modification, // 7
+    SemanticTokenModifiers.documentation, // 8
+    SemanticTokenModifiers.defaultLibrary, // 9
+];
 
 // VintLang language configuration
 const vintlangConfig = {
@@ -211,6 +253,18 @@ connection.onInitialize(params => {
             },
             // Support selection ranges
             selectionRangeProvider: true,
+            // Support semantic tokens
+            semanticTokensProvider: {
+                legend: {
+                    tokenTypes: tokenTypes,
+                    tokenModifiers: tokenModifiers,
+                },
+                full: true,
+            },
+            // Support inlay hints
+            inlayHintProvider: true,
+            // Support call hierarchy
+            callHierarchyProvider: true,
         },
     };
 
@@ -587,10 +641,8 @@ function getHoverDocumentation(word) {
         convert:
             '**convert(value, type)** - Converts a value to the specified type\n\n```vint\nlet str = "123"\nconvert(str, "INTEGER")\n```',
         len: '**len(collection)** - Returns the length of a string, array, or map\n\n```vint\nlet size = len([1, 2, 3])  // 3\n```',
-        range:
-            '**range(start, end, [step])** - Creates a range of numbers\n\n```vint\nfor i in range(0, 10) {\n    print(i)\n}\n```',
-        split:
-            '**split(string, delimiter)** - Splits a string by delimiter\n\n```vint\nlet parts = split("a,b,c", ",")\n```',
+        range: '**range(start, end, [step])** - Creates a range of numbers\n\n```vint\nfor i in range(0, 10) {\n    print(i)\n}\n```',
+        split: '**split(string, delimiter)** - Splits a string by delimiter\n\n```vint\nlet parts = split("a,b,c", ",")\n```',
         join: '**join(array, separator)** - Joins array elements into a string\n\n```vint\nlet result = join(["a", "b", "c"], ",")\n```',
         time: '**time** - Module for time-related operations\n\nFunctions:\n- `now()` - Get current timestamp\n- `format(time, layout)` - Format time\n- `add(time, duration)` - Add duration to time\n- `subtract(time, duration)` - Subtract duration from time\n- `isLeapYear(year)` - Check if year is leap year',
         net: '**net** - Module for network operations\n\nFunctions:\n- `get(url)` - HTTP GET request\n- `post(url, data)` - HTTP POST request\n- `put(url, data)` - HTTP PUT request\n- `delete(url)` - HTTP DELETE request',
@@ -1345,6 +1397,393 @@ connection.onSelectionRanges(params => {
     }
 
     return ranges;
+});
+
+// Semantic tokens provider
+connection.onSemanticTokens(params => {
+    const document = documents.get(params.textDocument.uri);
+    if (!document) {
+        return { data: [] };
+    }
+
+    const text = document.getText();
+    const lines = text.split('\n');
+    const builder = new SemanticTokensBuilder();
+
+    for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+        const line = lines[lineIndex];
+
+        // Match keywords
+        const keywordRegex =
+            /\b(if|else|elif|while|for|in|switch|case|default|break|continue|func|return|let|const|declare|defer|import|package|include|try|catch|throw|finally|as|is|async|await|go|chan|match|repeat)\b/g;
+        let match;
+        while ((match = keywordRegex.exec(line))) {
+            builder.push(lineIndex, match.index, match[0].length, 15, 0); // keyword
+        }
+
+        // Match built-in functions
+        const builtinRegex =
+            /\b(print|println|write|type|convert|has_key|len|range|split|join|replace|contains|startsWith|endsWith|trim|upper|lower|push|pop|shift|unshift|slice|splice|sort|reverse|abs|ceil|floor|round|max|min|sqrt|pow|random|now|format|add|subtract|isLeapYear|exec|env|args|exit)\b/g;
+        while ((match = builtinRegex.exec(line))) {
+            builder.push(lineIndex, match.index, match[0].length, 12, 1 << 9); // function with defaultLibrary modifier
+        }
+
+        // Match modules
+        const moduleRegex = /\b(time|net|os|json|csv|regex|crypto|encoding|colors|term)\b/g;
+        while ((match = moduleRegex.exec(line))) {
+            builder.push(lineIndex, match.index, match[0].length, 0, 1 << 9); // namespace with defaultLibrary
+        }
+
+        // Match function definitions
+        const funcDefRegex = /let\s+(\w+)\s*=\s*func/g;
+        while ((match = funcDefRegex.exec(line))) {
+            const funcNameStart = line.indexOf(match[1], match.index);
+            builder.push(lineIndex, funcNameStart, match[1].length, 12, 1 << 0); // function with declaration
+        }
+
+        // Match variable declarations
+        const varDefRegex = /(?:let|const)\s+(\w+)\s*=/g;
+        while ((match = varDefRegex.exec(line))) {
+            if (!line.includes('func')) {
+                // Not a function definition
+                const varNameStart = line.indexOf(match[1], match.index);
+                builder.push(lineIndex, varNameStart, match[1].length, 8, 1 << 0); // variable with declaration
+            }
+        }
+
+        // Match string literals
+        const stringRegex = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/g;
+        while ((match = stringRegex.exec(line))) {
+            builder.push(lineIndex, match.index, match[0].length, 18, 0); // string
+        }
+
+        // Match numbers
+        const numberRegex = /\b\d+(\.\d+)?\b/g;
+        while ((match = numberRegex.exec(line))) {
+            builder.push(lineIndex, match.index, match[0].length, 19, 0); // number
+        }
+
+        // Match comments
+        if (line.includes('//')) {
+            const commentStart = line.indexOf('//');
+            builder.push(lineIndex, commentStart, line.length - commentStart, 17, 0); // comment
+        }
+
+        // Match operators
+        const operatorRegex = /[+\-*/%=<>!&|^~]+/g;
+        while ((match = operatorRegex.exec(line))) {
+            if (line[match.index - 1] !== '/' && line[match.index + 1] !== '/') {
+                // Not part of a comment
+                builder.push(lineIndex, match.index, match[0].length, 21, 0); // operator
+            }
+        }
+
+        // Match boolean literals
+        const boolRegex = /\b(true|false|null)\b/g;
+        while ((match = boolRegex.exec(line))) {
+            builder.push(lineIndex, match.index, match[0].length, 15, 1 << 2); // keyword with readonly
+        }
+
+        // Match declarative statements
+        const declarativeRegex =
+            /\b(todo|warn|error|info|debug|note|success|trace|fatal|critical|log|Todo|Warn|Error|Info|Debug|Note|Success|Trace|Fatal|Critical|Log)\b/g;
+        while ((match = declarativeRegex.exec(line))) {
+            builder.push(lineIndex, match.index, match[0].length, 14, 0); // macro
+        }
+    }
+
+    return builder.build();
+});
+
+// Inlay hints provider
+connection.onInlayHint(params => {
+    const document = documents.get(params.textDocument.uri);
+    if (!document) {
+        return [];
+    }
+
+    const text = document.getText();
+    const lines = text.split('\n');
+    const hints = [];
+
+    // Parameter name hints for built-in functions
+    const functionSignatures = {
+        convert: ['value', 'type'],
+        split: ['string', 'delimiter'],
+        join: ['array', 'separator'],
+        replace: ['string', 'old', 'new'],
+        range: ['start', 'end', 'step'],
+    };
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // Find function calls
+        for (const [funcName, paramNames] of Object.entries(functionSignatures)) {
+            const funcRegex = new RegExp(`\\b${funcName}\\s*\\(([^)]*)\\)`, 'g');
+            let match;
+
+            while ((match = funcRegex.exec(line))) {
+                const args = match[1].split(',');
+                let charOffset = match.index + funcName.length + 1; // Start after '('
+
+                for (let j = 0; j < args.length && j < paramNames.length; j++) {
+                    const arg = args[j].trim();
+                    if (arg) {
+                        // Skip whitespace
+                        while (charOffset < line.length && line[charOffset] === ' ') {
+                            charOffset++;
+                        }
+
+                        hints.push({
+                            position: { line: i, character: charOffset },
+                            label: `${paramNames[j]}:`,
+                            kind: 2, // Parameter
+                            paddingRight: true,
+                        });
+
+                        charOffset += arg.length + 1; // Move past arg and comma
+                    }
+                }
+            }
+        }
+
+        // Type hints for variable declarations (inferred types)
+        const varMatch = line.match(/let\s+(\w+)\s*=\s*(.+?)(?:\/\/|$)/);
+        if (varMatch) {
+            const value = varMatch[2].trim();
+            let inferredType = null;
+
+            if (value.startsWith('"') || value.startsWith("'")) {
+                inferredType = 'string';
+            } else if (/^\d+$/.test(value)) {
+                inferredType = 'int';
+            } else if (/^\d+\.\d+$/.test(value)) {
+                inferredType = 'float';
+            } else if (value === 'true' || value === 'false') {
+                inferredType = 'bool';
+            } else if (value.startsWith('[')) {
+                inferredType = 'array';
+            } else if (value.startsWith('{')) {
+                inferredType = 'map';
+            } else if (value.includes('func')) {
+                inferredType = 'function';
+            }
+
+            if (inferredType) {
+                const varNameMatch = line.match(/let\s+(\w+)/);
+                if (varNameMatch) {
+                    const varNameEnd = varNameMatch.index + 4 + varNameMatch[1].length;
+                    hints.push({
+                        position: { line: i, character: varNameEnd },
+                        label: `: ${inferredType}`,
+                        kind: 1, // Type
+                        paddingLeft: true,
+                    });
+                }
+            }
+        }
+    }
+
+    return hints;
+});
+
+// Call hierarchy provider
+connection.onPrepareCallHierarchy(params => {
+    const document = documents.get(params.textDocument.uri);
+    if (!document) {
+        return null;
+    }
+
+    const position = params.position;
+    const text = document.getText();
+    const offset = document.offsetAt(position);
+
+    // Get the word at the position
+    const wordRange = getWordRangeAtPosition(text, offset);
+    if (!wordRange) {
+        return null;
+    }
+
+    const word = text.substring(wordRange.start, wordRange.end);
+
+    // Find the function definition
+    const lines = text.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const funcMatch = line.match(new RegExp(`let\\s+(${word})\\s*=\\s*func`));
+
+        if (funcMatch) {
+            return [
+                {
+                    name: word,
+                    kind: SymbolKind.Function,
+                    uri: params.textDocument.uri,
+                    range: {
+                        start: { line: i, character: 0 },
+                        end: { line: i, character: line.length },
+                    },
+                    selectionRange: {
+                        start: { line: i, character: funcMatch.index + 4 },
+                        end: { line: i, character: funcMatch.index + 4 + word.length },
+                    },
+                },
+            ];
+        }
+    }
+
+    return null;
+});
+
+connection.onCallHierarchyIncomingCalls(params => {
+    const document = documents.get(params.item.uri);
+    if (!document) {
+        return [];
+    }
+
+    const funcName = params.item.name;
+    const text = document.getText();
+    const lines = text.split('\n');
+    const calls = [];
+
+    // Find all calls to this function
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const callRegex = new RegExp(`\\b${funcName}\\s*\\(`, 'g');
+        let match;
+
+        while ((match = callRegex.exec(line))) {
+            // Find which function this call is in
+            let callingFunction = 'global';
+            for (let j = i - 1; j >= 0; j--) {
+                const prevLine = lines[j];
+                const funcMatch = prevLine.match(/let\s+(\w+)\s*=\s*func/);
+                if (funcMatch) {
+                    callingFunction = funcMatch[1];
+                    calls.push({
+                        from: {
+                            name: callingFunction,
+                            kind: SymbolKind.Function,
+                            uri: params.item.uri,
+                            range: {
+                                start: { line: j, character: 0 },
+                                end: { line: j, character: prevLine.length },
+                            },
+                            selectionRange: {
+                                start: { line: j, character: funcMatch.index + 4 },
+                                end: {
+                                    line: j,
+                                    character: funcMatch.index + 4 + callingFunction.length,
+                                },
+                            },
+                        },
+                        fromRanges: [
+                            {
+                                start: { line: i, character: match.index },
+                                end: { line: i, character: match.index + funcName.length },
+                            },
+                        ],
+                    });
+                    break;
+                }
+            }
+        }
+    }
+
+    return calls;
+});
+
+connection.onCallHierarchyOutgoingCalls(params => {
+    const document = documents.get(params.item.uri);
+    if (!document) {
+        return [];
+    }
+
+    const funcName = params.item.name;
+    const text = document.getText();
+    const lines = text.split('\n');
+    const calls = [];
+
+    // Find the function definition
+    let funcStartLine = -1;
+    let funcEndLine = -1;
+    let braceCount = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (line.includes(`let ${funcName} = func`)) {
+            funcStartLine = i;
+            braceCount = 0;
+        }
+
+        if (funcStartLine !== -1) {
+            for (const char of line) {
+                if (char === '{') braceCount++;
+                if (char === '}') braceCount--;
+            }
+
+            if (braceCount === 0 && funcStartLine !== i) {
+                funcEndLine = i;
+                break;
+            }
+        }
+    }
+
+    if (funcStartLine === -1) {
+        return [];
+    }
+
+    // Find all function calls within this function
+    for (let i = funcStartLine; i <= (funcEndLine === -1 ? lines.length - 1 : funcEndLine); i++) {
+        const line = lines[i];
+        const funcCallRegex = /\b(\w+)\s*\(/g;
+        let match;
+
+        while ((match = funcCallRegex.exec(line))) {
+            const calledFunc = match[1];
+
+            // Skip keywords and built-ins
+            if (
+                vintlangConfig.keywords.includes(calledFunc) ||
+                vintlangConfig.builtins.includes(calledFunc)
+            ) {
+                continue;
+            }
+
+            // Find the definition of the called function
+            for (let j = 0; j < lines.length; j++) {
+                const defLine = lines[j];
+                const defMatch = defLine.match(new RegExp(`let\\s+(${calledFunc})\\s*=\\s*func`));
+
+                if (defMatch) {
+                    calls.push({
+                        to: {
+                            name: calledFunc,
+                            kind: SymbolKind.Function,
+                            uri: params.item.uri,
+                            range: {
+                                start: { line: j, character: 0 },
+                                end: { line: j, character: defLine.length },
+                            },
+                            selectionRange: {
+                                start: { line: j, character: defMatch.index + 4 },
+                                end: { line: j, character: defMatch.index + 4 + calledFunc.length },
+                            },
+                        },
+                        fromRanges: [
+                            {
+                                start: { line: i, character: match.index },
+                                end: { line: i, character: match.index + calledFunc.length },
+                            },
+                        ],
+                    });
+                    break;
+                }
+            }
+        }
+    }
+
+    return calls;
 });
 
 // Make the text document manager listen on the connection

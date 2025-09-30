@@ -2,7 +2,7 @@
   "name": "vint",
   "displayName": "VintLang",
   "description": "The official Vint language support extension with full LSP features",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "publisher": "tacheraSasi",
   "repository": {
     "type": "git",
@@ -102,6 +102,21 @@
           "type": "boolean",
           "default": true,
           "description": "Enable real-time error diagnostics"
+        },
+        "vintlang.inlayHints.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable inlay hints for parameters and types"
+        },
+        "vintlang.semanticHighlighting.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable semantic syntax highlighting"
+        },
+        "vintlang.codeActions.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable code actions and quick fixes"
         }
       }
     },
@@ -114,6 +129,11 @@
       {
         "command": "vintlang.showReferences",
         "title": "Show References",
+        "category": "VintLang"
+      },
+      {
+        "command": "vintlang.showStatus",
+        "title": "Show Extension Status",
         "category": "VintLang"
       }
     ]

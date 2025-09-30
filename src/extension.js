@@ -8,6 +8,7 @@ const {
 const path = require('path');
 
 let client;
+let statusBarItem;
 
 /**
  * Activate the VintLang extension
@@ -16,6 +17,14 @@ let client;
 async function activate(context) {
     try {
         console.log('VintLang extension is now active!');
+
+        // Create status bar item
+        statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+        statusBarItem.text = '$(check) VintLang';
+        statusBarItem.tooltip = 'VintLang Language Server is active';
+        statusBarItem.command = 'vintlang.showStatus';
+        statusBarItem.show();
+        context.subscriptions.push(statusBarItem);
 
         // Start the language server
         await startLanguageServer(context);
@@ -46,6 +55,10 @@ async function activate(context) {
     } catch (error) {
         console.error('Failed to activate VintLang extension:', error);
         vscode.window.showErrorMessage(`VintLang extension activation failed: ${error.message}`);
+        if (statusBarItem) {
+            statusBarItem.text = '$(alert) VintLang Error';
+            statusBarItem.tooltip = `VintLang extension error: ${error.message}`;
+        }
     }
 }
 
@@ -106,6 +119,12 @@ async function startLanguageServer(context) {
         await client.start();
         console.log('VintLang Language Server started successfully');
 
+        // Update status bar
+        if (statusBarItem) {
+            statusBarItem.text = '$(check) VintLang Active';
+            statusBarItem.tooltip = 'VintLang Language Server is running';
+        }
+
         // Register error handler
         client.onDidChangeState(event => {
             if (event.newState === 3) {
@@ -113,6 +132,10 @@ async function startLanguageServer(context) {
                 vscode.window.showWarningMessage(
                     'VintLang Language Server has stopped. Use "VintLang: Restart Language Server" to restart.'
                 );
+                if (statusBarItem) {
+                    statusBarItem.text = '$(alert) VintLang Stopped';
+                    statusBarItem.tooltip = 'VintLang Language Server has stopped';
+                }
             }
         });
     } catch (error) {
@@ -135,6 +158,9 @@ function registerCommands(context) {
         async () => {
             if (client) {
                 await client.stop();
+                if (statusBarItem) {
+                    statusBarItem.text = '$(sync~spin) VintLang Restarting...';
+                }
                 await startLanguageServer(context);
                 vscode.window.showInformationMessage('VintLang Language Server restarted');
             }
@@ -146,7 +172,31 @@ function registerCommands(context) {
         vscode.commands.executeCommand('editor.action.referenceSearch.trigger');
     });
 
-    context.subscriptions.push(restartServerCommand, showReferencesCommand);
+    // Command to show extension status
+    const showStatusCommand = vscode.commands.registerCommand('vintlang.showStatus', () => {
+        const config = vscode.workspace.getConfiguration('vintlang');
+        const isEnabled = config.get('enable', true);
+        const traceLevel = config.get('trace.server', 'off');
+
+        vscode.window
+            .showInformationMessage(
+                `VintLang Extension Status:\n` +
+                    `• Server: ${client ? 'Running' : 'Stopped'}\n` +
+                    `• Enabled: ${isEnabled}\n` +
+                    `• Trace Level: ${traceLevel}`,
+                'Open Settings',
+                'Restart Server'
+            )
+            .then(selection => {
+                if (selection === 'Open Settings') {
+                    vscode.commands.executeCommand('workbench.action.openSettings', 'vintlang');
+                } else if (selection === 'Restart Server') {
+                    vscode.commands.executeCommand('vintlang.restartServer');
+                }
+            });
+    });
+
+    context.subscriptions.push(restartServerCommand, showReferencesCommand, showStatusCommand);
 }
 
 /**

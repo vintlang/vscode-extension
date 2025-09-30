@@ -4,6 +4,82 @@ All notable changes to the VintLang VS Code extension will be documented in this
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.4.0] - 2024-12-XX (Modern LSP Features Release)
+
+### 🚀 Major Features
+
+This release transforms the VintLang extension into a fully-featured modern Language Server Protocol implementation with advanced code intelligence features.
+
+### Added - Advanced LSP Features
+
+#### Enhanced Diagnostics & Validation
+- **Symbol Table Tracking** - Full scope tracking for variables, functions, and imports
+- **Unused Symbol Detection** - Identifies unused variables and functions with hints
+- **Better Error Messages** - All diagnostics now include codes for quick identification
+- **Unmatched Brace Detection** - Warns about unmatched braces and parentheses
+- **Semantic Validation** - Context-aware validation based on symbol usage
+
+#### Code Actions & Quick Fixes
+- **Add 'let' Quick Fix** - Automatically add missing 'let' keyword to variable declarations
+- **Remove Unused Code** - Quick fix to remove unused variable/function declarations
+- **Documentation Links** - Clickable links to VintLang documentation for errors
+
+#### Navigation & Refactoring
+- **Rename Refactoring** - Safe symbol renaming across entire codebase with prepare rename
+- **Enhanced Go to Definition** - Navigate to function, variable, and module definitions
+- **Find All References** - Find all usages of any symbol across documents
+- **Document Highlight** - Automatically highlight all occurrences of symbol under cursor
+- **Call Hierarchy** - Navigate incoming and outgoing function calls
+- **Workspace Symbol Search** - Search for symbols across all files in workspace
+
+#### Semantic Features
+- **Semantic Tokens** - Advanced syntax highlighting based on semantic analysis
+  - Distinguishes functions, variables, modules, keywords, operators, etc.
+  - Highlights built-in functions differently from user-defined ones
+  - Special highlighting for declarative statements
+- **Inlay Hints** - Inline parameter names and type information
+  - Parameter names shown for function calls
+  - Type inference hints for variable declarations
+  - Toggle via `vintlang.inlayHints.enable` setting
+- **Signature Help Enhancement** - Extended to 8+ built-in functions with detailed documentation
+
+#### Smart Features
+- **Document Links** - Clickable links for:
+  - Import statements linking to module documentation
+  - URLs in comments
+- **Selection Ranges** - Smart expand/shrink selection (Alt+Shift+Left/Right)
+  - Word level → Line level → Block level
+- **Enhanced Hover** - More comprehensive documentation for built-in functions and modules
+
+#### Developer Experience
+- **Status Bar Integration** - Shows extension status with visual indicators
+  - Green checkmark when active
+  - Alert icon when stopped or error
+  - Click to show detailed status
+- **Show Extension Status Command** - New command to display:
+  - Server running state
+  - Current configuration
+  - Quick access to settings and restart
+- **Enhanced Configuration** - New settings:
+  - `vintlang.inlayHints.enable` - Toggle inlay hints
+  - `vintlang.semanticHighlighting.enable` - Toggle semantic highlighting
+  - `vintlang.codeActions.enable` - Toggle code actions
+
+### Enhanced
+- **Completion Provider** - More context-aware completions with better sorting
+- **Document Symbols** - Enhanced with proper selection ranges
+- **Folding Ranges** - Improved block detection and folding accuracy
+- **Hover Documentation** - Added documentation for more built-in functions (len, range, split, join, os, json modules)
+
+### Technical Improvements
+- **Symbol Resolution** - Two-pass analysis for accurate symbol tracking
+- **Reference Tracking** - Efficient reference counting for unused detection
+- **Error Recovery** - Better error handling in all LSP features
+- **Performance** - Optimized token scanning and symbol lookup
+
+### Breaking Changes
+None - All changes are backward compatible
+
 ## [0.3.0] - 2024-12-XX (Production Ready Release)
 
 ### 🎉 Production Ready Improvements
