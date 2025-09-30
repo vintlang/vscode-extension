@@ -152,19 +152,26 @@ The extension provides completion and documentation for all VintLang built-ins:
 
 **String Functions:**
 - `split()`, `join()`, `replace()`, `contains()`, `trim()`, `upper()`, `lower()`
+- `substring()`, `indexOf()`, `lastIndexOf()`, `charAt()`, `charCodeAt()`
+- `padStart()`, `padEnd()`, `repeat()`
 
 **Array Functions:**
 - `push()`, `pop()`, `shift()`, `unshift()`, `slice()`, `sort()`, `reverse()`
+- `map()`, `filter()`, `reduce()`, `find()`, `findIndex()`, `includes()`, `forEach()`
 
 **Math Functions:**
 - `abs()`, `ceil()`, `floor()`, `round()`, `max()`, `min()`, `sqrt()`, `pow()`, `random()`
 - `sin()`, `cos()`, `tan()`, `log()`, `exp()`, `toFixed()`, `parseInt()`, `parseFloat()`
+- `asin()`, `acos()`, `atan()`, `atan2()`, `cbrt()`
 
 **File I/O Functions:**
 - `readFile()`, `writeFile()`, `appendFile()`, `deleteFile()`, `fileExists()`, `readDir()`, `makeDir()`
 
 **Utility Functions:**
 - `keys()`, `values()`, `entries()`, `merge()`, `clone()`, `freeze()`, `seal()`
+
+**Type Checking Functions:**
+- `isString()`, `isNumber()`, `isArray()`, `isMap()`, `isNull()`, `isBool()`
 
 ### Modules
 Full support for VintLang modules with auto-completion:

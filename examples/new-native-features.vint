@@ -1,0 +1,184 @@
+// VintLang - New Native Features Demo
+// This file demonstrates the new built-in functions added to VintLang
+
+println("=== Advanced String Functions ===")
+
+// Substring extraction
+let text = "Hello, World!"
+let hello = substring(text, 0, 5)
+println("Substring:", hello)  // "Hello"
+
+// Finding substrings
+let pos = indexOf(text, "World")
+println("Index of 'World':", pos)  // 7
+
+let lastO = lastIndexOf(text, "o")
+println("Last index of 'o':", lastO)  // 8
+
+// Character access
+let firstChar = charAt(text, 0)
+println("First character:", firstChar)  // "H"
+
+let charCode = charCodeAt(text, 0)
+println("Char code of 'H':", charCode)  // 72
+
+// String padding
+let num = "5"
+let padded1 = padStart(num, 3, "0")
+println("Padded number:", padded1)  // "005"
+
+let greeting = "Hi"
+let padded2 = padEnd(greeting, 5, "!")
+println("Padded greeting:", padded2)  // "Hi!!!"
+
+// String repetition
+let repeated = repeat("Ha", 3)
+println("Repeated string:", repeated)  // "HaHaHa"
+
+println("\n=== Functional Array Operations ===")
+
+let numbers = [1, 2, 3, 4, 5]
+
+// Map - transform elements
+let doubled = map(numbers, func(x) {
+    return x * 2
+})
+println("Doubled:", doubled)  // [2, 4, 6, 8, 10]
+
+// Filter - keep elements that pass test
+let evens = filter(numbers, func(x) {
+    return x % 2 == 0
+})
+println("Even numbers:", evens)  // [2, 4]
+
+// Reduce - reduce to single value
+let sum = reduce(numbers, func(acc, x) {
+    return acc + x
+}, 0)
+println("Sum of numbers:", sum)  // 15
+
+// Find - first matching element
+let found = find(numbers, func(x) {
+    return x > 3
+})
+println("First number > 3:", found)  // 4
+
+// FindIndex - index of first match
+let index = findIndex(numbers, func(x) {
+    return x > 3
+})
+println("Index of first > 3:", index)  // 3
+
+// Includes - check if array contains value
+let hasThree = includes(numbers, 3)
+println("Has 3:", hasThree)  // true
+
+let hasTen = includes(numbers, 10)
+println("Has 10:", hasTen)  // false
+
+// ForEach - iterate over elements
+println("Iterating with forEach:")
+forEach(numbers, func(x) {
+    println("  Number:", x)
+})
+
+println("\n=== Type Checking Functions ===")
+
+let stringValue = "Hello"
+let numberValue = 42
+let arrayValue = [1, 2, 3]
+let mapValue = {"key": "value"}
+let nullValue = null
+let boolValue = true
+
+println("Is 'Hello' a string?", isString(stringValue))    // true
+println("Is 42 a string?", isString(numberValue))          // false
+
+println("Is 42 a number?", isNumber(numberValue))          // true
+println("Is '42' a number?", isNumber("42"))               // false
+
+println("Is [1,2,3] an array?", isArray(arrayValue))       // true
+println("Is 'array' an array?", isArray("array"))          // false
+
+println("Is {key:val} a map?", isMap(mapValue))            // true
+println("Is [1,2] a map?", isMap([1, 2]))                  // false
+
+println("Is null null?", isNull(nullValue))                // true
+println("Is 0 null?", isNull(0))                           // false
+
+println("Is true a boolean?", isBool(boolValue))           // true
+println("Is 1 a boolean?", isBool(1))                      // false
+
+println("\n=== Advanced Math Functions ===")
+
+// Inverse trigonometric functions
+let angle1 = asin(0.5)
+println("Arc sine of 0.5:", angle1)  // ~0.524 radians (30 degrees)
+
+let angle2 = acos(0.5)
+println("Arc cosine of 0.5:", angle2)  // ~1.047 radians (60 degrees)
+
+let angle3 = atan(1)
+println("Arc tangent of 1:", angle3)  // ~0.785 radians (45 degrees)
+
+// Angle from coordinates
+let angle = atan2(1, 1)
+println("Angle from (1,1):", angle)  // ~0.785 radians (45 degrees)
+
+// Cube root
+let cubeRoot = cbrt(27)
+println("Cube root of 27:", cubeRoot)  // 3
+
+let cubeRoot2 = cbrt(8)
+println("Cube root of 8:", cubeRoot2)  // 2
+
+println("\n=== Practical Examples ===")
+
+// Example 1: Format IDs with padding
+let ids = ["1", "42", "123"]
+let formattedIds = map(ids, func(id) {
+    return padStart(id, 5, "0")
+})
+println("Formatted IDs:", formattedIds)  // ["00001", "00042", "00123"]
+
+// Example 2: Validate user input types
+let userInput = "John Doe"
+if (isString(userInput)) {
+    println("Valid name input:", userInput)
+} else {
+    println("Invalid input - must be a string")
+}
+
+// Example 3: Find and filter data
+let ages = [18, 25, 17, 30, 16, 21]
+let adults = filter(ages, func(age) {
+    return age >= 18
+})
+let averageAge = reduce(adults, func(acc, age) {
+    return acc + age
+}, 0) / len(adults)
+println("Adult ages:", adults)
+println("Average adult age:", averageAge)
+
+// Example 4: String manipulation pipeline
+let rawText = "  hello  "
+let processed = trim(rawText)
+processed = upper(processed)
+processed = repeat(processed + "! ", 3)
+println("Processed text:", processed)  // "HELLO! HELLO! HELLO! "
+
+// Example 5: Check if value exists in array
+let fruits = ["apple", "banana", "orange"]
+if (includes(fruits, "banana")) {
+    println("We have bananas!")
+}
+
+// Example 6: Extract domain from email
+let email = "user@example.com"
+let atIndex = indexOf(email, "@")
+if (atIndex > -1) {
+    let domain = substring(email, atIndex + 1, len(email))
+    println("Email domain:", domain)  // "example.com"
+}
+
+println("\nAll new features demonstrated successfully! 🎉")

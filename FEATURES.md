@@ -17,6 +17,13 @@ This document showcases all the modern Language Server Protocol features impleme
 11. [Code Lens](#code-lens)
 12. [Color Decorators](#color-decorators)
 13. [New Built-in Functions](#new-built-in-functions)
+    - [File I/O Functions](#file-io-functions)
+    - [Enhanced Math Functions](#enhanced-math-functions)
+    - [Utility Functions](#utility-functions)
+    - [Advanced String Functions](#advanced-string-functions)
+    - [Functional Array Operations](#functional-array-operations)
+    - [Type Checking Functions](#type-checking-functions)
+    - [Advanced Math Functions](#advanced-math-functions)
 
 ---
 
@@ -545,6 +552,143 @@ seal(config)       // Prevent adding properties
 - `clone(value)` - Deep copy of any value
 - `freeze(object)` - Freeze object to prevent changes
 - `seal(object)` - Seal object to prevent new properties
+
+### Advanced String Functions
+
+Extended string manipulation capabilities:
+
+```vint
+let text = "Hello, World!"
+
+// Substring extraction
+let hello = substring(text, 0, 5)  // "Hello"
+
+// Finding substrings
+let pos = indexOf(text, "World")       // 7
+let lastPos = lastIndexOf(text, "o")   // 8
+
+// Character access
+let firstChar = charAt(text, 0)        // "H"
+let charCode = charCodeAt(text, 0)     // 72
+
+// String padding
+let padded1 = padStart("5", 3, "0")    // "005"
+let padded2 = padEnd("Hi", 5, "!")     // "Hi!!!"
+
+// Repetition
+let repeated = repeat("Ha", 3)         // "HaHaHa"
+```
+
+**Available Functions:**
+- `substring(string, start, end)` - Extract substring between indices
+- `indexOf(string, searchValue)` - Find first occurrence index
+- `lastIndexOf(string, searchValue)` - Find last occurrence index
+- `charAt(string, index)` - Get character at position
+- `charCodeAt(string, index)` - Get Unicode value of character
+- `padStart(string, length, padString)` - Pad from start
+- `padEnd(string, length, padString)` - Pad from end
+- `repeat(string, count)` - Repeat string n times
+
+### Functional Array Operations
+
+Modern functional programming methods for arrays:
+
+```vint
+let numbers = [1, 2, 3, 4, 5]
+
+// Transform elements
+let doubled = map(numbers, func(x) { return x * 2 })  // [2, 4, 6, 8, 10]
+
+// Filter elements
+let evens = filter(numbers, func(x) { return x % 2 == 0 })  // [2, 4]
+
+// Reduce to single value
+let sum = reduce(numbers, func(acc, x) { return acc + x }, 0)  // 15
+
+// Find elements
+let found = find(numbers, func(x) { return x > 3 })      // 4
+let index = findIndex(numbers, func(x) { return x > 3 })  // 3
+
+// Check inclusion
+let hasThree = includes(numbers, 3)  // true
+
+// Iterate
+forEach(numbers, func(x) { println(x) })
+```
+
+**Available Functions:**
+- `map(array, function)` - Transform each element
+- `filter(array, function)` - Keep elements that pass test
+- `reduce(array, function, initialValue)` - Reduce to single value
+- `find(array, function)` - Find first matching element
+- `findIndex(array, function)` - Find first matching index
+- `includes(array, value)` - Check if array contains value
+- `forEach(array, function)` - Execute function for each element
+
+### Type Checking Functions
+
+Runtime type validation utilities:
+
+```vint
+let value = "Hello"
+
+// Type checks
+if (isString(value)) {
+    println("It's a string!")
+}
+
+if (isNumber(42)) {
+    println("It's a number!")
+}
+
+if (isArray([1, 2, 3])) {
+    println("It's an array!")
+}
+
+if (isMap({"key": "value"})) {
+    println("It's a map!")
+}
+
+if (isNull(null)) {
+    println("It's null!")
+}
+
+if (isBool(true)) {
+    println("It's a boolean!")
+}
+```
+
+**Available Functions:**
+- `isString(value)` - Check if value is a string
+- `isNumber(value)` - Check if value is a number
+- `isArray(value)` - Check if value is an array
+- `isMap(value)` - Check if value is a map/object
+- `isNull(value)` - Check if value is null
+- `isBool(value)` - Check if value is a boolean
+
+### Advanced Math Functions
+
+Additional mathematical operations:
+
+```vint
+// Inverse trigonometric functions
+let angle1 = asin(0.5)  // Arc sine: ~0.524 radians (30 degrees)
+let angle2 = acos(0.5)  // Arc cosine: ~1.047 radians (60 degrees)
+let angle3 = atan(1)    // Arc tangent: ~0.785 radians (45 degrees)
+
+// Calculate angle from coordinates
+let angle = atan2(1, 1)  // ~0.785 radians (45 degrees)
+
+// Cube root
+let cubeRoot = cbrt(27)  // 3
+```
+
+**Available Functions:**
+- `asin(x)` - Arc sine (inverse sine)
+- `acos(x)` - Arc cosine (inverse cosine)
+- `atan(x)` - Arc tangent (inverse tangent)
+- `atan2(y, x)` - Angle from coordinates
+- `cbrt(x)` - Cube root
 
 ---
 
