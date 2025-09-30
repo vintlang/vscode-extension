@@ -1,4 +1,4 @@
-const time = import ("time")
+import time
 // Test file for Vint language extension
 let  main = func() {
     if (true) {
@@ -14,5 +14,31 @@ let fibonacci = func(n) {
     }
     return fibonacci(n-1) + fibonacci(n-2)
 }
+
+const countToTen = func() {
+    let i = 0
+    while (i < 10) {
+        println(i)
+        i = i + 1
+    }
+}
+
+const switchExample = func(value) {
+    switch (value) {
+        case 1 {
+            println("One")
+            break
+            }
+        case 2 {
+            println("Two")
+            break
+            }
+        default {
+            println("Other")
+            }
+    }
+}
+
+
 
 // Test keywords: func, return, if, else, while, for, switch, case, default, break, continue
