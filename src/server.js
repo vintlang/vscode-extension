@@ -216,6 +216,36 @@ const vintlangConfig = {
         'clone',
         'freeze',
         'seal',
+        // Additional string functions
+        'substring',
+        'indexOf',
+        'lastIndexOf',
+        'charAt',
+        'charCodeAt',
+        'padStart',
+        'padEnd',
+        'repeat',
+        // Additional array functions
+        'map',
+        'filter',
+        'reduce',
+        'find',
+        'findIndex',
+        'includes',
+        'forEach',
+        // Type checking functions
+        'isString',
+        'isNumber',
+        'isArray',
+        'isMap',
+        'isNull',
+        'isBool',
+        // Additional math functions
+        'asin',
+        'acos',
+        'atan',
+        'atan2',
+        'cbrt',
     ],
     modules: ['time', 'net', 'os', 'json', 'csv', 'regex', 'crypto', 'encoding', 'colors', 'term'],
 };
@@ -718,6 +748,56 @@ function getHoverDocumentation(word) {
         freeze:
             '**freeze(object)** - Freezes an object to prevent modifications\n\n```vint\nfreeze(myObject)\n```',
         seal: '**seal(object)** - Seals an object to prevent adding new properties\n\n```vint\nseal(myObject)\n```',
+        // Additional string functions
+        substring:
+            '**substring(string, start, end)** - Extracts a portion of a string between two indices\n\n```vint\nlet text = "Hello World"\nlet part = substring(text, 0, 5)  // "Hello"\n```',
+        indexOf:
+            '**indexOf(string, searchValue)** - Returns the index of the first occurrence of a value in a string\n\n```vint\nlet text = "Hello World"\nlet index = indexOf(text, "World")  // 6\n```',
+        lastIndexOf:
+            '**lastIndexOf(string, searchValue)** - Returns the index of the last occurrence of a value in a string\n\n```vint\nlet text = "Hello World World"\nlet index = lastIndexOf(text, "World")  // 12\n```',
+        charAt:
+            '**charAt(string, index)** - Returns the character at the specified index\n\n```vint\nlet text = "Hello"\nlet char = charAt(text, 0)  // "H"\n```',
+        charCodeAt:
+            '**charCodeAt(string, index)** - Returns the Unicode value of the character at the specified index\n\n```vint\nlet text = "Hello"\nlet code = charCodeAt(text, 0)  // 72\n```',
+        padStart:
+            '**padStart(string, length, padString)** - Pads the string from the start to reach a target length\n\n```vint\nlet num = "5"\nlet padded = padStart(num, 3, "0")  // "005"\n```',
+        padEnd:
+            '**padEnd(string, length, padString)** - Pads the string from the end to reach a target length\n\n```vint\nlet text = "Hi"\nlet padded = padEnd(text, 5, "!")  // "Hi!!!"\n```',
+        repeat:
+            '**repeat(string, count)** - Returns a new string with the specified number of copies\n\n```vint\nlet text = "Ha"\nlet repeated = repeat(text, 3)  // "HaHaHa"\n```',
+        // Additional array functions
+        map: '**map(array, function)** - Creates a new array with the results of calling a function for every array element\n\n```vint\nlet numbers = [1, 2, 3]\nlet doubled = map(numbers, func(x) { return x * 2 })  // [2, 4, 6]\n```',
+        filter:
+            '**filter(array, function)** - Creates a new array with elements that pass the test function\n\n```vint\nlet numbers = [1, 2, 3, 4, 5]\nlet evens = filter(numbers, func(x) { return x % 2 == 0 })  // [2, 4]\n```',
+        reduce:
+            '**reduce(array, function, initialValue)** - Reduces the array to a single value by executing a function\n\n```vint\nlet numbers = [1, 2, 3, 4]\nlet sum = reduce(numbers, func(acc, x) { return acc + x }, 0)  // 10\n```',
+        find: '**find(array, function)** - Returns the first element that satisfies the test function\n\n```vint\nlet numbers = [1, 2, 3, 4]\nlet found = find(numbers, func(x) { return x > 2 })  // 3\n```',
+        findIndex:
+            '**findIndex(array, function)** - Returns the index of the first element that satisfies the test function\n\n```vint\nlet numbers = [1, 2, 3, 4]\nlet index = findIndex(numbers, func(x) { return x > 2 })  // 2\n```',
+        includes:
+            '**includes(array, value)** - Checks if an array contains a specific value\n\n```vint\nlet fruits = ["apple", "banana", "orange"]\nlet hasApple = includes(fruits, "apple")  // true\n```',
+        forEach:
+            '**forEach(array, function)** - Executes a function for each array element\n\n```vint\nlet numbers = [1, 2, 3]\nforEach(numbers, func(x) { println(x) })\n```',
+        // Type checking functions
+        isString:
+            '**isString(value)** - Checks if a value is a string\n\n```vint\nlet result = isString("hello")  // true\nlet result2 = isString(42)  // false\n```',
+        isNumber:
+            '**isNumber(value)** - Checks if a value is a number\n\n```vint\nlet result = isNumber(42)  // true\nlet result2 = isNumber("42")  // false\n```',
+        isArray:
+            '**isArray(value)** - Checks if a value is an array\n\n```vint\nlet result = isArray([1, 2, 3])  // true\nlet result2 = isArray("array")  // false\n```',
+        isMap:
+            '**isMap(value)** - Checks if a value is a map/object\n\n```vint\nlet result = isMap({"key": "value"})  // true\nlet result2 = isMap([1, 2])  // false\n```',
+        isNull:
+            '**isNull(value)** - Checks if a value is null\n\n```vint\nlet result = isNull(null)  // true\nlet result2 = isNull(0)  // false\n```',
+        isBool:
+            '**isBool(value)** - Checks if a value is a boolean\n\n```vint\nlet result = isBool(true)  // true\nlet result2 = isBool(1)  // false\n```',
+        // Additional math functions
+        asin: '**asin(x)** - Calculates arc sine (inverse sine) of x, returns value in radians\n\n```vint\nlet result = asin(0.5)  // ~0.524 radians (30 degrees)\n```',
+        acos: '**acos(x)** - Calculates arc cosine (inverse cosine) of x, returns value in radians\n\n```vint\nlet result = acos(0.5)  // ~1.047 radians (60 degrees)\n```',
+        atan: '**atan(x)** - Calculates arc tangent (inverse tangent) of x, returns value in radians\n\n```vint\nlet result = atan(1)  // ~0.785 radians (45 degrees)\n```',
+        atan2:
+            '**atan2(y, x)** - Calculates the angle between the positive x-axis and the point (x, y)\n\n```vint\nlet angle = atan2(1, 1)  // ~0.785 radians (45 degrees)\n```',
+        cbrt: '**cbrt(x)** - Calculates the cube root of x\n\n```vint\nlet result = cbrt(27)  // 3\nlet result2 = cbrt(8)  // 2\n```',
     };
 
     return docs[word] || null;
@@ -868,6 +948,192 @@ connection.onSignatureHelp(params => {
                 { label: 'map1', documentation: 'First map' },
                 { label: 'map2', documentation: 'Second map' },
             ],
+        },
+        // Additional string function signatures
+        substring: {
+            label: 'substring(string, start, end)',
+            documentation: 'Extracts a portion of a string',
+            parameters: [
+                { label: 'string', documentation: 'The source string' },
+                { label: 'start', documentation: 'Starting index' },
+                { label: 'end', documentation: 'Ending index (exclusive)' },
+            ],
+        },
+        indexOf: {
+            label: 'indexOf(string, searchValue)',
+            documentation: 'Returns the index of the first occurrence',
+            parameters: [
+                { label: 'string', documentation: 'The source string' },
+                { label: 'searchValue', documentation: 'Value to search for' },
+            ],
+        },
+        lastIndexOf: {
+            label: 'lastIndexOf(string, searchValue)',
+            documentation: 'Returns the index of the last occurrence',
+            parameters: [
+                { label: 'string', documentation: 'The source string' },
+                { label: 'searchValue', documentation: 'Value to search for' },
+            ],
+        },
+        charAt: {
+            label: 'charAt(string, index)',
+            documentation: 'Returns the character at the specified index',
+            parameters: [
+                { label: 'string', documentation: 'The source string' },
+                { label: 'index', documentation: 'Character position' },
+            ],
+        },
+        charCodeAt: {
+            label: 'charCodeAt(string, index)',
+            documentation: 'Returns the Unicode value of the character',
+            parameters: [
+                { label: 'string', documentation: 'The source string' },
+                { label: 'index', documentation: 'Character position' },
+            ],
+        },
+        padStart: {
+            label: 'padStart(string, length, padString)',
+            documentation: 'Pads the string from the start',
+            parameters: [
+                { label: 'string', documentation: 'The source string' },
+                { label: 'length', documentation: 'Target length' },
+                { label: 'padString', documentation: 'String to pad with' },
+            ],
+        },
+        padEnd: {
+            label: 'padEnd(string, length, padString)',
+            documentation: 'Pads the string from the end',
+            parameters: [
+                { label: 'string', documentation: 'The source string' },
+                { label: 'length', documentation: 'Target length' },
+                { label: 'padString', documentation: 'String to pad with' },
+            ],
+        },
+        repeat: {
+            label: 'repeat(string, count)',
+            documentation: 'Repeats the string the specified number of times',
+            parameters: [
+                { label: 'string', documentation: 'The source string' },
+                { label: 'count', documentation: 'Number of repetitions' },
+            ],
+        },
+        // Additional array function signatures
+        map: {
+            label: 'map(array, function)',
+            documentation: 'Creates a new array with the results of calling a function',
+            parameters: [
+                { label: 'array', documentation: 'The source array' },
+                { label: 'function', documentation: 'Function to call for each element' },
+            ],
+        },
+        filter: {
+            label: 'filter(array, function)',
+            documentation: 'Creates a new array with elements that pass the test',
+            parameters: [
+                { label: 'array', documentation: 'The source array' },
+                { label: 'function', documentation: 'Test function' },
+            ],
+        },
+        reduce: {
+            label: 'reduce(array, function, initialValue)',
+            documentation: 'Reduces the array to a single value',
+            parameters: [
+                { label: 'array', documentation: 'The source array' },
+                { label: 'function', documentation: 'Reducer function' },
+                { label: 'initialValue', documentation: 'Initial accumulator value' },
+            ],
+        },
+        find: {
+            label: 'find(array, function)',
+            documentation: 'Returns the first element that satisfies the test',
+            parameters: [
+                { label: 'array', documentation: 'The source array' },
+                { label: 'function', documentation: 'Test function' },
+            ],
+        },
+        findIndex: {
+            label: 'findIndex(array, function)',
+            documentation: 'Returns the index of the first element that satisfies the test',
+            parameters: [
+                { label: 'array', documentation: 'The source array' },
+                { label: 'function', documentation: 'Test function' },
+            ],
+        },
+        includes: {
+            label: 'includes(array, value)',
+            documentation: 'Checks if an array contains a specific value',
+            parameters: [
+                { label: 'array', documentation: 'The source array' },
+                { label: 'value', documentation: 'Value to search for' },
+            ],
+        },
+        forEach: {
+            label: 'forEach(array, function)',
+            documentation: 'Executes a function for each array element',
+            parameters: [
+                { label: 'array', documentation: 'The source array' },
+                { label: 'function', documentation: 'Function to execute' },
+            ],
+        },
+        // Type checking function signatures
+        isString: {
+            label: 'isString(value)',
+            documentation: 'Checks if a value is a string',
+            parameters: [{ label: 'value', documentation: 'Value to check' }],
+        },
+        isNumber: {
+            label: 'isNumber(value)',
+            documentation: 'Checks if a value is a number',
+            parameters: [{ label: 'value', documentation: 'Value to check' }],
+        },
+        isArray: {
+            label: 'isArray(value)',
+            documentation: 'Checks if a value is an array',
+            parameters: [{ label: 'value', documentation: 'Value to check' }],
+        },
+        isMap: {
+            label: 'isMap(value)',
+            documentation: 'Checks if a value is a map/object',
+            parameters: [{ label: 'value', documentation: 'Value to check' }],
+        },
+        isNull: {
+            label: 'isNull(value)',
+            documentation: 'Checks if a value is null',
+            parameters: [{ label: 'value', documentation: 'Value to check' }],
+        },
+        isBool: {
+            label: 'isBool(value)',
+            documentation: 'Checks if a value is a boolean',
+            parameters: [{ label: 'value', documentation: 'Value to check' }],
+        },
+        // Additional math function signatures
+        asin: {
+            label: 'asin(x)',
+            documentation: 'Calculates arc sine (inverse sine)',
+            parameters: [{ label: 'x', documentation: 'Value between -1 and 1' }],
+        },
+        acos: {
+            label: 'acos(x)',
+            documentation: 'Calculates arc cosine (inverse cosine)',
+            parameters: [{ label: 'x', documentation: 'Value between -1 and 1' }],
+        },
+        atan: {
+            label: 'atan(x)',
+            documentation: 'Calculates arc tangent (inverse tangent)',
+            parameters: [{ label: 'x', documentation: 'Input value' }],
+        },
+        atan2: {
+            label: 'atan2(y, x)',
+            documentation: 'Calculates the angle between the positive x-axis and the point (x, y)',
+            parameters: [
+                { label: 'y', documentation: 'Y coordinate' },
+                { label: 'x', documentation: 'X coordinate' },
+            ],
+        },
+        cbrt: {
+            label: 'cbrt(x)',
+            documentation: 'Calculates the cube root',
+            parameters: [{ label: 'x', documentation: 'Input value' }],
         },
     };
 

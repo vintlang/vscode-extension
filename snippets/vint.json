@@ -427,6 +427,212 @@
             "let ${1:copy} = clone(${2:original})"
         ],
         "description": "Create a deep copy of an object"
+    },
+    "Substring": {
+        "prefix": "substring",
+        "body": [
+            "let ${1:part} = substring(${2:string}, ${3:start}, ${4:end})"
+        ],
+        "description": "Extract a portion of a string"
+    },
+    "Index Of": {
+        "prefix": "indexof",
+        "body": [
+            "let ${1:index} = indexOf(${2:string}, ${3:searchValue})"
+        ],
+        "description": "Find the first occurrence of a value"
+    },
+    "Last Index Of": {
+        "prefix": "lastindexof",
+        "body": [
+            "let ${1:index} = lastIndexOf(${2:string}, ${3:searchValue})"
+        ],
+        "description": "Find the last occurrence of a value"
+    },
+    "Char At": {
+        "prefix": "charat",
+        "body": [
+            "let ${1:char} = charAt(${2:string}, ${3:index})"
+        ],
+        "description": "Get character at index"
+    },
+    "Char Code At": {
+        "prefix": "charcodeat",
+        "body": [
+            "let ${1:code} = charCodeAt(${2:string}, ${3:index})"
+        ],
+        "description": "Get Unicode value of character"
+    },
+    "Pad Start": {
+        "prefix": "padstart",
+        "body": [
+            "let ${1:padded} = padStart(${2:string}, ${3:length}, ${4:padString})"
+        ],
+        "description": "Pad string from the start"
+    },
+    "Pad End": {
+        "prefix": "padend",
+        "body": [
+            "let ${1:padded} = padEnd(${2:string}, ${3:length}, ${4:padString})"
+        ],
+        "description": "Pad string from the end"
+    },
+    "Repeat": {
+        "prefix": "repeat",
+        "body": [
+            "let ${1:repeated} = repeat(${2:string}, ${3:count})"
+        ],
+        "description": "Repeat a string"
+    },
+    "Map Array": {
+        "prefix": "map",
+        "body": [
+            "let ${1:result} = map(${2:array}, func(${3:item}) {",
+            "\treturn ${4:item}",
+            "})"
+        ],
+        "description": "Transform array elements"
+    },
+    "Filter Array": {
+        "prefix": "filter",
+        "body": [
+            "let ${1:result} = filter(${2:array}, func(${3:item}) {",
+            "\treturn ${4:condition}",
+            "})"
+        ],
+        "description": "Filter array elements"
+    },
+    "Reduce Array": {
+        "prefix": "reduce",
+        "body": [
+            "let ${1:result} = reduce(${2:array}, func(${3:acc}, ${4:item}) {",
+            "\treturn ${5:acc + item}",
+            "}, ${6:initialValue})"
+        ],
+        "description": "Reduce array to single value"
+    },
+    "Find In Array": {
+        "prefix": "find",
+        "body": [
+            "let ${1:result} = find(${2:array}, func(${3:item}) {",
+            "\treturn ${4:condition}",
+            "})"
+        ],
+        "description": "Find first element matching condition"
+    },
+    "Find Index": {
+        "prefix": "findindex",
+        "body": [
+            "let ${1:index} = findIndex(${2:array}, func(${3:item}) {",
+            "\treturn ${4:condition}",
+            "})"
+        ],
+        "description": "Find index of first matching element"
+    },
+    "Includes": {
+        "prefix": "includes",
+        "body": [
+            "let ${1:hasValue} = includes(${2:array}, ${3:value})"
+        ],
+        "description": "Check if array contains value"
+    },
+    "For Each": {
+        "prefix": "foreach",
+        "body": [
+            "forEach(${1:array}, func(${2:item}) {",
+            "\t${3:// process item}",
+            "})"
+        ],
+        "description": "Execute function for each array element"
+    },
+    "Is String": {
+        "prefix": "isstring",
+        "body": [
+            "if (isString(${1:value})) {",
+            "\t${2:// value is a string}",
+            "}"
+        ],
+        "description": "Check if value is a string"
+    },
+    "Is Number": {
+        "prefix": "isnumber",
+        "body": [
+            "if (isNumber(${1:value})) {",
+            "\t${2:// value is a number}",
+            "}"
+        ],
+        "description": "Check if value is a number"
+    },
+    "Is Array": {
+        "prefix": "isarray",
+        "body": [
+            "if (isArray(${1:value})) {",
+            "\t${2:// value is an array}",
+            "}"
+        ],
+        "description": "Check if value is an array"
+    },
+    "Is Map": {
+        "prefix": "ismap",
+        "body": [
+            "if (isMap(${1:value})) {",
+            "\t${2:// value is a map}",
+            "}"
+        ],
+        "description": "Check if value is a map/object"
+    },
+    "Is Null": {
+        "prefix": "isnull",
+        "body": [
+            "if (isNull(${1:value})) {",
+            "\t${2:// value is null}",
+            "}"
+        ],
+        "description": "Check if value is null"
+    },
+    "Is Bool": {
+        "prefix": "isbool",
+        "body": [
+            "if (isBool(${1:value})) {",
+            "\t${2:// value is a boolean}",
+            "}"
+        ],
+        "description": "Check if value is a boolean"
+    },
+    "Arc Sine": {
+        "prefix": "asin",
+        "body": [
+            "let ${1:result} = asin(${2:value})"
+        ],
+        "description": "Calculate arc sine"
+    },
+    "Arc Cosine": {
+        "prefix": "acos",
+        "body": [
+            "let ${1:result} = acos(${2:value})"
+        ],
+        "description": "Calculate arc cosine"
+    },
+    "Arc Tangent": {
+        "prefix": "atan",
+        "body": [
+            "let ${1:result} = atan(${2:value})"
+        ],
+        "description": "Calculate arc tangent"
+    },
+    "Arc Tangent 2": {
+        "prefix": "atan2",
+        "body": [
+            "let ${1:angle} = atan2(${2:y}, ${3:x})"
+        ],
+        "description": "Calculate angle from coordinates"
+    },
+    "Cube Root": {
+        "prefix": "cbrt",
+        "body": [
+            "let ${1:result} = cbrt(${2:value})"
+        ],
+        "description": "Calculate cube root"
     }
 }
   

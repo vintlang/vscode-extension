@@ -319,6 +319,36 @@ function registerProviders(context) {
                     'clone',
                     'freeze',
                     'seal',
+                    // Additional string functions
+                    'substring',
+                    'indexOf',
+                    'lastIndexOf',
+                    'charAt',
+                    'charCodeAt',
+                    'padStart',
+                    'padEnd',
+                    'repeat',
+                    // Additional array functions
+                    'map',
+                    'filter',
+                    'reduce',
+                    'find',
+                    'findIndex',
+                    'includes',
+                    'forEach',
+                    // Type checking functions
+                    'isString',
+                    'isNumber',
+                    'isArray',
+                    'isMap',
+                    'isNull',
+                    'isBool',
+                    // Additional math functions
+                    'asin',
+                    'acos',
+                    'atan',
+                    'atan2',
+                    'cbrt',
                 ];
 
                 const modules = [
