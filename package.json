@@ -14,6 +14,7 @@
   "categories": [
     "Programming Languages"
   ],
+  "icon": "icons/favicon.png",
   "main": "./src/extension.js",
   "activationEvents": [
     "onLanguage:vint"
