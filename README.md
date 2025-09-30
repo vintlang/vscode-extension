@@ -2,7 +2,11 @@
 
 ![VintLang Logo](./icons/vint-dark.png)
 
-The **official** VS Code extension for VintLang programming language with full Language Server Protocol (LSP) support. This extension provides comprehensive language support including intelligent code completion, real-time error checking, syntax highlighting, and much more.
+[![CI](https://github.com/vintlang/vscode-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/vintlang/vscode-extension/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/visual-studio-marketplace/v/tacheraSasi.vint)](https://marketplace.visualstudio.com/items?itemName=tacheraSasi.vint)
+
+The **official** production-ready VS Code extension for VintLang programming language with full Language Server Protocol (LSP) support. This extension provides comprehensive language support including intelligent code completion, real-time error checking, syntax highlighting, and much more.
 
 ## ✨ Features
 

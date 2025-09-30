@@ -2,7 +2,7 @@
   "name": "vint",
   "displayName": "VintLang",
   "description": "The official Vint language support extension with full LSP features",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "tacheraSasi",
   "repository": {
     "type": "git",
