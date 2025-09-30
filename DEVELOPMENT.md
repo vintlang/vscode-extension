@@ -240,6 +240,70 @@ Features:
 - Brace alignment
 - Consistent spacing
 
+### 17. Code Lens (NEW in v0.5.0)
+
+**Location**: `src/server.js` - `connection.onCodeLens()`
+
+Inline actionable information:
+- **Reference counts**: Shows how many times each function is called
+- **Interactive**: Click to navigate to all references
+- **Real-time updates**: Updates automatically as code changes
+- **Configuration**: Toggle via `vintlang.codeLens.enable`
+
+### 18. Color Decorators (NEW in v0.5.0)
+
+**Location**: `src/server.js` - `connection.onDocumentColor()`, `connection.onColorPresentation()`
+
+Visual color previews:
+- **Hex colors**: Detects #RGB and #RRGGBB formats
+- **RGB/RGBA**: Supports rgb() and rgba() color values
+- **Color picker**: Integrated VS Code color picker
+- **Format conversion**: Convert between hex, RGB, and RGBA
+- **Configuration**: Toggle via `vintlang.colorDecorators.enable`
+
+## 🆕 New Built-in Functions (v0.5.0)
+
+### File I/O Functions
+
+Added 7 new file system operations:
+
+```javascript
+// src/server.js - vintlangConfig.builtins
+'readFile',      // Read file contents
+'writeFile',     // Write content to file
+'appendFile',    // Append to file
+'deleteFile',    // Delete a file
+'fileExists',    // Check if file exists
+'readDir',       // List directory contents
+'makeDir',       // Create directory
+```
+
+### Enhanced Math Functions
+
+Added 8 new mathematical operations:
+
+```javascript
+'sin', 'cos', 'tan',    // Trigonometric functions
+'log', 'exp',           // Logarithmic and exponential
+'toFixed',              // Format to fixed decimals
+'parseInt',             // Parse string to integer
+'parseFloat',           // Parse string to float
+```
+
+### Utility Functions
+
+Added 8 new utility functions:
+
+```javascript
+'keys',      // Get map keys
+'values',    // Get map values
+'entries',   // Get [key, value] pairs
+'merge',     // Merge two maps
+'clone',     // Deep copy
+'freeze',    // Prevent modifications
+'seal',      // Prevent new properties
+```
+
 ## 📝 TextMate Grammar
 
 The syntax highlighting is defined in `syntaxes/vint.tmLanguage.json` using TextMate grammar:
@@ -332,6 +396,22 @@ The syntax highlighting is defined in `syntaxes/vint.tmLanguage.json` using Text
    - "time" should be underlined (Ctrl+click to open docs)
    - Add URL in comment
    - URL should be clickable
+   
+   **Code Lens** (NEW in v0.5.0):
+   - Define a function and call it multiple times
+   - Should see reference count above function (e.g., "3 references")
+   - Click on code lens to navigate to all references
+   
+   **Color Decorators** (NEW in v0.5.0):
+   - Write: `let color = "#FF5733"`
+   - Should see color swatch next to the value
+   - Click the color to open color picker
+   - Try different formats: `#RGB`, `rgb(255, 87, 51)`, `rgba(255, 87, 51, 0.8)`
+   
+   **New Built-in Functions** (NEW in v0.5.0):
+   - Test file I/O: `readFile("test.txt")` - should show in completion
+   - Test math: `sin(0)`, `toFixed(3.14, 1)` - should show signature help
+   - Test utilities: `keys(map)`, `merge(m1, m2)` - should show documentation on hover
 
 4. **Test Error Scenarios**
    ```vint
@@ -527,6 +607,35 @@ Example: Adding "Find References" support
      }
    }
    ```
+
+4. **Add Signature Help** (Optional, for functions with parameters)
+   ```javascript
+   // src/server.js - signatures object
+   const signatures = {
+     newFunction: {
+       label: 'newFunction(param1, param2)',
+       documentation: 'Description of what the function does',
+       parameters: [
+         { label: 'param1', documentation: 'First parameter' },
+         { label: 'param2', documentation: 'Second parameter' },
+       ],
+     },
+   };
+   ```
+
+5. **Update Extension.js Completion**
+   ```javascript
+   // src/extension.js - builtinFunctions array
+   const builtinFunctions = [
+     // ... existing
+     'newFunction',
+   ];
+   ```
+
+6. **Update Documentation**
+   - Add to README.md under "Built-in Functions"
+   - Add to FEATURES.md with examples
+   - Update CHANGELOG.md
 
 ### 3. Add New Snippet
 

@@ -294,6 +294,31 @@ function registerProviders(context) {
                     'env',
                     'args',
                     'exit',
+                    // File I/O functions
+                    'readFile',
+                    'writeFile',
+                    'appendFile',
+                    'deleteFile',
+                    'fileExists',
+                    'readDir',
+                    'makeDir',
+                    // Additional math functions
+                    'sin',
+                    'cos',
+                    'tan',
+                    'log',
+                    'exp',
+                    'toFixed',
+                    'parseInt',
+                    'parseFloat',
+                    // Utility functions
+                    'keys',
+                    'values',
+                    'entries',
+                    'merge',
+                    'clone',
+                    'freeze',
+                    'seal',
                 ];
 
                 const modules = [

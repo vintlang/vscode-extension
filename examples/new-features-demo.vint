@@ -1,0 +1,277 @@
+// VintLang Extension v0.5.0 - New Features Demo
+// This file demonstrates the new features added in version 0.5.0
+
+// ============================================
+// 1. CODE LENS - Reference Counts
+// ============================================
+// Functions now show inline reference counts above them
+// Try hovering over the function name to see references
+
+let greet = func(name) {
+    println("Hello, " + name)
+    return "Greeted " + name
+}
+
+// Call the function multiple times to see reference count increase
+greet("Alice")
+greet("Bob")
+let result = greet("Charlie")
+
+// ============================================
+// 2. COLOR DECORATORS
+// ============================================
+// Color values are now decorated with visual color swatches
+// Click on a color to edit it with the color picker
+
+let primaryColor = "#FF5733"  // Hex color with decorator
+let secondaryColor = "#3498db"  // Another hex color
+let tertiaryColor = "#2ecc71"
+
+// RGB colors are also supported
+let backgroundColor = "rgb(255, 255, 255)"
+let textColor = "rgb(33, 33, 33)"
+let accentColor = "rgba(255, 87, 51, 0.8)"  // With alpha
+
+// Short hex notation
+let errorColor = "#f00"
+let successColor = "#0f0"
+let infoColor = "#00f"
+
+// ============================================
+// 3. NEW FILE I/O FUNCTIONS
+// ============================================
+// Read and write files with new built-in functions
+
+// Check if file exists before reading
+if (fileExists("config.json")) {
+    let config = readFile("config.json")
+    println("Config loaded:", config)
+}
+
+// Write data to a file
+let data = "Hello, World!"
+writeFile("output.txt", data)
+
+// Append to a log file
+appendFile("app.log", "Application started\n")
+
+// Work with directories
+if (!fileExists("output")) {
+    makeDir("output")
+}
+
+let files = readDir("./")
+println("Files in directory:", files)
+
+// Clean up temporary files
+if (fileExists("temp.txt")) {
+    deleteFile("temp.txt")
+}
+
+// ============================================
+// 4. ENHANCED MATH FUNCTIONS
+// ============================================
+
+// Trigonometric functions
+let angle = 3.14159 / 4  // 45 degrees in radians
+let sineValue = sin(angle)
+let cosineValue = cos(angle)
+let tangentValue = tan(angle)
+
+println("sin(45°) =", sineValue)
+println("cos(45°) =", cosineValue)
+println("tan(45°) =", tangentValue)
+
+// Logarithmic and exponential
+let naturalLog = log(10)
+let exponential = exp(2)
+
+println("ln(10) =", naturalLog)
+println("e^2 =", exponential)
+
+// Number formatting and parsing
+let pi = 3.14159265359
+let formattedPi = toFixed(pi, 2)  // "3.14"
+println("Pi to 2 decimal places:", formattedPi)
+
+let numStr = "42"
+let parsedInt = parseInt(numStr)
+let parsedFloat = parseFloat("3.14")
+
+println("Parsed integer:", parsedInt)
+println("Parsed float:", parsedFloat)
+
+// ============================================
+// 5. NEW UTILITY FUNCTIONS
+// ============================================
+
+// Map operations
+let userInfo = {
+    "name": "John Doe",
+    "age": 30,
+    "email": "john@example.com",
+    "role": "developer"
+}
+
+// Get keys, values, and entries
+let userKeys = keys(userInfo)
+println("User info keys:", userKeys)
+
+let userValues = values(userInfo)
+println("User info values:", userValues)
+
+let userEntries = entries(userInfo)
+println("User info entries:", userEntries)
+
+// Merge maps
+let defaultSettings = {
+    "theme": "dark",
+    "fontSize": 14
+}
+
+let userSettings = {
+    "fontSize": 16,
+    "lineNumbers": true
+}
+
+let finalSettings = merge(defaultSettings, userSettings)
+println("Merged settings:", finalSettings)
+
+// Deep cloning
+let original = {
+    "data": [1, 2, 3],
+    "nested": {
+        "value": "test"
+    }
+}
+
+let cloned = clone(original)
+println("Cloned object:", cloned)
+
+// Freeze object to prevent modifications
+let constants = {
+    "PI": 3.14159,
+    "E": 2.71828
+}
+freeze(constants)
+// constants.PI = 3.14  // This would be prevented
+
+// Seal object to prevent adding new properties
+let config = {
+    "version": "1.0"
+}
+seal(config)
+// config.newProperty = "value"  // This would be prevented
+
+// ============================================
+// 6. COMPREHENSIVE EXAMPLE
+// ============================================
+
+let processDataFile = func(filePath) {
+    // Check if file exists
+    if (!fileExists(filePath)) {
+        println("Error: File not found -", filePath)
+        return null
+    }
+    
+    // Read the file
+    let content = readFile(filePath)
+    
+    // Parse and process
+    let lines = split(content, "\n")
+    let processedData = []
+    
+    for line in lines {
+        if (len(trim(line)) > 0) {
+            let parts = split(line, ",")
+            let entry = {
+                "id": parseInt(parts[0]),
+                "value": parseFloat(parts[1]),
+                "formatted": toFixed(parseFloat(parts[1]), 2)
+            }
+            push(processedData, entry)
+        }
+    }
+    
+    // Log results
+    let summary = {
+        "totalRows": len(processedData),
+        "filePath": filePath,
+        "timestamp": now()
+    }
+    
+    let logEntry = "Processed " + filePath + " with " + len(processedData) + " rows\n"
+    appendFile("processing.log", logEntry)
+    
+    return merge(summary, {"data": processedData})
+}
+
+// Use the function
+let result = processDataFile("data.csv")
+if (result != null) {
+    println("Processing complete!")
+    println("Summary:", result)
+}
+
+// ============================================
+// 7. COLOR THEME MANAGER EXAMPLE
+// ============================================
+
+let themeManager = func() {
+    let themes = {
+        "dark": {
+            "background": "#1e1e1e",
+            "foreground": "#d4d4d4",
+            "primary": "#007acc",
+            "secondary": "#4ec9b0",
+            "accent": "#ce9178",
+            "error": "#f48771",
+            "success": "#89d185"
+        },
+        "light": {
+            "background": "#ffffff",
+            "foreground": "#000000",
+            "primary": "#0066cc",
+            "secondary": "#008080",
+            "accent": "#a31515",
+            "error": "#cd3131",
+            "success": "#14ce14"
+        }
+    }
+    
+    let applyTheme = func(themeName) {
+        let theme = themes[themeName]
+        if (theme == null) {
+            println("Theme not found:", themeName)
+            return false
+        }
+        
+        // Apply colors
+        let themeKeys = keys(theme)
+        for key in themeKeys {
+            let colorValue = theme[key]
+            println("Setting " + key + " to " + colorValue)
+        }
+        
+        // Save theme to config
+        let configData = {"currentTheme": themeName}
+        writeFile("theme-config.json", configData)
+        
+        return true
+    }
+    
+    return {
+        "themes": themes,
+        "apply": applyTheme
+    }
+}
+
+let tm = themeManager()
+tm.apply("dark")
+
+println("\n🎉 All new features demonstrated!")
+println("✓ Code Lens showing reference counts")
+println("✓ Color decorators for color values")
+println("✓ File I/O functions (read, write, append)")
+println("✓ Enhanced math functions (trig, log, exp)")
+println("✓ Utility functions (keys, values, merge, clone)")

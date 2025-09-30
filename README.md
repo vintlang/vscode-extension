@@ -32,6 +32,8 @@ The **official** production-ready VS Code extension for VintLang programming lan
 - **Call Hierarchy** - Navigate function call relationships
 - **Document Links** - Clickable links for imports and URLs in comments
 - **Selection Ranges** - Smart expand/shrink selection (Alt+Shift+Left/Right)
+- **Code Lens** - Shows reference counts and inline actions for functions
+- **Color Decorators** - Visual color previews for hex and RGB color values in code
 
 ### 📝 Smart Snippets
 Over 30 pre-built code snippets for common VintLang patterns:
@@ -134,6 +136,8 @@ The extension supports various configuration options:
 | `vintlang.inlayHints.enable` | boolean | `true` | Enable inlay hints for parameters and types |
 | `vintlang.semanticHighlighting.enable` | boolean | `true` | Enable semantic syntax highlighting |
 | `vintlang.codeActions.enable` | boolean | `true` | Enable code actions and quick fixes |
+| `vintlang.codeLens.enable` | boolean | `true` | Enable code lens showing reference counts |
+| `vintlang.colorDecorators.enable` | boolean | `true` | Enable color decorators for color values |
 
 ## 🎯 Language Features
 
@@ -154,6 +158,13 @@ The extension provides completion and documentation for all VintLang built-ins:
 
 **Math Functions:**
 - `abs()`, `ceil()`, `floor()`, `round()`, `max()`, `min()`, `sqrt()`, `pow()`, `random()`
+- `sin()`, `cos()`, `tan()`, `log()`, `exp()`, `toFixed()`, `parseInt()`, `parseFloat()`
+
+**File I/O Functions:**
+- `readFile()`, `writeFile()`, `appendFile()`, `deleteFile()`, `fileExists()`, `readDir()`, `makeDir()`
+
+**Utility Functions:**
+- `keys()`, `values()`, `entries()`, `merge()`, `clone()`, `freeze()`, `seal()`
 
 ### Modules
 Full support for VintLang modules with auto-completion:

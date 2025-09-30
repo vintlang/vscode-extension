@@ -191,6 +191,31 @@ const vintlangConfig = {
         'env',
         'args',
         'exit',
+        // File I/O functions
+        'readFile',
+        'writeFile',
+        'appendFile',
+        'deleteFile',
+        'fileExists',
+        'readDir',
+        'makeDir',
+        // Additional math functions
+        'sin',
+        'cos',
+        'tan',
+        'log',
+        'exp',
+        'toFixed',
+        'parseInt',
+        'parseFloat',
+        // Utility functions
+        'keys',
+        'values',
+        'entries',
+        'merge',
+        'clone',
+        'freeze',
+        'seal',
     ],
     modules: ['time', 'net', 'os', 'json', 'csv', 'regex', 'crypto', 'encoding', 'colors', 'term'],
 };
@@ -265,6 +290,12 @@ connection.onInitialize(params => {
             inlayHintProvider: true,
             // Support call hierarchy
             callHierarchyProvider: true,
+            // Support code lens
+            codeLensProvider: {
+                resolveProvider: false,
+            },
+            // Support color provider
+            colorProvider: true,
         },
     };
 
@@ -649,6 +680,44 @@ function getHoverDocumentation(word) {
         json: '**json** - Module for JSON operations\n\nFunctions:\n- `parse(string)` - Parse JSON string\n- `stringify(value)` - Convert value to JSON string',
         os: '**os** - Module for operating system operations\n\nFunctions:\n- `exec(command)` - Execute shell command\n- `env(name)` - Get environment variable\n- `args()` - Get command line arguments\n- `exit(code)` - Exit program',
         defer: '**defer** - Defers execution until function returns\n\n```vint\nlet myFunc = func() {\n    defer println("This runs last")\n    println("This runs first")\n}\n```',
+        // File I/O functions
+        readFile:
+            '**readFile(path)** - Reads the contents of a file\n\n```vint\nlet content = readFile("data.txt")\n```',
+        writeFile:
+            '**writeFile(path, content)** - Writes content to a file\n\n```vint\nwriteFile("output.txt", "Hello, World!")\n```',
+        appendFile:
+            '**appendFile(path, content)** - Appends content to a file\n\n```vint\nappendFile("log.txt", "New log entry\\n")\n```',
+        deleteFile:
+            '**deleteFile(path)** - Deletes a file\n\n```vint\ndeleteFile("temp.txt")\n```',
+        fileExists:
+            '**fileExists(path)** - Checks if a file exists\n\n```vint\nif (fileExists("config.json")) {\n    // file exists\n}\n```',
+        readDir:
+            '**readDir(path)** - Reads directory contents\n\n```vint\nlet files = readDir("./src")\n```',
+        makeDir:
+            '**makeDir(path)** - Creates a directory\n\n```vint\nmakeDir("output")\n```',
+        // Additional math functions
+        sin: '**sin(x)** - Calculates sine of x (in radians)\n\n```vint\nlet result = sin(3.14159)\n```',
+        cos: '**cos(x)** - Calculates cosine of x (in radians)\n\n```vint\nlet result = cos(0)\n```',
+        tan: '**tan(x)** - Calculates tangent of x (in radians)\n\n```vint\nlet result = tan(0.785398)\n```',
+        log: '**log(x)** - Calculates natural logarithm of x\n\n```vint\nlet result = log(2.718281828)\n```',
+        exp: '**exp(x)** - Calculates e raised to the power of x\n\n```vint\nlet result = exp(1)\n```',
+        toFixed:
+            '**toFixed(number, digits)** - Formats a number to fixed decimal places\n\n```vint\nlet formatted = toFixed(3.14159, 2)  // "3.14"\n```',
+        parseInt:
+            '**parseInt(string)** - Parses a string to an integer\n\n```vint\nlet num = parseInt("42")\n```',
+        parseFloat:
+            '**parseFloat(string)** - Parses a string to a float\n\n```vint\nlet num = parseFloat("3.14")\n```',
+        // Utility functions
+        keys: '**keys(map)** - Returns an array of map keys\n\n```vint\nlet m = {"a": 1, "b": 2}\nlet k = keys(m)  // ["a", "b"]\n```',
+        values:
+            '**values(map)** - Returns an array of map values\n\n```vint\nlet m = {"a": 1, "b": 2}\nlet v = values(m)  // [1, 2]\n```',
+        entries:
+            '**entries(map)** - Returns an array of [key, value] pairs\n\n```vint\nlet m = {"a": 1, "b": 2}\nlet e = entries(m)\n```',
+        merge: '**merge(map1, map2)** - Merges two maps\n\n```vint\nlet result = merge({"a": 1}, {"b": 2})\n```',
+        clone: '**clone(value)** - Creates a deep copy of a value\n\n```vint\nlet copy = clone(original)\n```',
+        freeze:
+            '**freeze(object)** - Freezes an object to prevent modifications\n\n```vint\nfreeze(myObject)\n```',
+        seal: '**seal(object)** - Seals an object to prevent adding new properties\n\n```vint\nseal(myObject)\n```',
     };
 
     return docs[word] || null;
@@ -733,6 +802,71 @@ connection.onSignatureHelp(params => {
             parameters: [
                 { label: 'array', documentation: 'The array to join' },
                 { label: 'separator', documentation: 'The separator to use' },
+            ],
+        },
+        // File I/O signatures
+        readFile: {
+            label: 'readFile(path)',
+            documentation: 'Reads the contents of a file',
+            parameters: [{ label: 'path', documentation: 'Path to the file to read' }],
+        },
+        writeFile: {
+            label: 'writeFile(path, content)',
+            documentation: 'Writes content to a file',
+            parameters: [
+                { label: 'path', documentation: 'Path to the file' },
+                { label: 'content', documentation: 'Content to write' },
+            ],
+        },
+        appendFile: {
+            label: 'appendFile(path, content)',
+            documentation: 'Appends content to a file',
+            parameters: [
+                { label: 'path', documentation: 'Path to the file' },
+                { label: 'content', documentation: 'Content to append' },
+            ],
+        },
+        fileExists: {
+            label: 'fileExists(path)',
+            documentation: 'Checks if a file exists',
+            parameters: [{ label: 'path', documentation: 'Path to check' }],
+        },
+        readDir: {
+            label: 'readDir(path)',
+            documentation: 'Reads directory contents',
+            parameters: [{ label: 'path', documentation: 'Path to directory' }],
+        },
+        makeDir: {
+            label: 'makeDir(path)',
+            documentation: 'Creates a directory',
+            parameters: [{ label: 'path', documentation: 'Path to create' }],
+        },
+        // Math function signatures
+        toFixed: {
+            label: 'toFixed(number, digits)',
+            documentation: 'Formats a number to fixed decimal places',
+            parameters: [
+                { label: 'number', documentation: 'The number to format' },
+                { label: 'digits', documentation: 'Number of decimal places' },
+            ],
+        },
+        parseInt: {
+            label: 'parseInt(string)',
+            documentation: 'Parses a string to an integer',
+            parameters: [{ label: 'string', documentation: 'The string to parse' }],
+        },
+        parseFloat: {
+            label: 'parseFloat(string)',
+            documentation: 'Parses a string to a float',
+            parameters: [{ label: 'string', documentation: 'The string to parse' }],
+        },
+        // Utility function signatures
+        merge: {
+            label: 'merge(map1, map2)',
+            documentation: 'Merges two maps',
+            parameters: [
+                { label: 'map1', documentation: 'First map' },
+                { label: 'map2', documentation: 'Second map' },
             ],
         },
     };
@@ -1784,6 +1918,138 @@ connection.onCallHierarchyOutgoingCalls(params => {
     }
 
     return calls;
+});
+
+// Code lens provider - shows inline information and actions
+connection.onCodeLens(params => {
+    const document = documents.get(params.textDocument.uri);
+    if (!document) {
+        return [];
+    }
+
+    const text = document.getText();
+    const lines = text.split('\n');
+    const lenses = [];
+
+    // Add code lens for functions showing reference count
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const funcMatch = line.match(/let\s+(\w+)\s*=\s*func/);
+
+        if (funcMatch) {
+            const funcName = funcMatch[1];
+            // Count references to this function
+            let refCount = 0;
+            for (let j = 0; j < lines.length; j++) {
+                if (j === i) continue; // Skip the definition line
+                const refRegex = new RegExp(`\\b${funcName}\\s*\\(`);
+                if (refRegex.test(lines[j])) {
+                    refCount++;
+                }
+            }
+
+            lenses.push({
+                range: {
+                    start: { line: i, character: 0 },
+                    end: { line: i, character: line.length },
+                },
+                command: {
+                    title: `${refCount} reference${refCount !== 1 ? 's' : ''}`,
+                    command: 'vintlang.showReferences',
+                    arguments: [params.textDocument.uri, { line: i, character: funcMatch.index }],
+                },
+            });
+        }
+    }
+
+    return lenses;
+});
+
+// Document color provider - detects color values in code
+connection.onDocumentColor(params => {
+    const document = documents.get(params.textDocument.uri);
+    if (!document) {
+        return [];
+    }
+
+    const text = document.getText();
+    const lines = text.split('\n');
+    const colors = [];
+
+    // Detect hex colors (#RRGGBB or #RGB)
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const hexRegex = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b/g;
+        let match;
+
+        while ((match = hexRegex.exec(line))) {
+            const hexColor = match[1];
+            let r, g, b;
+
+            if (hexColor.length === 3) {
+                // Convert #RGB to #RRGGBB
+                r = parseInt(hexColor[0] + hexColor[0], 16) / 255;
+                g = parseInt(hexColor[1] + hexColor[1], 16) / 255;
+                b = parseInt(hexColor[2] + hexColor[2], 16) / 255;
+            } else {
+                r = parseInt(hexColor.substring(0, 2), 16) / 255;
+                g = parseInt(hexColor.substring(2, 4), 16) / 255;
+                b = parseInt(hexColor.substring(4, 6), 16) / 255;
+            }
+
+            colors.push({
+                range: {
+                    start: { line: i, character: match.index },
+                    end: { line: i, character: match.index + match[0].length },
+                },
+                color: { red: r, green: g, blue: b, alpha: 1.0 },
+            });
+        }
+
+        // Detect rgb() and rgba() colors
+        const rgbRegex = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/g;
+        while ((match = rgbRegex.exec(line))) {
+            colors.push({
+                range: {
+                    start: { line: i, character: match.index },
+                    end: { line: i, character: match.index + match[0].length },
+                },
+                color: {
+                    red: parseInt(match[1]) / 255,
+                    green: parseInt(match[2]) / 255,
+                    blue: parseInt(match[3]) / 255,
+                    alpha: match[4] ? parseFloat(match[4]) : 1.0,
+                },
+            });
+        }
+    }
+
+    return colors;
+});
+
+// Color presentation provider - provides color format options
+connection.onColorPresentation(params => {
+    const color = params.color;
+    const r = Math.round(color.red * 255);
+    const g = Math.round(color.green * 255);
+    const b = Math.round(color.blue * 255);
+    const a = color.alpha;
+
+    const presentations = [];
+
+    // Hex format
+    const hex = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    presentations.push({ label: hex.toUpperCase() });
+
+    // RGB format
+    presentations.push({ label: `rgb(${r}, ${g}, ${b})` });
+
+    // RGBA format
+    if (a < 1.0) {
+        presentations.push({ label: `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})` });
+    }
+
+    return presentations;
 });
 
 // Make the text document manager listen on the connection
