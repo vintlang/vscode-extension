@@ -23,6 +23,8 @@ const countToTen = func() {
     }
 }
 
+
+
 const switchExample = func(value) {
     switch (value) {
         case 1 {
