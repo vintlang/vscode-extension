@@ -1,0 +1,18 @@
+const time = import ("time")
+// Test file for Vint language extension
+let  main = func() {
+    if (true) {
+        println("Hello, World!")
+        println("Current time: " + time.now().toString())
+        return "Hello Vint!"
+    }
+}
+
+let fibonacci = func(n) {
+    if (n <= 1) {
+        return n
+    }
+    return fibonacci(n-1) + fibonacci(n-2)
+}
+
+// Test keywords: func, return, if, else, while, for, switch, case, default, break, continue
