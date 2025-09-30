@@ -23,8 +23,13 @@
     "languages": [
       {
         "id": "vint",
-        "aliases": ["Vint", "VintLang"],
-        "extensions": [".vint"],
+        "aliases": [
+          "Vint",
+          "VintLang"
+        ],
+        "extensions": [
+          ".vint"
+        ],
         "configuration": "./language-configuration.json",
         "icon": {
           "light": "./icons/vint-light.png",
@@ -56,7 +61,11 @@
         },
         "vintlang.trace.server": {
           "type": "string",
-          "enum": ["off", "messages", "verbose"],
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
           "default": "off",
           "description": "Traces the communication between VS Code and the language server"
         },
