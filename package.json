@@ -28,7 +28,8 @@
           "VintLang"
         ],
         "extensions": [
-          ".vint"
+          ".vint",
+          ".vintlang"
         ],
         "configuration": "./language-configuration.json",
         "icon": {
@@ -59,6 +60,16 @@
           "default": true,
           "description": "Enable VintLang language server"
         },
+        "vintlang.enableLinting": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable VintLang linting"
+        },
+        "vintlang.enableIntelliSense": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable IntelliSense features"
+        },
         "vintlang.trace.server": {
           "type": "string",
           "enum": [
@@ -78,6 +89,41 @@
           "type": "boolean",
           "default": true,
           "description": "Enable auto-formatting for VintLang files"
+        },
+        "vintlang.formatOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Format VintLang files on save"
+        },
+        "vintlang.indentSize": {
+          "type": "number",
+          "default": 4,
+          "description": "Number of spaces for indentation"
+        },
+        "vintlang.insertFinalNewline": {
+          "type": "boolean",
+          "default": true,
+          "description": "Insert final newline on save"
+        },
+        "vintlang.trimTrailingWhitespace": {
+          "type": "boolean",
+          "default": true,
+          "description": "Trim trailing whitespace on save"
+        },
+        "vintlang.vintPath": {
+          "type": "string",
+          "default": "vint",
+          "description": "Path to VintLang executable"
+        },
+        "vintlang.suggestionMode": {
+          "type": "string",
+          "enum": [
+            "strict",
+            "loose",
+            "off"
+          ],
+          "default": "strict",
+          "description": "IntelliSense suggestion mode"
         },
         "vintlang.completion.enable": {
           "type": "boolean",
@@ -100,6 +146,26 @@
       {
         "command": "vintlang.showReferences",
         "title": "Show References",
+        "category": "VintLang"
+      },
+      {
+        "command": "vintlang.run",
+        "title": "Run VintLang File",
+        "category": "VintLang"
+      },
+      {
+        "command": "vintlang.format",
+        "title": "Format VintLang Code",
+        "category": "VintLang"
+      },
+      {
+        "command": "vintlang.repl",
+        "title": "Start VintLang REPL",
+        "category": "VintLang"
+      },
+      {
+        "command": "vintlang.bundle",
+        "title": "Bundle VintLang Project",
         "category": "VintLang"
       }
     ]

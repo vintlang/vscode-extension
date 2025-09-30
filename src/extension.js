@@ -95,35 +95,64 @@ function registerProviders(context) {
     const completionProvider = vscode.languages.registerCompletionItemProvider('vint', {
         provideCompletionItems(document, position, token, context) {
             const keywords = [
+                // Core keywords
+                'let', 'const', 'func', 'return', 'break', 'continue', 'null',
                 // Control flow
-                'if', 'else', 'elif', 'while', 'for', 'in', 'switch', 'case', 'default', 'break', 'continue',
-                // Functions and declarations
-                'func', 'return', 'let', 'declare', 'defer',
-                // Modules and packages
-                'import', 'package', 'include',
-                // Types and constants
-                'true', 'false', 'null',
-                // Built-in functions
-                'print', 'println', 'write', 'type', 'convert', 'has_key', 'len', 'range',
+                'if', 'else', 'elif', 'while', 'for', 'in', 'switch', 'case', 'default',
+                // Import & Module keywords
+                'import', 'package', 'include', 'module',
+                // Async & Concurrency keywords
+                'async', 'await', 'go', 'chan', 'defer',
                 // Error handling
-                'try', 'catch', 'throw', 'finally'
+                'throw', 'try', 'catch', 'finally',
+                // Type system
+                'as', 'is',
+                // Boolean literals
+                'true', 'false',
+                // Special keywords
+                'match', 'repeat',
+                // Legacy
+                'declare'
+            ];
+
+            const declaratives = [
+                // Lowercase declaratives
+                'todo', 'warn', 'error', 'info', 'debug', 'note', 'success', 'trace', 'fatal', 'critical', 'log',
+                // Capitalized declaratives
+                'Todo', 'Warn', 'Error', 'Info', 'Debug', 'Note', 'Success', 'Trace', 'Fatal', 'Critical', 'Log'
             ];
 
             const builtinFunctions = [
-                // String functions
-                'split', 'join', 'replace', 'contains', 'startsWith', 'endsWith', 'trim', 'upper', 'lower',
-                // Array functions
-                'push', 'pop', 'shift', 'unshift', 'slice', 'splice', 'sort', 'reverse',
-                // Math functions
-                'abs', 'ceil', 'floor', 'round', 'max', 'min', 'sqrt', 'pow', 'random',
-                // Time functions
-                'now', 'format', 'add', 'subtract', 'isLeapYear',
-                // OS functions
-                'exec', 'env', 'args', 'exit'
+                // I/O Functions
+                'print', 'println', 'input', 'write',
+                // Type Functions
+                'type', 'typeof', 'len',
+                // Type Checking Functions
+                'isInt', 'isFloat', 'isString', 'isBool', 'isArray', 'isDict', 'isNull',
+                // Array Functions
+                'append', 'pop', 'push', 'sort', 'reverse', 'unique', 'filter', 'map', 'indexOf',
+                'shift', 'unshift', 'slice', 'splice',
+                // Dictionary Functions
+                'keys', 'values', 'hasKey', 'has_key',
+                // String Functions
+                'toUpper', 'toLower', 'trim', 'split', 'join', 'startsWith', 'endsWith',
+                'upper', 'lower', 'replace', 'contains',
+                // Mathematical Functions
+                'abs', 'min', 'max', 'ceil', 'floor', 'round', 'sqrt', 'pow', 'random',
+                // Parsing Functions
+                'parseInt', 'parseFloat',
+                // Logical Functions
+                'and', 'or', 'not', 'xor', 'nand', 'nor',
+                // Other utility functions
+                'range', 'convert', 'now', 'format', 'add', 'subtract', 'isLeapYear', 'exec', 'env', 'args', 'exit'
             ];
 
             const modules = [
-                'time', 'net', 'os', 'json', 'csv', 'regex', 'crypto', 'encoding', 'colors', 'term'
+                'argparse', 'cli', 'clipboard', 'colors', 'crypto', 'csv', 'datetime', 'desktop', 'dotenv',
+                'editor', 'email', 'encoding', 'errors', 'filewatcher', 'hash', 'http', 'json', 'llm',
+                'logger', 'math', 'mysql', 'net', 'openai', 'os', 'path', 'postgres', 'random', 'reflect',
+                'regex', 'schedule', 'shell', 'sqlite', 'string', 'styled', 'sysinfo', 'term', 'time',
+                'url', 'uuid', 'vintchart', 'vintsocket', 'xml', 'yaml'
             ];
 
             const items = [];
@@ -132,6 +161,14 @@ function registerProviders(context) {
             keywords.forEach(keyword => {
                 const item = new vscode.CompletionItem(keyword, vscode.CompletionItemKind.Keyword);
                 item.documentation = new vscode.MarkdownString(`VintLang keyword: \`${keyword}\``);
+                items.push(item);
+            });
+
+            // Add declaratives
+            declaratives.forEach(declarative => {
+                const item = new vscode.CompletionItem(declarative, vscode.CompletionItemKind.Keyword);
+                item.insertText = new vscode.SnippetString(`${declarative} "$1"`);
+                item.documentation = new vscode.MarkdownString(`VintLang declarative statement: \`${declarative}\``);
                 items.push(item);
             });
 

@@ -9,6 +9,13 @@
         ],
         "description": "Create a function definition"
     },
+    "Constant Declaration": {
+        "prefix": "const",
+        "body": [
+            "const ${1:CONSTANT} = ${2:value}"
+        ],
+        "description": "Declare a constant"
+    },
     "Anonymous Function": {
         "prefix": "afunc",
         "body": [
@@ -19,10 +26,27 @@
         ],
         "description": "Create an anonymous function"
     },
+    "Async Function": {
+        "prefix": "async",
+        "body": [
+            "async func ${1:functionName}(${2:params}) {",
+            "\t${3:// async code}",
+            "\treturn ${4:value}",
+            "}"
+        ],
+        "description": "Create an async function"
+    },
+    "Await Expression": {
+        "prefix": "await",
+        "body": [
+            "let ${1:result} = await ${2:asyncFunction}()"
+        ],
+        "description": "Await an async function"
+    },
     "If Statement": {
         "prefix": "if",
         "body": [
-            "if (${1:condition}) {",
+            "if ${1:condition} {",
             "\t${2:// code}",
             "}"
         ],
@@ -31,10 +55,10 @@
     "If-Else Statement": {
         "prefix": "ifelse",
         "body": [
-            "if (${1:condition}) {",
-            "\t${2:// code}",
+            "if ${1:condition} {",
+            "\t${2:// if code}",
             "} else {",
-            "\t${3:// alternative code}",
+            "\t${3:// else code}",
             "}"
         ],
         "description": "Create an if-else statement"
@@ -42,9 +66,9 @@
     "If-Elif-Else Statement": {
         "prefix": "ifelif",
         "body": [
-            "if (${1:condition1}) {",
+            "if ${1:condition1} {",
             "\t${2:// code}",
-            "} elif (${3:condition2}) {",
+            "} elif ${3:condition2} {",
             "\t${4:// code}",
             "} else {",
             "\t${5:// alternative code}",
@@ -56,7 +80,7 @@
         "prefix": "for",
         "body": [
             "for ${1:item} in ${2:collection} {",
-            "\t${3:// code}",
+            "\t${3:// loop body}",
             "}"
         ],
         "description": "Create a for loop"
@@ -64,16 +88,25 @@
     "While Loop": {
         "prefix": "while",
         "body": [
-            "while (${1:condition}) {",
-            "\t${2:// code}",
+            "while ${1:condition} {",
+            "\t${2:// loop body}",
             "}"
         ],
         "description": "Create a while loop"
     },
+    "Repeat Loop": {
+        "prefix": "repeat",
+        "body": [
+            "repeat ${1:times} {",
+            "\t${2:// code to repeat}",
+            "}"
+        ],
+        "description": "Create a repeat loop"
+    },
     "Switch Case": {
         "prefix": "switch",
         "body": [
-            "switch (${1:expression}) {",
+            "switch ${1:expression} {",
             "\tcase ${2:value1}:",
             "\t\t${3:// code}",
             "\t\tbreak",
@@ -86,12 +119,23 @@
         ],
         "description": "Create a switch-case statement"
     },
+    "Match Statement": {
+        "prefix": "match",
+        "body": [
+            "match ${1:expression} {",
+            "\t${2:pattern1} => ${3:result1},",
+            "\t${4:pattern2} => ${5:result2},",
+            "\t_ => ${6:default}",
+            "}"
+        ],
+        "description": "Create a match expression"
+    },
     "Try-Catch": {
         "prefix": "try",
         "body": [
             "try {",
             "\t${1:// code that might throw}",
-            "} catch (${2:error}) {",
+            "} catch ${2:error} {",
             "\t${3:// error handling}",
             "}"
         ],
@@ -102,7 +146,7 @@
         "body": [
             "try {",
             "\t${1:// code that might throw}",
-            "} catch (${2:error}) {",
+            "} catch ${2:error} {",
             "\t${3:// error handling}",
             "} finally {",
             "\t${4:// cleanup code}",
@@ -113,7 +157,7 @@
     "Variable Declaration": {
         "prefix": "let",
         "body": [
-            "let ${1:variableName} = ${2:value}"
+            "let ${1:variable} = ${2:value}"
         ],
         "description": "Declare a variable"
     },
@@ -138,6 +182,20 @@
         ],
         "description": "Import a module"
     },
+    "Import with Alias": {
+        "prefix": "importas",
+        "body": [
+            "import ${1:moduleName} as ${2:alias}"
+        ],
+        "description": "Import module with alias"
+    },
+    "Dynamic Import": {
+        "prefix": "dimport",
+        "body": [
+            "let ${1:module} = import(\"${2:moduleName}\")"
+        ],
+        "description": "Dynamic module import"
+    },
     "Multiple Imports": {
         "prefix": "imports",
         "body": [
@@ -155,6 +213,71 @@
             "}"
         ],
         "description": "Declare a package"
+    },
+    "Todo Declaration": {
+        "prefix": "todo",
+        "body": [
+            "todo \"${1:description}\""
+        ],
+        "description": "Add a todo item"
+    },
+    "Warning Declaration": {
+        "prefix": "warn",
+        "body": [
+            "warn \"${1:message}\""
+        ],
+        "description": "Add a warning"
+    },
+    "Error Declaration": {
+        "prefix": "error",
+        "body": [
+            "error \"${1:message}\""
+        ],
+        "description": "Add an error"
+    },
+    "Info Declaration": {
+        "prefix": "info",
+        "body": [
+            "info \"${1:message}\""
+        ],
+        "description": "Add an info message"
+    },
+    "Debug Declaration": {
+        "prefix": "debug",
+        "body": [
+            "debug \"${1:message}\""
+        ],
+        "description": "Add a debug message"
+    },
+    "Note Declaration": {
+        "prefix": "note",
+        "body": [
+            "note \"${1:message}\""
+        ],
+        "description": "Add a note"
+    },
+    "Success Declaration": {
+        "prefix": "success",
+        "body": [
+            "success \"${1:message}\""
+        ],
+        "description": "Add a success message"
+    },
+    "Array Declaration": {
+        "prefix": "arr",
+        "body": [
+            "let ${1:array} = [${2:elements}]"
+        ],
+        "description": "Create an array"
+    },
+    "Dictionary Declaration": {
+        "prefix": "dict",
+        "body": [
+            "let ${1:dict} = {",
+            "\t\"${2:key}\": ${3:value}",
+            "}"
+        ],
+        "description": "Create a dictionary"
     },
     "Convert Statement": {
         "prefix": "convert",
@@ -189,9 +312,9 @@
     "HTTP GET Request": {
         "prefix": "httpget",
         "body": [
-            "import net",
+            "import http",
             "",
-            "let ${1:response} = net.get(\"${2:url}\")",
+            "let ${1:response} = http.get(\"${2:url}\")",
             "print(${1:response})"
         ],
         "description": "Make an HTTP GET request"
@@ -199,10 +322,10 @@
     "HTTP POST Request": {
         "prefix": "httppost",
         "body": [
-            "import net",
+            "import http",
             "",
             "let ${1:data} = {${2:key}: \"${3:value}\"}",
-            "let ${4:response} = net.post(\"${5:url}\", ${1:data})",
+            "let ${4:response} = http.post(\"${5:url}\", ${1:data})",
             "print(${4:response})"
         ],
         "description": "Make an HTTP POST request"
@@ -212,7 +335,7 @@
         "body": [
             "import json",
             "",
-            "let ${1:data} = json.parse(${2:jsonString})"
+            "let ${1:data} = json.decode(${2:jsonString})"
         ],
         "description": "Parse JSON string"
     },
@@ -221,7 +344,7 @@
         "body": [
             "import json",
             "",
-            "let ${1:jsonString} = json.stringify(${2:object})"
+            "let ${1:jsonString} = json.encode(${2:object})"
         ],
         "description": "Convert object to JSON string"
     },
@@ -273,21 +396,21 @@
     "String Split": {
         "prefix": "split",
         "body": [
-            "let ${1:parts} = ${2:string}.split(\"${3:delimiter}\")"
+            "let ${1:parts} = split(${2:string}, \"${3:delimiter}\")"
         ],
         "description": "Split a string"
     },
     "Array Join": {
         "prefix": "join",
         "body": [
-            "let ${1:result} = ${2:array}.join(\"${3:separator}\")"
+            "let ${1:result} = join(${2:array}, \"${3:separator}\")"
         ],
         "description": "Join array elements into a string"
     },
     "Error Handling": {
-        "prefix": "error",
+        "prefix": "throw",
         "body": [
-            "if (${1:errorCondition}) {",
+            "if ${1:errorCondition} {",
             "\tthrow \"${2:Error message}\"",
             "}"
         ],
@@ -315,7 +438,7 @@
     "Main Function": {
         "prefix": "main",
         "body": [
-            "let main = func() {",
+            "func main() {",
             "\t${1:// main program logic}",
             "}",
             "",
