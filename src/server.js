@@ -30,18 +30,62 @@ let hasDiagnosticRelatedInformationCapability = false;
 // VintLang language configuration
 const vintlangConfig = {
     keywords: [
-        'if', 'else', 'elif', 'while', 'for', 'in', 'switch', 'case', 'default', 'break', 'continue',
-        'func', 'return', 'let', 'declare', 'defer', 'import', 'package', 'include',
-        'true', 'false', 'null', 'try', 'catch', 'throw', 'finally'
+        // Core keywords
+        'let', 'const', 'func', 'return', 'break', 'continue', 'null',
+        // Control flow
+        'if', 'else', 'elif', 'switch', 'case', 'default', 'while', 'for', 'in',
+        // Import & Module keywords
+        'import', 'package', 'include', 'module',
+        // Async & Concurrency keywords
+        'async', 'await', 'go', 'chan', 'defer',
+        // Error handling
+        'throw', 'try', 'catch', 'finally',
+        // Type system
+        'as', 'is',
+        // Boolean literals
+        'true', 'false',
+        // Special keywords
+        'match', 'repeat',
+        // Legacy support
+        'declare'
+    ],
+    declaratives: [
+        // Lowercase declaratives
+        'todo', 'warn', 'error', 'info', 'debug', 'note', 'success', 'trace', 'fatal', 'critical', 'log',
+        // Capitalized declaratives
+        'Todo', 'Warn', 'Error', 'Info', 'Debug', 'Note', 'Success', 'Trace', 'Fatal', 'Critical', 'Log'
     ],
     builtins: [
-        'print', 'println', 'write', 'type', 'convert', 'has_key', 'len', 'range',
-        'split', 'join', 'replace', 'contains', 'startsWith', 'endsWith', 'trim', 'upper', 'lower',
-        'push', 'pop', 'shift', 'unshift', 'slice', 'splice', 'sort', 'reverse',
-        'abs', 'ceil', 'floor', 'round', 'max', 'min', 'sqrt', 'pow', 'random',
-        'now', 'format', 'add', 'subtract', 'isLeapYear', 'exec', 'env', 'args', 'exit'
+        // I/O Functions
+        'print', 'println', 'input', 'write',
+        // Type Functions
+        'type', 'typeof', 'len',
+        // Type Checking Functions
+        'isInt', 'isFloat', 'isString', 'isBool', 'isArray', 'isDict', 'isNull',
+        // Array Functions
+        'append', 'pop', 'push', 'sort', 'reverse', 'unique', 'filter', 'map', 'indexOf',
+        'shift', 'unshift', 'slice', 'splice',
+        // Dictionary Functions
+        'keys', 'values', 'hasKey', 'has_key',
+        // String Functions
+        'toUpper', 'toLower', 'trim', 'split', 'join', 'startsWith', 'endsWith',
+        'upper', 'lower', 'replace', 'contains',
+        // Mathematical Functions
+        'abs', 'min', 'max', 'ceil', 'floor', 'round', 'sqrt', 'pow', 'random',
+        // Parsing Functions
+        'parseInt', 'parseFloat',
+        // Logical Functions
+        'and', 'or', 'not', 'xor', 'nand', 'nor',
+        // Other utility functions
+        'range', 'convert', 'now', 'format', 'add', 'subtract', 'isLeapYear', 'exec', 'env', 'args', 'exit'
     ],
-    modules: ['time', 'net', 'os', 'json', 'csv', 'regex', 'crypto', 'encoding', 'colors', 'term']
+    modules: [
+        'argparse', 'cli', 'clipboard', 'colors', 'crypto', 'csv', 'datetime', 'desktop', 'dotenv',
+        'editor', 'email', 'encoding', 'errors', 'filewatcher', 'hash', 'http', 'json', 'llm',
+        'logger', 'math', 'mysql', 'net', 'openai', 'os', 'path', 'postgres', 'random', 'reflect',
+        'regex', 'schedule', 'shell', 'sqlite', 'string', 'styled', 'sysinfo', 'term', 'time',
+        'url', 'uuid', 'vintchart', 'vintsocket', 'xml', 'yaml'
+    ]
 };
 
 connection.onInitialize((params) => {
@@ -243,12 +287,23 @@ connection.onCompletion(
             });
         });
 
+        // Add declarative statements
+        vintlangConfig.declaratives.forEach((declarative, index) => {
+            items.push({
+                label: declarative,
+                kind: CompletionItemKind.Keyword,
+                data: vintlangConfig.keywords.length + index,
+                insertText: `${declarative} "$1"`,
+                insertTextFormat: 2 // Snippet format
+            });
+        });
+
         // Add built-in functions
         vintlangConfig.builtins.forEach((builtin, index) => {
             items.push({
                 label: builtin,
                 kind: CompletionItemKind.Function,
-                data: vintlangConfig.keywords.length + index,
+                data: vintlangConfig.keywords.length + vintlangConfig.declaratives.length + index,
                 insertText: `${builtin}($1)`,
                 insertTextFormat: 2 // Snippet format
             });
@@ -259,7 +314,7 @@ connection.onCompletion(
             items.push({
                 label: module,
                 kind: CompletionItemKind.Module,
-                data: vintlangConfig.keywords.length + vintlangConfig.builtins.length + index
+                data: vintlangConfig.keywords.length + vintlangConfig.declaratives.length + vintlangConfig.builtins.length + index
             });
         });
 

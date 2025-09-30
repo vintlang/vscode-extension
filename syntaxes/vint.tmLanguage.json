@@ -4,11 +4,13 @@
     "scopeName": "source.vint",
     "fileTypes": ["vint"],
     "patterns": [
+        { "include": "#shebang" },
         { "include": "#linecomments" },
         { "include": "#blockcomments" },
         { "include": "#strings" },
         { "include": "#numbers" },
         { "include": "#constants" },
+        { "include": "#declaratives" },
         { "include": "#keywords" },
         { "include": "#functions" },
         { "include": "#operators" },
@@ -17,12 +19,22 @@
         { "include": "#groups" }
     ],
     "repository": {
+        "shebang": {
+            "name": "comment.line.shebang.vint",
+            "match": "^#!/.*$"
+        },
         "linecomments": {
             "name": "comment.line.double-slash.vint",
             "match": "//.*$",
             "captures": {
                 "0": { "name": "punctuation.definition.comment.vint" }
-            }
+            },
+            "patterns": [
+                {
+                    "name": "keyword.codetag.vint",
+                    "match": "\\b(TODO|FIXME|XXX|NOTE|HACK|BUG)\\b"
+                }
+            ]
         },
         "blockcomments": {
             "name": "comment.block.vint",
@@ -30,7 +42,13 @@
             "end": "\\*/",
             "captures": {
                 "0": { "name": "punctuation.definition.comment.vint" }
-            }
+            },
+            "patterns": [
+                {
+                    "name": "keyword.codetag.vint",
+                    "match": "\\b(TODO|FIXME|XXX|NOTE|HACK|BUG)\\b"
+                }
+            ]
         },
         "strings": {
             "patterns": [
@@ -98,6 +116,10 @@
                 }
             ]
         },
+        "declaratives": {
+            "name": "keyword.other.declarative.vint",
+            "match": "\\b(todo|warn|error|info|debug|note|success|trace|fatal|critical|log|Todo|Warn|Error|Info|Debug|Note|Success|Trace|Fatal|Critical|Log)\\b"
+        },
         "keywords": {
             "patterns": [
                 {
@@ -106,7 +128,7 @@
                 },
                 {
                     "name": "storage.type.variable.vint",
-                    "match": "\\b(let)\\b"
+                    "match": "\\b(let|const)\\b"
                 },
                 {
                     "name": "storage.modifier.vint",
@@ -114,7 +136,7 @@
                 },
                 {
                     "name": "keyword.control.import.vint",
-                    "match": "\\b(import|package|include)\\b"
+                    "match": "\\b(import|package|include|module)\\b"
                 },
                 {
                     "name": "keyword.control.conditional.vint",
@@ -122,15 +144,23 @@
                 },
                 {
                     "name": "keyword.control.loop.vint",
-                    "match": "\\b(while|for|in|break|continue)\\b"
+                    "match": "\\b(while|for|in|break|continue|repeat)\\b"
                 },
                 {
                     "name": "keyword.control.switch.vint",
-                    "match": "\\b(switch|case|default)\\b"
+                    "match": "\\b(switch|case|default|match)\\b"
                 },
                 {
                     "name": "keyword.control.exception.vint",
                     "match": "\\b(try|catch|throw|finally)\\b"
+                },
+                {
+                    "name": "keyword.control.async.vint",
+                    "match": "\\b(async|await|go|chan)\\b"
+                },
+                {
+                    "name": "keyword.operator.type.vint",
+                    "match": "\\b(as|is)\\b"
                 }
             ]
         },
@@ -138,23 +168,39 @@
             "patterns": [
                 {
                     "name": "support.function.builtin.io.vint",
-                    "match": "\\b(print|println|write)\\b"
+                    "match": "\\b(print|println|write|input)\\b"
                 },
                 {
                     "name": "support.function.builtin.type.vint",
-                    "match": "\\b(type|convert|has_key|len|range)\\b"
+                    "match": "\\b(type|typeof|convert|len|range)\\b"
+                },
+                {
+                    "name": "support.function.builtin.typecheck.vint",
+                    "match": "\\b(isInt|isFloat|isString|isBool|isArray|isDict|isNull)\\b"
                 },
                 {
                     "name": "support.function.builtin.string.vint",
-                    "match": "\\b(split|join|replace|contains|startsWith|endsWith|trim|upper|lower)\\b"
+                    "match": "\\b(split|join|replace|contains|startsWith|endsWith|trim|upper|lower|toUpper|toLower)\\b"
                 },
                 {
                     "name": "support.function.builtin.array.vint",
-                    "match": "\\b(push|pop|shift|unshift|slice|splice|sort|reverse)\\b"
+                    "match": "\\b(push|pop|shift|unshift|slice|splice|sort|reverse|append|unique|filter|map|indexOf)\\b"
+                },
+                {
+                    "name": "support.function.builtin.dict.vint",
+                    "match": "\\b(keys|values|hasKey|has_key)\\b"
                 },
                 {
                     "name": "support.function.builtin.math.vint",
                     "match": "\\b(abs|ceil|floor|round|max|min|sqrt|pow|random)\\b"
+                },
+                {
+                    "name": "support.function.builtin.parse.vint",
+                    "match": "\\b(parseInt|parseFloat)\\b"
+                },
+                {
+                    "name": "support.function.builtin.logical.vint",
+                    "match": "\\b(and|or|not|xor|nand|nor)\\b"
                 },
                 {
                     "name": "support.function.builtin.system.vint",
@@ -178,19 +224,23 @@
                 },
                 {
                     "name": "keyword.operator.logical.vint",
-                    "match": "(&&|\\|\\||!)"
+                    "match": "(&&|\\|\\||!|\\?\\?|&|\\|)"
                 },
                 {
                     "name": "keyword.operator.arithmetic.vint",
-                    "match": "(\\+|\\-|\\*|\\/|%|\\^|\\*\\*)"
+                    "match": "(\\+\\+|\\-\\-|\\+|\\-|\\*\\*|\\*|\\/|%)"
                 },
                 {
                     "name": "keyword.operator.assignment.vint",
-                    "match": "(=|\\+=|\\-=|\\*=|\\/=|%=)"
+                    "match": "(\\+=|\\-=|\\*=|\\/=|%=|=)"
                 },
                 {
-                    "name": "keyword.operator.increment.vint",
-                    "match": "(\\+\\+|\\-\\-)"
+                    "name": "keyword.operator.arrow.vint",
+                    "match": "=>"
+                },
+                {
+                    "name": "keyword.operator.range.vint",
+                    "match": "\\.\\."
                 },
                 {
                     "name": "punctuation.accessor.vint",
@@ -218,7 +268,7 @@
             "patterns": [
                 {
                     "name": "support.constant.module.vint",
-                    "match": "\\b(time|net|os|json|csv|regex|crypto|encoding|colors|term|math|string|array)\\b"
+                    "match": "\\b(argparse|cli|clipboard|colors|crypto|csv|datetime|desktop|dotenv|editor|email|encoding|errors|filewatcher|hash|http|json|llm|logger|math|mysql|net|openai|os|path|postgres|random|reflect|regex|schedule|shell|sqlite|string|styled|sysinfo|term|time|url|uuid|vintchart|vintsocket|xml|yaml)\\b"
                 },
                 {
                     "name": "variable.other.constant.vint",
