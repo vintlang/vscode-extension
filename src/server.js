@@ -717,14 +717,12 @@ function getHoverDocumentation(word) {
             '**writeFile(path, content)** - Writes content to a file\n\n```vint\nwriteFile("output.txt", "Hello, World!")\n```',
         appendFile:
             '**appendFile(path, content)** - Appends content to a file\n\n```vint\nappendFile("log.txt", "New log entry\\n")\n```',
-        deleteFile:
-            '**deleteFile(path)** - Deletes a file\n\n```vint\ndeleteFile("temp.txt")\n```',
+        deleteFile: '**deleteFile(path)** - Deletes a file\n\n```vint\ndeleteFile("temp.txt")\n```',
         fileExists:
             '**fileExists(path)** - Checks if a file exists\n\n```vint\nif (fileExists("config.json")) {\n    // file exists\n}\n```',
         readDir:
             '**readDir(path)** - Reads directory contents\n\n```vint\nlet files = readDir("./src")\n```',
-        makeDir:
-            '**makeDir(path)** - Creates a directory\n\n```vint\nmakeDir("output")\n```',
+        makeDir: '**makeDir(path)** - Creates a directory\n\n```vint\nmakeDir("output")\n```',
         // Additional math functions
         sin: '**sin(x)** - Calculates sine of x (in radians)\n\n```vint\nlet result = sin(3.14159)\n```',
         cos: '**cos(x)** - Calculates cosine of x (in radians)\n\n```vint\nlet result = cos(0)\n```',
@@ -739,14 +737,12 @@ function getHoverDocumentation(word) {
             '**parseFloat(string)** - Parses a string to a float\n\n```vint\nlet num = parseFloat("3.14")\n```',
         // Utility functions
         keys: '**keys(map)** - Returns an array of map keys\n\n```vint\nlet m = {"a": 1, "b": 2}\nlet k = keys(m)  // ["a", "b"]\n```',
-        values:
-            '**values(map)** - Returns an array of map values\n\n```vint\nlet m = {"a": 1, "b": 2}\nlet v = values(m)  // [1, 2]\n```',
+        values: '**values(map)** - Returns an array of map values\n\n```vint\nlet m = {"a": 1, "b": 2}\nlet v = values(m)  // [1, 2]\n```',
         entries:
             '**entries(map)** - Returns an array of [key, value] pairs\n\n```vint\nlet m = {"a": 1, "b": 2}\nlet e = entries(m)\n```',
         merge: '**merge(map1, map2)** - Merges two maps\n\n```vint\nlet result = merge({"a": 1}, {"b": 2})\n```',
         clone: '**clone(value)** - Creates a deep copy of a value\n\n```vint\nlet copy = clone(original)\n```',
-        freeze:
-            '**freeze(object)** - Freezes an object to prevent modifications\n\n```vint\nfreeze(myObject)\n```',
+        freeze: '**freeze(object)** - Freezes an object to prevent modifications\n\n```vint\nfreeze(myObject)\n```',
         seal: '**seal(object)** - Seals an object to prevent adding new properties\n\n```vint\nseal(myObject)\n```',
         // Additional string functions
         substring:
@@ -755,22 +751,17 @@ function getHoverDocumentation(word) {
             '**indexOf(string, searchValue)** - Returns the index of the first occurrence of a value in a string\n\n```vint\nlet text = "Hello World"\nlet index = indexOf(text, "World")  // 6\n```',
         lastIndexOf:
             '**lastIndexOf(string, searchValue)** - Returns the index of the last occurrence of a value in a string\n\n```vint\nlet text = "Hello World World"\nlet index = lastIndexOf(text, "World")  // 12\n```',
-        charAt:
-            '**charAt(string, index)** - Returns the character at the specified index\n\n```vint\nlet text = "Hello"\nlet char = charAt(text, 0)  // "H"\n```',
+        charAt: '**charAt(string, index)** - Returns the character at the specified index\n\n```vint\nlet text = "Hello"\nlet char = charAt(text, 0)  // "H"\n```',
         charCodeAt:
             '**charCodeAt(string, index)** - Returns the Unicode value of the character at the specified index\n\n```vint\nlet text = "Hello"\nlet code = charCodeAt(text, 0)  // 72\n```',
         padStart:
             '**padStart(string, length, padString)** - Pads the string from the start to reach a target length\n\n```vint\nlet num = "5"\nlet padded = padStart(num, 3, "0")  // "005"\n```',
-        padEnd:
-            '**padEnd(string, length, padString)** - Pads the string from the end to reach a target length\n\n```vint\nlet text = "Hi"\nlet padded = padEnd(text, 5, "!")  // "Hi!!!"\n```',
-        repeat:
-            '**repeat(string, count)** - Returns a new string with the specified number of copies\n\n```vint\nlet text = "Ha"\nlet repeated = repeat(text, 3)  // "HaHaHa"\n```',
+        padEnd: '**padEnd(string, length, padString)** - Pads the string from the end to reach a target length\n\n```vint\nlet text = "Hi"\nlet padded = padEnd(text, 5, "!")  // "Hi!!!"\n```',
+        repeat: '**repeat(string, count)** - Returns a new string with the specified number of copies\n\n```vint\nlet text = "Ha"\nlet repeated = repeat(text, 3)  // "HaHaHa"\n```',
         // Additional array functions
         map: '**map(array, function)** - Creates a new array with the results of calling a function for every array element\n\n```vint\nlet numbers = [1, 2, 3]\nlet doubled = map(numbers, func(x) { return x * 2 })  // [2, 4, 6]\n```',
-        filter:
-            '**filter(array, function)** - Creates a new array with elements that pass the test function\n\n```vint\nlet numbers = [1, 2, 3, 4, 5]\nlet evens = filter(numbers, func(x) { return x % 2 == 0 })  // [2, 4]\n```',
-        reduce:
-            '**reduce(array, function, initialValue)** - Reduces the array to a single value by executing a function\n\n```vint\nlet numbers = [1, 2, 3, 4]\nlet sum = reduce(numbers, func(acc, x) { return acc + x }, 0)  // 10\n```',
+        filter: '**filter(array, function)** - Creates a new array with elements that pass the test function\n\n```vint\nlet numbers = [1, 2, 3, 4, 5]\nlet evens = filter(numbers, func(x) { return x % 2 == 0 })  // [2, 4]\n```',
+        reduce: '**reduce(array, function, initialValue)** - Reduces the array to a single value by executing a function\n\n```vint\nlet numbers = [1, 2, 3, 4]\nlet sum = reduce(numbers, func(acc, x) { return acc + x }, 0)  // 10\n```',
         find: '**find(array, function)** - Returns the first element that satisfies the test function\n\n```vint\nlet numbers = [1, 2, 3, 4]\nlet found = find(numbers, func(x) { return x > 2 })  // 3\n```',
         findIndex:
             '**findIndex(array, function)** - Returns the index of the first element that satisfies the test function\n\n```vint\nlet numbers = [1, 2, 3, 4]\nlet index = findIndex(numbers, func(x) { return x > 2 })  // 2\n```',
@@ -785,18 +776,14 @@ function getHoverDocumentation(word) {
             '**isNumber(value)** - Checks if a value is a number\n\n```vint\nlet result = isNumber(42)  // true\nlet result2 = isNumber("42")  // false\n```',
         isArray:
             '**isArray(value)** - Checks if a value is an array\n\n```vint\nlet result = isArray([1, 2, 3])  // true\nlet result2 = isArray("array")  // false\n```',
-        isMap:
-            '**isMap(value)** - Checks if a value is a map/object\n\n```vint\nlet result = isMap({"key": "value"})  // true\nlet result2 = isMap([1, 2])  // false\n```',
-        isNull:
-            '**isNull(value)** - Checks if a value is null\n\n```vint\nlet result = isNull(null)  // true\nlet result2 = isNull(0)  // false\n```',
-        isBool:
-            '**isBool(value)** - Checks if a value is a boolean\n\n```vint\nlet result = isBool(true)  // true\nlet result2 = isBool(1)  // false\n```',
+        isMap: '**isMap(value)** - Checks if a value is a map/object\n\n```vint\nlet result = isMap({"key": "value"})  // true\nlet result2 = isMap([1, 2])  // false\n```',
+        isNull: '**isNull(value)** - Checks if a value is null\n\n```vint\nlet result = isNull(null)  // true\nlet result2 = isNull(0)  // false\n```',
+        isBool: '**isBool(value)** - Checks if a value is a boolean\n\n```vint\nlet result = isBool(true)  // true\nlet result2 = isBool(1)  // false\n```',
         // Additional math functions
         asin: '**asin(x)** - Calculates arc sine (inverse sine) of x, returns value in radians\n\n```vint\nlet result = asin(0.5)  // ~0.524 radians (30 degrees)\n```',
         acos: '**acos(x)** - Calculates arc cosine (inverse cosine) of x, returns value in radians\n\n```vint\nlet result = acos(0.5)  // ~1.047 radians (60 degrees)\n```',
         atan: '**atan(x)** - Calculates arc tangent (inverse tangent) of x, returns value in radians\n\n```vint\nlet result = atan(1)  // ~0.785 radians (45 degrees)\n```',
-        atan2:
-            '**atan2(y, x)** - Calculates the angle between the positive x-axis and the point (x, y)\n\n```vint\nlet angle = atan2(1, 1)  // ~0.785 radians (45 degrees)\n```',
+        atan2: '**atan2(y, x)** - Calculates the angle between the positive x-axis and the point (x, y)\n\n```vint\nlet angle = atan2(1, 1)  // ~0.785 radians (45 degrees)\n```',
         cbrt: '**cbrt(x)** - Calculates the cube root of x\n\n```vint\nlet result = cbrt(27)  // 3\nlet result2 = cbrt(8)  // 2\n```',
     };
 
