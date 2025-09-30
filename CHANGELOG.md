@@ -4,6 +4,61 @@ All notable changes to the VintLang VS Code extension will be documented in this
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [Unreleased]
+
+### 🎉 New Features
+
+#### Additional Native Built-in Functions (35+ new functions)
+
+**Advanced String Functions:**
+- `substring(string, start, end)` - Extract substring between indices
+- `indexOf(string, searchValue)` - Find first occurrence index
+- `lastIndexOf(string, searchValue)` - Find last occurrence index
+- `charAt(string, index)` - Get character at position
+- `charCodeAt(string, index)` - Get Unicode value of character
+- `padStart(string, length, padString)` - Pad from start
+- `padEnd(string, length, padString)` - Pad from end
+- `repeat(string, count)` - Repeat string n times
+
+**Functional Array Operations:**
+- `map(array, function)` - Transform each element
+- `filter(array, function)` - Keep elements that pass test
+- `reduce(array, function, initialValue)` - Reduce to single value
+- `find(array, function)` - Find first matching element
+- `findIndex(array, function)` - Find first matching index
+- `includes(array, value)` - Check if array contains value
+- `forEach(array, function)` - Execute function for each element
+
+**Type Checking Functions:**
+- `isString(value)` - Check if value is a string
+- `isNumber(value)` - Check if value is a number
+- `isArray(value)` - Check if value is an array
+- `isMap(value)` - Check if value is a map/object
+- `isNull(value)` - Check if value is null
+- `isBool(value)` - Check if value is a boolean
+
+**Advanced Math Functions:**
+- `asin(x)` - Arc sine (inverse sine)
+- `acos(x)` - Arc cosine (inverse cosine)
+- `atan(x)` - Arc tangent (inverse tangent)
+- `atan2(y, x)` - Angle from coordinates
+- `cbrt(x)` - Cube root
+
+### Enhanced
+
+- **Hover Documentation** - Added documentation for 35+ new built-in functions
+- **Signature Help** - Extended to include all new string, array, type checking, and math functions
+- **Code Completion** - All new functions available in IntelliSense
+- **Snippets** - Added 35+ new snippets for all new built-in functions
+
+### Documentation
+
+- Updated FEATURES.md with comprehensive examples for new functions
+- Enhanced README.md with complete built-in function list
+- Updated function categories and organization
+
+---
+
 ## [0.5.0] - 2024-12-XX (Enhanced Features Release)
 
 ### 🎉 New Features
