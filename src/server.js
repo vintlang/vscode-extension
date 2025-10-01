@@ -347,19 +347,20 @@ connection.onInitialized(() => {
 });
 
 // The global settings, used when the `workspace/configuration` request is not supported by the client.
-const defaultSettings = { maxNumberOfProblems: 1000 };
-let globalSettings = defaultSettings;
+// const defaultSettings = { maxNumberOfProblems: 1000 };
+// let globalSettings = defaultSettings;
 
 // Cache the settings of all open documents
 const documentSettings = new Map();
 
-connection.onDidChangeConfiguration(change => {
+connection.onDidChangeConfiguration(_change => {
     if (hasConfigurationCapability) {
         // Reset all cached document settings
         documentSettings.clear();
-    } else {
-        globalSettings = change.settings.vintlang || defaultSettings;
     }
+    // else {
+    //     globalSettings = change.settings.vintlang || defaultSettings;
+    // }
 
     // Revalidate all open text documents
     documents.all().forEach(validateTextDocument);
