@@ -1,177 +1,177 @@
 {
-  "name": "vint",
-  "displayName": "VintLang",
-  "description": "The official Vint language support extension with full LSP features",
-  "version": "0.2.1",
-  "publisher": "tacheraSasi",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vintlang/vscode-extension.git"
-  },
-  "bugs": {
-    "url": "https://github.com/vintlang/vscode-extension/issues"
-  },
-  "homepage": "https://github.com/vintlang/vscode-extension#readme",
-  "license": "MIT",
-  "keywords": [
-    "vintlang",
-    "vint",
-    "language",
-    "syntax-highlighting",
-    "intellisense",
-    "lsp",
-    "language-server"
-  ],
-  "engines": {
-    "vscode": "^1.74.0"
-  },
-  "categories": [
-    "Programming Languages"
-  ],
-  "icon": "icons/favicon.png",
-  "main": "./src/extension.js",
-  "activationEvents": [
-    "onLanguage:vint"
-  ],
-  "contributes": {
-    "languages": [
-      {
-        "id": "vint",
-        "aliases": [
-          "Vint",
-          "VintLang"
-        ],
-        "extensions": [
-          ".vint"
-        ],
-        "configuration": "./language-configuration.json",
-        "icon": {
-          "light": "./icons/vint-light.png",
-          "dark": "./icons/vint-dark.png"
-        }
-      }
-    ],
-    "grammars": [
-      {
-        "language": "vint",
-        "scopeName": "source.vint",
-        "path": "./syntaxes/vint.tmLanguage.json"
-      }
-    ],
-    "snippets": [
-      {
-        "language": "vint",
-        "path": "./snippets/vint.json"
-      }
-    ],
-    "configuration": {
-      "type": "object",
-      "title": "VintLang",
-      "properties": {
-        "vintlang.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable VintLang language server"
-        },
-        "vintlang.trace.server": {
-          "type": "string",
-          "enum": [
-            "off",
-            "messages",
-            "verbose"
-          ],
-          "default": "off",
-          "description": "Traces the communication between VS Code and the language server"
-        },
-        "vintlang.maxNumberOfProblems": {
-          "type": "number",
-          "default": 100,
-          "description": "Controls the maximum number of problems produced by the server"
-        },
-        "vintlang.format.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable auto-formatting for VintLang files"
-        },
-        "vintlang.completion.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable intelligent code completion"
-        },
-        "vintlang.diagnostics.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable real-time error diagnostics"
-        },
-        "vintlang.inlayHints.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable inlay hints for parameters and types"
-        },
-        "vintlang.semanticHighlighting.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable semantic syntax highlighting"
-        },
-        "vintlang.codeActions.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable code actions and quick fixes"
-        },
-        "vintlang.codeLens.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable code lens showing reference counts and actions"
-        },
-        "vintlang.colorDecorators.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable color decorators for color values in code"
-        }
-      }
+    "name": "vint",
+    "displayName": "VintLang",
+    "description": "The official Vint language support extension with full LSP features",
+    "version": "0.2.1",
+    "publisher": "tacheraSasi",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vintlang/vscode-extension.git"
     },
-    "commands": [
-      {
-        "command": "vintlang.restartServer",
-        "title": "Restart Language Server",
-        "category": "VintLang"
-      },
-      {
-        "command": "vintlang.showReferences",
-        "title": "Show References",
-        "category": "VintLang"
-      },
-      {
-        "command": "vintlang.showStatus",
-        "title": "Show Extension Status",
-        "category": "VintLang"
-      }
-    ]
-  },
-  "scripts": {
-    "lint": "eslint src/**/*.js",
-    "lint:fix": "eslint src/**/*.js --fix",
-    "format": "prettier --write \"src/**/*.{js,json}\"",
-    "format:check": "prettier --check \"src/**/*.{js,json}\"",
-    "test": "echo \"Tests coming soon\" && exit 0",
-    "package": "vsce package",
-    "publish": "vsce publish",
-    "vscode:prepublish": "npm run lint && npm run format:check"
-  },
-  "dependencies": {
-    "vscode-languageclient": "^8.1.0",
-    "vscode-languageserver": "^8.1.0",
-    "vscode-languageserver-textdocument": "^1.0.8"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.36.0",
-    "@types/vscode": "^1.74.0",
-    "@typescript-eslint/eslint-plugin": "^8.45.0",
-    "@typescript-eslint/parser": "^8.45.0",
-    "eslint": "^9.36.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "nodemon": "^3.1.10",
-    "prettier": "^3.6.2"
-  }
+    "bugs": {
+        "url": "https://github.com/vintlang/vscode-extension/issues"
+    },
+    "homepage": "https://github.com/vintlang/vscode-extension#readme",
+    "license": "MIT",
+    "keywords": [
+        "vintlang",
+        "vint",
+        "language",
+        "syntax-highlighting",
+        "intellisense",
+        "lsp",
+        "language-server"
+    ],
+    "engines": {
+        "vscode": "^1.74.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "icon": "icons/favicon.png",
+    "main": "./src/extension.js",
+    "activationEvents": [
+        "onLanguage:vint"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "vint",
+                "aliases": [
+                    "Vint",
+                    "VintLang"
+                ],
+                "extensions": [
+                    ".vint"
+                ],
+                "configuration": "./language-configuration.json",
+                "icon": {
+                    "light": "./icons/vint-light.png",
+                    "dark": "./icons/vint-dark.png"
+                }
+            }
+        ],
+        "grammars": [
+            {
+                "language": "vint",
+                "scopeName": "source.vint",
+                "path": "./syntaxes/vint.tmLanguage.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "vint",
+                "path": "./snippets/vint.json"
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "VintLang",
+            "properties": {
+                "vintlang.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable VintLang language server"
+                },
+                "vintlang.trace.server": {
+                    "type": "string",
+                    "enum": [
+                        "off",
+                        "messages",
+                        "verbose"
+                    ],
+                    "default": "off",
+                    "description": "Traces the communication between VS Code and the language server"
+                },
+                "vintlang.maxNumberOfProblems": {
+                    "type": "number",
+                    "default": 100,
+                    "description": "Controls the maximum number of problems produced by the server"
+                },
+                "vintlang.format.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable auto-formatting for VintLang files"
+                },
+                "vintlang.completion.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable intelligent code completion"
+                },
+                "vintlang.diagnostics.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable real-time error diagnostics"
+                },
+                "vintlang.inlayHints.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable inlay hints for parameters and types"
+                },
+                "vintlang.semanticHighlighting.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable semantic syntax highlighting"
+                },
+                "vintlang.codeActions.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable code actions and quick fixes"
+                },
+                "vintlang.codeLens.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable code lens showing reference counts and actions"
+                },
+                "vintlang.colorDecorators.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable color decorators for color values in code"
+                }
+            }
+        },
+        "commands": [
+            {
+                "command": "vintlang.restartServer",
+                "title": "Restart Language Server",
+                "category": "VintLang"
+            },
+            {
+                "command": "vintlang.showReferences",
+                "title": "Show References",
+                "category": "VintLang"
+            },
+            {
+                "command": "vintlang.showStatus",
+                "title": "Show Extension Status",
+                "category": "VintLang"
+            }
+        ]
+    },
+    "scripts": {
+        "lint": "eslint src/**/*.js",
+        "lint:fix": "eslint src/**/*.js --fix",
+        "format": "prettier --write \"src/**/*.{js,json}\"",
+        "format:check": "prettier --check \"src/**/*.{js,json}\"",
+        "test": "echo \"Tests coming soon\" && exit 0",
+        "package": "vsce package",
+        "publish": "vsce publish",
+        "vscode:prepublish": "npm run lint && npm run format:check"
+    },
+    "dependencies": {
+        "vscode-languageclient": "^8.1.0",
+        "vscode-languageserver": "^8.1.0",
+        "vscode-languageserver-textdocument": "^1.0.8"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.36.0",
+        "@types/vscode": "^1.74.0",
+        "@typescript-eslint/eslint-plugin": "^8.45.0",
+        "@typescript-eslint/parser": "^8.45.0",
+        "eslint": "^9.36.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.4",
+        "nodemon": "^3.1.10",
+        "prettier": "^3.6.2"
+    }
 }
