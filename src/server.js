@@ -365,20 +365,20 @@ connection.onDidChangeConfiguration(change => {
     documents.all().forEach(validateTextDocument);
 });
 
-function getDocumentSettings(resource) {
-    if (!hasConfigurationCapability) {
-        return Promise.resolve(globalSettings);
-    }
-    let result = documentSettings.get(resource);
-    if (!result) {
-        result = connection.workspace.getConfiguration({
-            scopeUri: resource,
-            section: 'vintlang',
-        });
-        documentSettings.set(resource, result);
-    }
-    return result;
-}
+// function getDocumentSettings(resource) {
+//     if (!hasConfigurationCapability) {
+//         return Promise.resolve(globalSettings);
+//     }
+//     let result = documentSettings.get(resource);
+//     if (!result) {
+//         result = connection.workspace.getConfiguration({
+//             scopeUri: resource,
+//             section: 'vintlang',
+//         });
+//         documentSettings.set(resource, result);
+//     }
+//     return result;
+// }
 
 // Only keep settings for open documents
 documents.onDidClose(e => {
