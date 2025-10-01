@@ -207,7 +207,7 @@ function registerProviders(context) {
     const completionProvider = vscode.languages.registerCompletionItemProvider(
         'vint',
         {
-            provideCompletionItems(document, position, token, context) {
+            provideCompletionItems() {
                 const keywords = [
                     // Control flow
                     'if',
@@ -409,7 +409,7 @@ function registerProviders(context) {
 
     // Hover provider for better documentation
     const hoverProvider = vscode.languages.registerHoverProvider('vint', {
-        provideHover(document, position, token) {
+        provideHover(document, position) {
             const range = document.getWordRangeAtPosition(position);
             const word = document.getText(range);
 
@@ -422,7 +422,7 @@ function registerProviders(context) {
 
     // Definition provider for basic navigation
     const definitionProvider = vscode.languages.registerDefinitionProvider('vint', {
-        provideDefinition(document, position, token) {
+        provideDefinition(document, position) {
             // Basic implementation - in a full LSP this would be more sophisticated
             const range = document.getWordRangeAtPosition(position);
             const word = document.getText(range);

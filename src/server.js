@@ -1,16 +1,11 @@
 const {
     createConnection,
     TextDocuments,
-    Diagnostic,
     DiagnosticSeverity,
     ProposedFeatures,
-    InitializeParams,
     DidChangeConfigurationNotification,
-    CompletionItem,
     CompletionItemKind,
-    TextDocumentPositionParams,
     TextDocumentSyncKind,
-    InitializeResult,
     SymbolKind,
     FoldingRangeKind,
     SemanticTokensBuilder,
@@ -28,7 +23,6 @@ const documents = new TextDocuments(TextDocument);
 
 let hasConfigurationCapability = false;
 let hasWorkspaceFolderCapability = false;
-let hasDiagnosticRelatedInformationCapability = false;
 
 // Symbol table for tracking variables and functions across the document
 class SymbolTable {
@@ -260,11 +254,11 @@ connection.onInitialize(params => {
     hasWorkspaceFolderCapability = !!(
         capabilities.workspace && !!capabilities.workspace.workspaceFolders
     );
-    hasDiagnosticRelatedInformationCapability = !!(
-        capabilities.textDocument &&
-        capabilities.textDocument.publishDiagnostics &&
-        capabilities.textDocument.publishDiagnostics.relatedInformation
-    );
+    // hasDiagnosticRelatedInformationCapability = !!(
+    //     capabilities.textDocument &&
+    //     capabilities.textDocument.publishDiagnostics &&
+    //     capabilities.textDocument.publishDiagnostics.relatedInformation
+    // );
 
     const result = {
         capabilities: {
@@ -398,7 +392,7 @@ documents.onDidChangeContent(change => {
 });
 
 async function validateTextDocument(textDocument) {
-    const _settings = await getDocumentSettings(textDocument.uri);
+    // const _settings = await getDocumentSettings(textDocument.uri);
     const text = textDocument.getText();
     const diagnostics = [];
 
@@ -668,7 +662,7 @@ function getWordRangeAtPosition(text, offset) {
     let end = offset;
 
     // Find word boundaries
-    const _wordPattern = /[a-zA-Z_][a-zA-Z0-9_]*/;
+    // const _wordPattern = /[a-zA-Z_][a-zA-Z0-9_]*/;
 
     // Go backwards to find the start
     while (start > 0 && /[a-zA-Z0-9_]/.test(text[start - 1])) {
@@ -1534,13 +1528,13 @@ connection.onCodeAction(params => {
     for (const diagnostic of diagnostics) {
         if (diagnostic.code === 'missing-let') {
             // Quick fix: Add 'let' to variable declaration
-            const _line = document.getText({
-                start: { line: diagnostic.range.start.line, character: 0 },
-                end: {
-                    line: diagnostic.range.start.line,
-                    character: 1000,
-                },
-            });
+            // const _line = document.getText({
+            //     start: { line: diagnostic.range.start.line, character: 0 },
+            //     end: {
+            //         line: diagnostic.range.start.line,
+            //         character: 1000,
+            //     },
+            // });
 
             codeActions.push({
                 title: "Add 'let' to declare variable",
