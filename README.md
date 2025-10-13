@@ -1,6 +1,6 @@
 # VintLang Extension for VS Code
 
-![VintLang Logo](./icons/vint-dark.png)
+![VintLang Logo](./icons/favicon.png)
 
 [![CI](https://github.com/vintlang/vscode-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/vintlang/vscode-extension/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -11,6 +11,7 @@ The **official** production-ready VS Code extension for VintLang programming lan
 ## ✨ Features
 
 ### 🔥 Core Language Support
+
 - **Advanced Syntax Highlighting** - Rich, semantic syntax highlighting for all VintLang constructs
 - **Intelligent Code Completion** - Context-aware autocompletion for keywords, functions, modules, and variables
 - **Real-time Error Diagnostics** - Instant feedback on syntax errors and potential issues
@@ -18,6 +19,7 @@ The **official** production-ready VS Code extension for VintLang programming lan
 - **Bracket Matching** - Automatic bracket, parentheses, and quote pairing
 
 ### 🚀 Advanced LSP Features
+
 - **Go to Definition** - Navigate to function and variable definitions
 - **Find All References** - Find all usages of symbols across your codebase
 - **Hover Documentation** - Rich documentation on hover for built-in functions and keywords
@@ -36,7 +38,9 @@ The **official** production-ready VS Code extension for VintLang programming lan
 - **Color Decorators** - Visual color previews for hex and RGB color values in code
 
 ### 📝 Smart Snippets
+
 Over 50+ pre-built code snippets for common VintLang patterns:
+
 - Functions (regular, async, anonymous, classes)
 - Control flow statements (if/else, loops, switch/case, try/catch)
 - **Async/Await patterns** (async functions, await, promises)
@@ -48,6 +52,7 @@ Over 50+ pre-built code snippets for common VintLang patterns:
 - **Module imports** (argparse, cli, uuid, filewatcher, kv, random, etc.)
 
 ### 🛠️ Developer Experience
+
 - **Auto-closing pairs** for brackets, quotes, and parentheses
 - **Smart commenting** with `//` and `/* */` support
 - **Configurable settings** for personalized experience
@@ -57,12 +62,14 @@ Over 50+ pre-built code snippets for common VintLang patterns:
 ## 📦 Installation
 
 ### From VS Code Marketplace
+
 1. Open VS Code
 2. Go to Extensions (Ctrl+Shift+X)
 3. Search for "VintLang"
 4. Click Install
 
 ### Manual Installation
+
 1. Download the `.vsix` file from releases
 2. Run `code --install-extension vint-x.x.x.vsix`
 
@@ -145,41 +152,52 @@ The extension supports various configuration options:
 ## 🎯 Language Features
 
 ### Built-in Functions
+
 The extension provides completion and documentation for all VintLang built-ins:
 
 **I/O Functions:**
+
 - `print()`, `println()`, `write()`
 
 **Type Functions:**
+
 - `type()`, `convert()`, `has_key()`, `len()`, `range()`
 
 **String Functions:**
+
 - `split()`, `join()`, `replace()`, `contains()`, `trim()`, `upper()`, `lower()`
 - `substring()`, `indexOf()`, `lastIndexOf()`, `charAt()`, `charCodeAt()`
 - `padStart()`, `padEnd()`, `repeat()`
 
 **Array Functions:**
+
 - `push()`, `pop()`, `shift()`, `unshift()`, `slice()`, `sort()`, `reverse()`
 - `map()`, `filter()`, `reduce()`, `find()`, `findIndex()`, `includes()`, `forEach()`
 
 **Math Functions:**
+
 - `abs()`, `ceil()`, `floor()`, `round()`, `max()`, `min()`, `sqrt()`, `pow()`, `random()`
 - `sin()`, `cos()`, `tan()`, `log()`, `exp()`, `toFixed()`, `parseInt()`, `parseFloat()`
 - `asin()`, `acos()`, `atan()`, `atan2()`, `cbrt()`
 
 **File I/O Functions:**
+
 - `readFile()`, `writeFile()`, `appendFile()`, `deleteFile()`, `fileExists()`, `readDir()`, `makeDir()`
 
 **Utility Functions:**
+
 - `keys()`, `values()`, `entries()`, `merge()`, `clone()`, `freeze()`, `seal()`
 
 **Type Checking Functions:**
+
 - `isString()`, `isNumber()`, `isArray()`, `isMap()`, `isNull()`, `isBool()`
 
 ### Modules
+
 Full support for VintLang modules with auto-completion:
 
 **Core Modules:**
+
 - `time` - Time and date operations
 - `net` - HTTP requests and networking
 - `os` - Operating system interactions
@@ -187,6 +205,7 @@ Full support for VintLang modules with auto-completion:
 - `csv` - CSV file handling
 
 **Advanced Modules:**
+
 - `regex` - Regular expressions and pattern matching
 - `crypto` - Cryptographic functions (hashing, encryption)
 - `encoding` - Encoding/decoding utilities (base64, etc.)
@@ -197,6 +216,7 @@ Full support for VintLang modules with auto-completion:
 - `uuid` - UUID generation and manipulation
 
 **Utility Modules:**
+
 - `math` - Advanced mathematical operations
 - `string` - String manipulation utilities
 - `array` - Array processing utilities
@@ -205,14 +225,17 @@ Full support for VintLang modules with auto-completion:
 - `kv` - In-memory key-value storage
 
 ### Async/Await & Concurrency
+
 Full support for modern async operations and concurrent programming:
 
 **Async Functions:**
+
 - `async func` - Define asynchronous functions
 - `await` - Wait for promise resolution
 - Promise-based async patterns
 
 **Goroutines & Channels:**
+
 - `go` - Execute code concurrently
 - `chan` - Create channels for communication
 - `send()` - Send values to channels
@@ -231,6 +254,7 @@ Access these commands via Command Palette (Ctrl+Shift+P):
 ## 🐛 Troubleshooting
 
 ### Language Server Issues
+
 If you encounter issues with the language server:
 
 1. **Restart the Language Server**: Use Command Palette → "VintLang: Restart Language Server"
@@ -253,12 +277,14 @@ A: Check that `"vintlang.diagnostics.enable": true` in settings
 This extension follows a comprehensive roadmap to become a fully-featured modern LSP:
 
 ### ✅ Phase 1: Core LSP Foundation (Complete)
+
 - [x] LSP client-server architecture
 - [x] Document synchronization
 - [x] Basic error diagnostics
 - [x] Enhanced syntax highlighting
 
 ### ✅ Phase 2: Essential Features (Complete)
+
 - [x] Intelligent code completion
 - [x] Hover information
 - [x] Go to definition
@@ -266,6 +292,7 @@ This extension follows a comprehensive roadmap to become a fully-featured modern
 - [x] Signature help
 
 ### ✅ Phase 3: Production Ready (Complete - v0.3.0)
+
 - [x] ESLint integration for code quality
 - [x] Prettier formatting
 - [x] CI/CD with GitHub Actions
@@ -277,6 +304,7 @@ This extension follows a comprehensive roadmap to become a fully-featured modern
 - [x] VS Code workspace configuration
 
 ### 🚧 Phase 4: Advanced Features (Complete - v0.4.0)
+
 - [x] Real-time semantic validation with symbol tracking
 - [x] Advanced code folding for all block types
 - [x] Document formatting with smart indentation
@@ -288,6 +316,7 @@ This extension follows a comprehensive roadmap to become a fully-featured modern
 - [x] Call hierarchy navigation
 
 ### 📋 Phase 5: Developer Experience (Complete - v0.4.0)
+
 - [x] Status bar integration
 - [x] Enhanced configuration options
 - [x] Document links for imports and URLs
@@ -296,6 +325,7 @@ This extension follows a comprehensive roadmap to become a fully-featured modern
 - [x] Improved error messages with diagnostic codes
 
 ### 🎯 Phase 6: Modern LSP Features (Future)
+
 - [ ] Debugger integration
 - [ ] Import/module resolution and validation
 - [ ] Integration with VintLang compiler

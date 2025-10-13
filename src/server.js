@@ -2195,7 +2195,7 @@ connection.onCallHierarchyOutgoingCalls(params => {
     return calls;
 });
 
-// Code lens provider - shows inline information and actions
+// Advanced code lens provider - shows inline information and actions
 connection.onCodeLens(params => {
     const document = documents.get(params.textDocument.uri);
     if (!document) {
@@ -2206,23 +2206,32 @@ connection.onCodeLens(params => {
     const lines = text.split('\n');
     const lenses = [];
 
-    // Add code lens for functions showing reference count
+    // Enhanced code lens for functions
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
+        
+        // Function definitions with enhanced actions
         const funcMatch = line.match(/let\s+(\w+)\s*=\s*func/);
-
         if (funcMatch) {
             const funcName = funcMatch[1];
             // Count references to this function
             let refCount = 0;
+            const functionCalls = [];
+            
             for (let j = 0; j < lines.length; j++) {
                 if (j === i) continue; // Skip the definition line
-                const refRegex = new RegExp(`\\b${funcName}\\s*\\(`);
-                if (refRegex.test(lines[j])) {
+                const refRegex = new RegExp(`\\b${funcName}\\s*\\(`, 'g');
+                let match;
+                while ((match = refRegex.exec(lines[j])) !== null) {
                     refCount++;
+                    functionCalls.push({
+                        line: j,
+                        character: match.index
+                    });
                 }
             }
 
+            // References code lens
             lenses.push({
                 range: {
                     start: { line: i, character: 0 },
@@ -2232,6 +2241,163 @@ connection.onCodeLens(params => {
                     title: `${refCount} reference${refCount !== 1 ? 's' : ''}`,
                     command: 'vintlang.showReferences',
                     arguments: [params.textDocument.uri, { line: i, character: funcMatch.index }],
+                },
+            });
+
+            // Run function code lens (for simple functions)
+            const isSimpleFunction = !line.includes('async') && !line.includes('(');
+            if (isSimpleFunction) {
+                lenses.push({
+                    range: {
+                        start: { line: i, character: line.length },
+                        end: { line: i, character: line.length },
+                    },
+                    command: {
+                        title: '▶ Run',
+                        command: 'vintlang.runFunction',
+                        arguments: [params.textDocument.uri, funcName, i],
+                    },
+                });
+            }
+        }
+
+        // Main function detection with run action
+        const mainMatch = line.match(/let\s+main\s*=\s*func|func\s+main\s*\(/);
+        if (mainMatch) {
+            lenses.push({
+                range: {
+                    start: { line: i, character: line.length },
+                    end: { line: i, character: line.length },
+                },
+                command: {
+                    title: '▶ Run Main',
+                    command: 'vintlang.runMain',
+                    arguments: [params.textDocument.uri],
+                },
+            });
+        }
+
+        // Import statements with module info
+        const importMatch = line.match(/import\s+(\w+)/);
+        if (importMatch) {
+            const moduleName = importMatch[1];
+            const isBuiltinModule = vintlangConfig.modules.includes(moduleName);
+            
+            lenses.push({
+                range: {
+                    start: { line: i, character: 0 },
+                    end: { line: i, character: line.length },
+                },
+                command: {
+                    title: isBuiltinModule ? '📦 Built-in module' : '📦 External module',
+                    command: 'vintlang.showModuleInfo',
+                    arguments: [moduleName, isBuiltinModule],
+                },
+            });
+
+            // Module usage count
+            let usageCount = 0;
+            for (let j = i + 1; j < lines.length; j++) {
+                const usageRegex = new RegExp(`\\b${moduleName}\\.\\w+`, 'g');
+                const matches = lines[j].match(usageRegex);
+                if (matches) {
+                    usageCount += matches.length;
+                }
+            }
+
+            if (usageCount > 0) {
+                lenses.push({
+                    range: {
+                        start: { line: i, character: line.length },
+                        end: { line: i, character: line.length },
+                    },
+                    command: {
+                        title: `${usageCount} usage${usageCount !== 1 ? 's' : ''}`,
+                        command: 'vintlang.showModuleUsages',
+                        arguments: [params.textDocument.uri, moduleName],
+                    },
+                });
+            }
+        }
+
+        // Variable definitions with type inference
+        const varMatch = line.match(/let\s+(\w+)\s*=\s*(.+)/);
+        if (varMatch && !funcMatch) {
+            const varName = varMatch[1];
+            const varValue = varMatch[2].trim();
+            
+            // Infer type from value
+            let inferredType = 'unknown';
+            if (varValue.match(/^".*"$|^'.*'$/)) {
+                inferredType = 'string';
+            } else if (varValue.match(/^\d+$/)) {
+                inferredType = 'integer';
+            } else if (varValue.match(/^\d+\.\d+$/)) {
+                inferredType = 'float';
+            } else if (varValue.match(/^(true|false)$/)) {
+                inferredType = 'boolean';
+            } else if (varValue.match(/^\[.*\]$/)) {
+                inferredType = 'array';
+            } else if (varValue.match(/^\{.*\}$/)) {
+                inferredType = 'map';
+            }
+
+            // Count variable usage
+            let varUsageCount = 0;
+            for (let j = i + 1; j < lines.length; j++) {
+                const usageRegex = new RegExp(`\\b${varName}\\b`, 'g');
+                const matches = lines[j].match(usageRegex);
+                if (matches) {
+                    varUsageCount += matches.length;
+                }
+            }
+
+            if (inferredType !== 'unknown') {
+                lenses.push({
+                    range: {
+                        start: { line: i, character: line.length },
+                        end: { line: i, character: line.length },
+                    },
+                    command: {
+                        title: `${inferredType} • ${varUsageCount} usage${varUsageCount !== 1 ? 's' : ''}`,
+                        command: 'vintlang.showVariableInfo',
+                        arguments: [varName, inferredType, varUsageCount],
+                    },
+                });
+            }
+        }
+
+        // Test function detection
+        const testMatch = line.match(/let\s+test(\w+)\s*=\s*func|let\s+(\w*test\w*)\s*=\s*func/i);
+        if (testMatch) {
+            const testName = testMatch[1] || testMatch[2];
+            lenses.push({
+                range: {
+                    start: { line: i, character: line.length },
+                    end: { line: i, character: line.length },
+                },
+                command: {
+                    title: '🧪 Run Test',
+                    command: 'vintlang.runTest',
+                    arguments: [params.textDocument.uri, testName, i],
+                },
+            });
+        }
+
+        // HTTP endpoints in comments (e.g., // GET /api/users)
+        const httpMatch = line.match(/\/\/\s*(GET|POST|PUT|DELETE|PATCH)\s+(\/[\w\/\-\?=&]*)/i);
+        if (httpMatch) {
+            const method = httpMatch[1];
+            const endpoint = httpMatch[2];
+            lenses.push({
+                range: {
+                    start: { line: i, character: 0 },
+                    end: { line: i, character: line.length },
+                },
+                command: {
+                    title: `🌐 ${method} ${endpoint}`,
+                    command: 'vintlang.openEndpoint',
+                    arguments: [method, endpoint],
                 },
             });
         }
