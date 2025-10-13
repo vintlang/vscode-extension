@@ -1,0 +1,319 @@
+// VintLang Module Features Demo
+// This file demonstrates all supported modules
+
+// ============================================
+// ARGPARSE MODULE
+// ============================================
+import argparse
+
+let parser = argparse.newParser("demo", "Module demonstration app")
+argparse.addArgument(parser, "name", {
+    "description": "Your name",
+    "required": true
+})
+argparse.addFlag(parser, "--verbose", {
+    "description": "Enable verbose output",
+    "shorthand": "-v"
+})
+
+// ============================================
+// CLI MODULE
+// ============================================
+import cli
+
+println("=== CLI Module Demo ===")
+let userInput = cli.prompt("Enter your age: ")
+println("You entered:", userInput)
+
+// ============================================
+// UUID MODULE
+// ============================================
+import uuid
+
+println("\n=== UUID Module Demo ===")
+let id1 = uuid.new()
+let id2 = uuid.new()
+println("Generated UUID 1:", id1)
+println("Generated UUID 2:", id2)
+
+// ============================================
+// KV (Key-Value) MODULE
+// ============================================
+import kv
+
+println("\n=== KV Module Demo ===")
+kv.set("username", "johndoe")
+kv.set("email", "john@example.com")
+kv.set("age", 30)
+
+let username = kv.get("username")
+let email = kv.get("email")
+let age = kv.get("age")
+
+println("Username:", username)
+println("Email:", email)
+println("Age:", age)
+
+// Check if key exists
+if (kv.has("username")) {
+    println("Key 'username' exists")
+}
+
+// Delete a key
+kv.delete("age")
+println("Age after delete:", kv.get("age"))
+
+// ============================================
+// RANDOM MODULE
+// ============================================
+import random
+
+println("\n=== Random Module Demo ===")
+let randomInt = random.int(1, 100)
+let randomFloat = random.float(0.0, 1.0)
+
+println("Random integer (1-100):", randomInt)
+println("Random float (0-1):", randomFloat)
+
+// ============================================
+// FILEWATCHER MODULE
+// ============================================
+import filewatcher
+
+println("\n=== FileWatcher Module Demo ===")
+println("Setting up file watcher (demo only)")
+
+// Watch a file for changes
+// filewatcher.watch("example.txt", func(event) {
+//     println("File changed:", event["type"])
+//     println("Path:", event["path"])
+// })
+
+// Watch directory recursively
+// filewatcher.watchDir(".", func(event) {
+//     println("Directory event:", event["type"])
+//     println("File:", event["path"])
+// }, {
+//     recursive: true,
+//     extensions: [".vint"]
+// })
+
+// ============================================
+// MATH MODULE
+// ============================================
+import math
+
+println("\n=== Math Module Demo ===")
+let pi = 3.14159265359
+let angle = 45.0
+
+println("sin(45°):", math.sin(angle * pi / 180))
+println("cos(45°):", math.cos(angle * pi / 180))
+println("tan(45°):", math.tan(angle * pi / 180))
+
+let num = 27.0
+println("Square root of", num, ":", math.sqrt(num))
+println("Cube root of", num, ":", math.cbrt(num))
+
+println("Absolute value of -15:", math.abs(-15))
+println("Max of 5, 10, 3:", math.max(5, 10, 3))
+println("Min of 5, 10, 3:", math.min(5, 10, 3))
+
+// ============================================
+// STRING MODULE
+// ============================================
+import string
+
+println("\n=== String Module Demo ===")
+let text = "  Hello, VintLang World!  "
+
+println("Original:", text)
+println("Upper:", string.toUpper(text))
+println("Lower:", string.toLower(text))
+println("Trimmed:", string.trim(text))
+println("Reversed:", string.reverse(text))
+
+let words = string.split(text, " ")
+println("Split into words:", words)
+
+if (string.contains(text, "VintLang")) {
+    println("Text contains 'VintLang'")
+}
+
+// ============================================
+// ARRAY MODULE
+// ============================================
+import array
+
+println("\n=== Array Module Demo ===")
+let numbers = [5, 2, 8, 1, 9, 3]
+
+println("Original array:", numbers)
+println("Sorted:", array.sort(numbers))
+println("Reversed:", array.reverse(numbers))
+println("Max value:", array.max(numbers))
+println("Min value:", array.min(numbers))
+println("Sum:", array.sum(numbers))
+println("Average:", array.average(numbers))
+
+// Filter even numbers
+let evens = array.filter(numbers, func(n) {
+    return n % 2 == 0
+})
+println("Even numbers:", evens)
+
+// Map to doubles
+let doubled = array.map(numbers, func(n) {
+    return n * 2
+})
+println("Doubled:", doubled)
+
+// ============================================
+// TIME MODULE
+// ============================================
+import time
+
+println("\n=== Time Module Demo ===")
+let now = time.now()
+println("Current timestamp:", now)
+println("Formatted:", time.format(now, "2006-01-02 15:04:05"))
+
+// ============================================
+// JSON MODULE
+// ============================================
+import json
+
+println("\n=== JSON Module Demo ===")
+let data = {
+    "name": "VintLang",
+    "version": "0.3.0",
+    "features": ["async", "channels", "modules"]
+}
+
+let jsonString = json.stringify(data)
+println("JSON:", jsonString)
+
+let parsed = json.parse(jsonString)
+println("Parsed name:", parsed["name"])
+
+// ============================================
+// OS MODULE
+// ============================================
+import os
+
+println("\n=== OS Module Demo ===")
+let homeDir = os.getenv("HOME")
+println("Home directory:", homeDir)
+
+let cwd = os.cwd()
+println("Current directory:", cwd)
+
+// List files in current directory
+let files = os.readDir(".")
+println("Files in current directory:", len(files))
+
+// ============================================
+// COLORS MODULE
+// ============================================
+import colors
+
+println("\n=== Colors Module Demo ===")
+println(colors.red("This is red text"))
+println(colors.green("This is green text"))
+println(colors.blue("This is blue text"))
+println(colors.yellow("This is yellow text"))
+println(colors.bold("This is bold text"))
+
+// ============================================
+// TERM MODULE
+// ============================================
+import term
+
+println("\n=== Term Module Demo ===")
+term.clear()
+term.moveTo(0, 0)
+println("Terminal cleared and cursor moved to top")
+
+// ============================================
+// CRYPTO MODULE
+// ============================================
+import crypto
+
+println("\n=== Crypto Module Demo ===")
+let password = "mySecretPassword123"
+let hash = crypto.sha256(password)
+println("SHA256 hash:", hash)
+
+let data = "Hello, VintLang!"
+let md5Hash = crypto.md5(data)
+println("MD5 hash:", md5Hash)
+
+// ============================================
+// ENCODING MODULE
+// ============================================
+import encoding
+
+println("\n=== Encoding Module Demo ===")
+let textToEncode = "VintLang is awesome!"
+let encoded = encoding.base64Encode(textToEncode)
+println("Base64 encoded:", encoded)
+
+let decoded = encoding.base64Decode(encoded)
+println("Base64 decoded:", decoded)
+
+// ============================================
+// REGEX MODULE
+// ============================================
+import regex
+
+println("\n=== Regex Module Demo ===")
+let pattern = "[0-9]+"
+let testString = "I have 42 apples and 7 oranges"
+
+let matches = regex.findAll(testString, pattern)
+println("Number matches:", matches)
+
+if (regex.match(testString, pattern)) {
+    println("Pattern found in string")
+}
+
+let replaced = regex.replace(testString, pattern, "X")
+println("Replaced numbers:", replaced)
+
+// ============================================
+// CSV MODULE
+// ============================================
+import csv
+
+println("\n=== CSV Module Demo ===")
+let csvData = "name,age,city\nJohn,30,New York\nJane,25,Los Angeles"
+let parsedCsv = csv.parse(csvData)
+println("Parsed CSV rows:", len(parsedCsv))
+
+// Convert array to CSV
+let arrayData = [
+    ["Name", "Score"],
+    ["Alice", "95"],
+    ["Bob", "87"]
+]
+let csvString = csv.stringify(arrayData)
+println("CSV string:", csvString)
+
+// ============================================
+// NET MODULE
+// ============================================
+import net
+
+println("\n=== Net Module Demo ===")
+println("Making HTTP request (demo)")
+
+// Example HTTP GET request
+// let response = net.get("https://api.github.com/users/vintlang")
+// println("Response:", response)
+
+// Example HTTP POST request
+// let postData = { "name": "test" }
+// let postResponse = net.post("https://api.example.com/data", postData)
+// println("POST Response:", postResponse)
+
+println("\n=== All Modules Demo Complete ===")

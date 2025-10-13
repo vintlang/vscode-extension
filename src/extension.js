@@ -224,6 +224,15 @@ function registerProviders(context) {
                     'let',
                     'declare',
                     'defer',
+                    // Async operations
+                    'async',
+                    'await',
+                    'go',
+                    // Channel operations
+                    'chan',
+                    'send',
+                    'receive',
+                    'close',
                     // Modules and packages
                     'import',
                     'package',
@@ -357,6 +366,15 @@ function registerProviders(context) {
                     'encoding',
                     'colors',
                     'term',
+                    'math',
+                    'string',
+                    'array',
+                    'argparse',
+                    'cli',
+                    'uuid',
+                    'filewatcher',
+                    'kv',
+                    'random',
                 ];
 
                 const items = [];

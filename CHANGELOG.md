@@ -8,6 +8,54 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### 🎉 New Features
 
+#### Async/Await and Concurrency Support
+
+**Async Operations:**
+- `async func` - Define asynchronous functions that return promises
+- `await` - Wait for promise resolution
+- Full async/await pattern support with proper syntax highlighting
+
+**Concurrency (Goroutine-style):**
+- `go` - Execute code concurrently in goroutines
+- `chan` - Create unbuffered channels for communication
+- `chan(size)` - Create buffered channels with specified capacity
+- `send(channel, value)` - Send values to channels
+- `receive(channel)` - Receive values from channels
+- `close(channel)` - Close channels
+
+**New Snippets:**
+- `asyncfunc` - Create async function template
+- `await` - Await expression
+- `go` - Goroutine execution
+- `gofunc` - Anonymous function in goroutine
+- `chan` / `chanbuf` - Channel creation
+- `send` / `receive` / `closechan` - Channel operations
+- `asyncawait` - Complete async/await pattern
+- `prodcons` - Producer-consumer pattern with channels
+
+#### Extended Module Support (9 new modules)
+
+**New Modules:**
+- `argparse` - Command-line argument parsing system
+- `cli` - Command-line application tools
+- `uuid` - UUID generation and manipulation
+- `filewatcher` - File system watching and monitoring
+- `kv` - In-memory key-value storage
+- `random` - Random number generation
+- `math` - Advanced mathematical operations
+- `string` - String manipulation utilities
+- `array` - Array processing utilities
+
+**Module Import Snippets:**
+- `importargparse` - Import and setup argparse
+- `importcli` - Import CLI module
+- `importuuid` - Import UUID with ID generation
+- `importfilewatcher` - Import and use file watcher
+- `importkv` - Import KV store with usage
+- `importrandom` - Import random module
+- `importmath` - Import math module
+- `importstring` - Import string module
+
 #### Additional Native Built-in Functions (35+ new functions)
 
 **Advanced String Functions:**

@@ -36,13 +36,16 @@ The **official** production-ready VS Code extension for VintLang programming lan
 - **Color Decorators** - Visual color previews for hex and RGB color values in code
 
 ### 📝 Smart Snippets
-Over 30 pre-built code snippets for common VintLang patterns:
-- Functions and classes
-- Control flow statements
+Over 50+ pre-built code snippets for common VintLang patterns:
+- Functions (regular, async, anonymous, classes)
+- Control flow statements (if/else, loops, switch/case, try/catch)
+- **Async/Await patterns** (async functions, await, promises)
+- **Concurrency** (goroutines, channels, producer-consumer)
 - HTTP requests and JSON handling
-- File operations
+- File operations and I/O
 - Time and date operations
 - Error handling patterns
+- **Module imports** (argparse, cli, uuid, filewatcher, kv, random, etc.)
 
 ### 🛠️ Developer Experience
 - **Auto-closing pairs** for brackets, quotes, and parentheses
@@ -175,16 +178,47 @@ The extension provides completion and documentation for all VintLang built-ins:
 
 ### Modules
 Full support for VintLang modules with auto-completion:
+
+**Core Modules:**
 - `time` - Time and date operations
 - `net` - HTTP requests and networking
 - `os` - Operating system interactions
 - `json` - JSON parsing and stringification
 - `csv` - CSV file handling
-- `regex` - Regular expressions
-- `crypto` - Cryptographic functions
-- `encoding` - Encoding/decoding utilities
-- `colors` - Terminal colors
-- `term` - Terminal operations
+
+**Advanced Modules:**
+- `regex` - Regular expressions and pattern matching
+- `crypto` - Cryptographic functions (hashing, encryption)
+- `encoding` - Encoding/decoding utilities (base64, etc.)
+- `colors` - Terminal colors and styling
+- `term` - Terminal operations and control
+- `argparse` - Command-line argument parsing
+- `cli` - Command-line interface tools
+- `uuid` - UUID generation and manipulation
+
+**Utility Modules:**
+- `math` - Advanced mathematical operations
+- `string` - String manipulation utilities
+- `array` - Array processing utilities
+- `random` - Random number generation
+- `filewatcher` - File system watching and monitoring
+- `kv` - In-memory key-value storage
+
+### Async/Await & Concurrency
+Full support for modern async operations and concurrent programming:
+
+**Async Functions:**
+- `async func` - Define asynchronous functions
+- `await` - Wait for promise resolution
+- Promise-based async patterns
+
+**Goroutines & Channels:**
+- `go` - Execute code concurrently
+- `chan` - Create channels for communication
+- `send()` - Send values to channels
+- `receive()` - Receive values from channels
+- `close()` - Close channels
+- Producer-consumer patterns
 
 ## 🔧 Commands
 
