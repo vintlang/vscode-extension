@@ -633,6 +633,178 @@
             "let ${1:result} = cbrt(${2:value})"
         ],
         "description": "Calculate cube root"
+    },
+    "Async Function": {
+        "prefix": "asyncfunc",
+        "body": [
+            "let ${1:functionName} = async func(${2:params}) {",
+            "\t${3:// async function body}",
+            "\treturn ${4:value}",
+            "}"
+        ],
+        "description": "Create an async function"
+    },
+    "Await Expression": {
+        "prefix": "await",
+        "body": [
+            "let ${1:result} = await ${2:promise}"
+        ],
+        "description": "Await a promise"
+    },
+    "Goroutine": {
+        "prefix": "go",
+        "body": [
+            "go ${1:expression}"
+        ],
+        "description": "Execute code in a goroutine"
+    },
+    "Goroutine Function": {
+        "prefix": "gofunc",
+        "body": [
+            "go func() {",
+            "\t${1:// concurrent execution}",
+            "}()"
+        ],
+        "description": "Execute anonymous function in goroutine"
+    },
+    "Create Channel": {
+        "prefix": "chan",
+        "body": [
+            "let ${1:channel} = chan"
+        ],
+        "description": "Create an unbuffered channel"
+    },
+    "Create Buffered Channel": {
+        "prefix": "chanbuf",
+        "body": [
+            "let ${1:channel} = chan(${2:size})"
+        ],
+        "description": "Create a buffered channel with size"
+    },
+    "Send to Channel": {
+        "prefix": "send",
+        "body": [
+            "send(${1:channel}, ${2:value})"
+        ],
+        "description": "Send a value to a channel"
+    },
+    "Receive from Channel": {
+        "prefix": "receive",
+        "body": [
+            "let ${1:value} = receive(${2:channel})"
+        ],
+        "description": "Receive a value from a channel"
+    },
+    "Close Channel": {
+        "prefix": "closechan",
+        "body": [
+            "close(${1:channel})"
+        ],
+        "description": "Close a channel"
+    },
+    "Async Await Pattern": {
+        "prefix": "asyncawait",
+        "body": [
+            "let ${1:fetchData} = async func() {",
+            "\t${2:// async operation}",
+            "\treturn ${3:result}",
+            "}",
+            "",
+            "let ${4:data} = await ${1:fetchData}()"
+        ],
+        "description": "Async/await pattern"
+    },
+    "Producer Consumer Pattern": {
+        "prefix": "prodcons",
+        "body": [
+            "let ${1:dataChan} = chan(${2:3})",
+            "",
+            "// Producer goroutine",
+            "go func() {",
+            "\tsend(${1:dataChan}, ${3:\"Item 1\"})",
+            "\tsend(${1:dataChan}, ${4:\"Item 2\"})",
+            "\tclose(${1:dataChan})",
+            "}()",
+            "",
+            "// Consumer",
+            "let ${5:item} = receive(${1:dataChan})"
+        ],
+        "description": "Producer-consumer pattern with channels"
+    },
+    "Import ArgParse": {
+        "prefix": "importargparse",
+        "body": [
+            "import argparse",
+            "",
+            "let ${1:parser} = argparse.newParser(\"${2:appname}\", \"${3:description}\")"
+        ],
+        "description": "Import and setup argparse module"
+    },
+    "Import CLI": {
+        "prefix": "importcli",
+        "body": [
+            "import cli",
+            "",
+            "${1:// Use cli functions}"
+        ],
+        "description": "Import CLI module"
+    },
+    "Import UUID": {
+        "prefix": "importuuid",
+        "body": [
+            "import uuid",
+            "",
+            "let ${1:id} = uuid.new()"
+        ],
+        "description": "Import UUID module and generate ID"
+    },
+    "Import FileWatcher": {
+        "prefix": "importfilewatcher",
+        "body": [
+            "import filewatcher",
+            "",
+            "filewatcher.watch(\"${1:path}\", func(event) {",
+            "\tprint(\"File changed:\", event)",
+            "})"
+        ],
+        "description": "Import and use filewatcher module"
+    },
+    "Import KV": {
+        "prefix": "importkv",
+        "body": [
+            "import kv",
+            "",
+            "kv.set(\"${1:key}\", ${2:value})",
+            "let ${3:value} = kv.get(\"${1:key}\")"
+        ],
+        "description": "Import and use key-value store"
+    },
+    "Import Random": {
+        "prefix": "importrandom",
+        "body": [
+            "import random",
+            "",
+            "let ${1:num} = random.int(${2:min}, ${3:max})"
+        ],
+        "description": "Import random module"
+    },
+    "Import Math": {
+        "prefix": "importmath",
+        "body": [
+            "import math",
+            "",
+            "${1:// Use math functions}"
+        ],
+        "description": "Import math module"
+    },
+    "Import String": {
+        "prefix": "importstring",
+        "body": [
+            "import string",
+            "",
+            "${1:// Use string functions}"
+        ],
+        "description": "Import string module"
     }
 }
   

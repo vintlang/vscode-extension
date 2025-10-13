@@ -105,12 +105,24 @@
                     "match": "\\b(func|declare|return)\\b"
                 },
                 {
+                    "name": "storage.type.function.async.vint",
+                    "match": "\\b(async)\\s+\\b(func)\\b"
+                },
+                {
                     "name": "storage.type.variable.vint",
                     "match": "\\b(let)\\b"
                 },
                 {
                     "name": "storage.modifier.vint",
                     "match": "\\b(defer)\\b"
+                },
+                {
+                    "name": "keyword.control.async.vint",
+                    "match": "\\b(async|await|go)\\b"
+                },
+                {
+                    "name": "keyword.control.channel.vint",
+                    "match": "\\b(chan|send|receive|close)\\b"
                 },
                 {
                     "name": "keyword.control.import.vint",
@@ -146,15 +158,27 @@
                 },
                 {
                     "name": "support.function.builtin.string.vint",
-                    "match": "\\b(split|join|replace|contains|startsWith|endsWith|trim|upper|lower)\\b"
+                    "match": "\\b(split|join|replace|contains|startsWith|endsWith|trim|upper|lower|substring|indexOf|lastIndexOf|charAt|charCodeAt|padStart|padEnd|repeat|toUpper|toLower|reverse)\\b"
                 },
                 {
                     "name": "support.function.builtin.array.vint",
-                    "match": "\\b(push|pop|shift|unshift|slice|splice|sort|reverse)\\b"
+                    "match": "\\b(push|pop|shift|unshift|slice|splice|sort|reverse|map|filter|reduce|find|findIndex|includes|forEach)\\b"
                 },
                 {
                     "name": "support.function.builtin.math.vint",
-                    "match": "\\b(abs|ceil|floor|round|max|min|sqrt|pow|random)\\b"
+                    "match": "\\b(abs|ceil|floor|round|max|min|sqrt|pow|random|sin|cos|tan|log|exp|asin|acos|atan|atan2|cbrt)\\b"
+                },
+                {
+                    "name": "support.function.builtin.file.vint",
+                    "match": "\\b(readFile|writeFile|appendFile|deleteFile|fileExists|readDir|makeDir|open)\\b"
+                },
+                {
+                    "name": "support.function.builtin.utility.vint",
+                    "match": "\\b(keys|values|entries|merge|clone|freeze|seal|toFixed|parseInt|parseFloat)\\b"
+                },
+                {
+                    "name": "support.function.builtin.typecheck.vint",
+                    "match": "\\b(isString|isNumber|isArray|isMap|isNull|isBool)\\b"
                 },
                 {
                     "name": "support.function.builtin.system.vint",
@@ -162,7 +186,7 @@
                 },
                 {
                     "name": "entity.name.function.definition.vint",
-                    "match": "(?<=let\\s+)[a-zA-Z_][a-zA-Z0-9_]*(?=\\s*=\\s*func)"
+                    "match": "(?<=let\\s+)[a-zA-Z_][a-zA-Z0-9_]*(?=\\s*=\\s*(async\\s+)?func)"
                 },
                 {
                     "name": "entity.name.function.call.vint",
@@ -218,7 +242,7 @@
             "patterns": [
                 {
                     "name": "support.constant.module.vint",
-                    "match": "\\b(time|net|os|json|csv|regex|crypto|encoding|colors|term|math|string|array)\\b"
+                    "match": "\\b(time|net|os|json|csv|regex|crypto|encoding|colors|term|math|string|array|argparse|cli|uuid|filewatcher|kv|random)\\b"
                 },
                 {
                     "name": "variable.other.constant.vint",
