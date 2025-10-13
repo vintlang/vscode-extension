@@ -72,6 +72,201 @@ class SymbolTable {
 // Document-specific symbol tables
 const documentSymbols = new Map();
 
+// Module resolution and validation system
+class ModuleResolver {
+    constructor() {
+        this.moduleCache = new Map();
+        this.importGraph = new Map(); // Track import dependencies
+    }
+
+    /**
+     * Validate if a module exists and is available
+     * @param {string} moduleName - Name of the module to validate
+     * @param {string} documentUri - URI of the document importing the module
+     * @returns {Object} Validation result
+     */
+    validateModule(moduleName, documentUri) {
+        const isBuiltin = vintlangConfig.modules.includes(moduleName);
+        const moduleInfo = vintlangConfig.moduleInfo[moduleName];
+
+        if (isBuiltin) {
+            return {
+                valid: true,
+                type: 'builtin',
+                info: moduleInfo,
+                suggestion: null
+            };
+        }
+
+        // Check for similar module names (typo detection)
+        const suggestions = this.findSimilarModules(moduleName);
+        
+        return {
+            valid: false,
+            type: 'unknown',
+            info: null,
+            suggestion: suggestions.length > 0 ? suggestions[0] : null
+        };
+    }
+
+    /**
+     * Find similar module names for typo suggestions
+     * @param {string} moduleName - The potentially misspelled module name
+     * @returns {Array} Array of similar module names
+     */
+    findSimilarModules(moduleName) {
+        const suggestions = [];
+        const threshold = 0.6; // Similarity threshold
+
+        for (const builtinModule of vintlangConfig.modules) {
+            const similarity = this.calculateSimilarity(moduleName, builtinModule);
+            if (similarity >= threshold) {
+                suggestions.push({
+                    name: builtinModule,
+                    similarity: similarity
+                });
+            }
+        }
+
+        return suggestions
+            .sort((a, b) => b.similarity - a.similarity)
+            .map(s => s.name)
+            .slice(0, 3);
+    }
+
+    /**
+     * Calculate string similarity using Levenshtein distance
+     * @param {string} str1 - First string
+     * @param {string} str2 - Second string
+     * @returns {number} Similarity score between 0 and 1
+     */
+    calculateSimilarity(str1, str2) {
+        const matrix = [];
+        const len1 = str1.length;
+        const len2 = str2.length;
+
+        for (let i = 0; i <= len2; i++) {
+            matrix[i] = [i];
+        }
+
+        for (let j = 0; j <= len1; j++) {
+            matrix[0][j] = j;
+        }
+
+        for (let i = 1; i <= len2; i++) {
+            for (let j = 1; j <= len1; j++) {
+                if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                } else {
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j - 1] + 1,
+                        matrix[i][j - 1] + 1,
+                        matrix[i - 1][j] + 1
+                    );
+                }
+            }
+        }
+
+        const maxLen = Math.max(len1, len2);
+        return maxLen === 0 ? 1 : (maxLen - matrix[len2][len1]) / maxLen;
+    }
+
+    /**
+     * Get module usage information
+     * @param {string} moduleName - Name of the module
+     * @param {string} documentText - Full document text
+     * @returns {Object} Usage information
+     */
+    getModuleUsage(moduleName, documentText) {
+        const lines = documentText.split('\n');
+        const usages = [];
+        const functions = new Set();
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            const usageRegex = new RegExp(`\\b${moduleName}\\.(\\w+)`, 'g');
+            let match;
+
+            while ((match = usageRegex.exec(line)) !== null) {
+                const functionName = match[1];
+                functions.add(functionName);
+                usages.push({
+                    line: i,
+                    character: match.index,
+                    function: functionName,
+                    context: line.trim()
+                });
+            }
+        }
+
+        return {
+            totalUsages: usages.length,
+            uniqueFunctions: Array.from(functions),
+            usages: usages
+        };
+    }
+
+    /**
+     * Track import dependencies to detect circular imports
+     * @param {string} documentUri - URI of the importing document
+     * @param {string} moduleName - Name of the imported module
+     */
+    addImportDependency(documentUri, moduleName) {
+        if (!this.importGraph.has(documentUri)) {
+            this.importGraph.set(documentUri, new Set());
+        }
+        this.importGraph.get(documentUri).add(moduleName);
+    }
+
+    /**
+     * Get auto-import suggestions based on function usage
+     * @param {string} functionName - Name of the function being used
+     * @param {string} documentText - Full document text
+     * @returns {Array} Array of import suggestions
+     */
+    getImportSuggestions(functionName, documentText) {
+        const suggestions = [];
+        const existingImports = this.getExistingImports(documentText);
+
+        // Check which modules contain this function
+        for (const [moduleName, info] of Object.entries(vintlangConfig.moduleInfo)) {
+            if (info.functions && info.functions.includes(functionName)) {
+                if (!existingImports.includes(moduleName)) {
+                    suggestions.push({
+                        moduleName: moduleName,
+                        functionName: functionName,
+                        description: info.description,
+                        example: info.examples[functionName] || `${moduleName}.${functionName}()`
+                    });
+                }
+            }
+        }
+
+        return suggestions;
+    }
+
+    /**
+     * Parse existing imports from document text
+     * @param {string} documentText - Full document text
+     * @returns {Array} Array of imported module names
+     */
+    getExistingImports(documentText) {
+        const imports = [];
+        const lines = documentText.split('\n');
+
+        for (const line of lines) {
+            const importMatch = line.match(/import\s+(\w+)/);
+            if (importMatch) {
+                imports.push(importMatch[1]);
+            }
+        }
+
+        return imports;
+    }
+}
+
+const moduleResolver = new ModuleResolver();
+
 // Semantic token legend
 const tokenTypes = [
     SemanticTokenTypes.namespace, // 0 - modules
@@ -269,6 +464,161 @@ const vintlangConfig = {
         'kv',
         'random',
     ],
+    moduleInfo: {
+        time: {
+            description: 'Time and date operations',
+            functions: ['now', 'format', 'parse', 'sleep', 'since', 'until', 'add', 'sub'],
+            examples: {
+                now: 'let currentTime = time.now()',
+                format: 'let formatted = time.format(time.now(), "2006-01-02 15:04:05")',
+                sleep: 'time.sleep(1000) // Sleep for 1 second'
+            }
+        },
+        net: {
+            description: 'HTTP requests and networking',
+            functions: ['get', 'post', 'put', 'delete', 'patch', 'request'],
+            examples: {
+                get: 'let response = net.get("https://api.example.com/data")',
+                post: 'let response = net.post("https://api.example.com/data", {"key": "value"})'
+            }
+        },
+        os: {
+            description: 'Operating system interactions',
+            functions: ['env', 'setenv', 'getwd', 'chdir', 'mkdir', 'rmdir', 'exists', 'exec'],
+            examples: {
+                env: 'let path = os.env("PATH")',
+                exec: 'let result = os.exec("ls", ["-la"])'
+            }
+        },
+        json: {
+            description: 'JSON parsing and stringification',
+            functions: ['parse', 'stringify', 'valid'],
+            examples: {
+                parse: 'let data = json.parse(\'{"key": "value"}\')',
+                stringify: 'let jsonStr = json.stringify({"key": "value"})'
+            }
+        },
+        csv: {
+            description: 'CSV file handling',
+            functions: ['read', 'write', 'parse'],
+            examples: {
+                read: 'let data = csv.read("data.csv")',
+                write: 'csv.write("output.csv", data)'
+            }
+        },
+        regex: {
+            description: 'Regular expressions and pattern matching',
+            functions: ['match', 'find', 'replace', 'split', 'compile'],
+            examples: {
+                match: 'let matches = regex.match("hello world", "\\\\w+")',
+                replace: 'let result = regex.replace("hello world", "world", "VintLang")'
+            }
+        },
+        crypto: {
+            description: 'Cryptographic functions',
+            functions: ['hash', 'hmac', 'encrypt', 'decrypt', 'random'],
+            examples: {
+                hash: 'let hash = crypto.hash("sha256", "hello world")',
+                random: 'let randomBytes = crypto.random(32)'
+            }
+        },
+        encoding: {
+            description: 'Encoding/decoding utilities',
+            functions: ['base64Encode', 'base64Decode', 'urlEncode', 'urlDecode', 'hexEncode', 'hexDecode'],
+            examples: {
+                base64Encode: 'let encoded = encoding.base64Encode("hello")',
+                urlEncode: 'let encoded = encoding.urlEncode("hello world")'
+            }
+        },
+        colors: {
+            description: 'Terminal colors and styling',
+            functions: ['red', 'green', 'blue', 'yellow', 'cyan', 'magenta', 'bold', 'dim'],
+            examples: {
+                red: 'println(colors.red("Error message"))',
+                bold: 'println(colors.bold("Important text"))'
+            }
+        },
+        term: {
+            description: 'Terminal operations and control',
+            functions: ['clear', 'moveTo', 'size', 'hide', 'show'],
+            examples: {
+                clear: 'term.clear()',
+                size: 'let [width, height] = term.size()'
+            }
+        },
+        math: {
+            description: 'Advanced mathematical operations',
+            functions: ['pi', 'e', 'sqrt', 'pow', 'log', 'sin', 'cos', 'tan', 'random'],
+            examples: {
+                sqrt: 'let result = math.sqrt(16)',
+                random: 'let num = math.random(1, 100)'
+            }
+        },
+        string: {
+            description: 'String manipulation utilities',
+            functions: ['trim', 'split', 'join', 'replace', 'contains', 'startsWith', 'endsWith'],
+            examples: {
+                trim: 'let trimmed = string.trim("  hello  ")',
+                split: 'let parts = string.split("a,b,c", ",")'
+            }
+        },
+        array: {
+            description: 'Array processing utilities',
+            functions: ['map', 'filter', 'reduce', 'sort', 'reverse', 'unique', 'flatten'],
+            examples: {
+                map: 'let doubled = array.map([1,2,3], func(x) { return x * 2 })',
+                filter: 'let evens = array.filter([1,2,3,4], func(x) { return x % 2 == 0 })'
+            }
+        },
+        argparse: {
+            description: 'Command-line argument parsing',
+            functions: ['parse', 'add', 'help'],
+            examples: {
+                parse: 'let args = argparse.parse()',
+                add: 'argparse.add("--verbose", "Enable verbose output")'
+            }
+        },
+        cli: {
+            description: 'Command-line interface tools',
+            functions: ['prompt', 'confirm', 'select', 'progress'],
+            examples: {
+                prompt: 'let name = cli.prompt("Enter your name: ")',
+                confirm: 'let proceed = cli.confirm("Continue?")'
+            }
+        },
+        uuid: {
+            description: 'UUID generation and manipulation',
+            functions: ['v4', 'v1', 'parse', 'string'],
+            examples: {
+                v4: 'let id = uuid.v4()',
+                parse: 'let parsed = uuid.parse("550e8400-e29b-41d4-a716-446655440000")'
+            }
+        },
+        filewatcher: {
+            description: 'File system watching and monitoring',
+            functions: ['watch', 'unwatch', 'events'],
+            examples: {
+                watch: 'filewatcher.watch("./src", func(event) { println(event) })',
+                unwatch: 'filewatcher.unwatch("./src")'
+            }
+        },
+        kv: {
+            description: 'In-memory key-value storage',
+            functions: ['set', 'get', 'delete', 'exists', 'keys', 'clear'],
+            examples: {
+                set: 'kv.set("user:123", {"name": "John"})',
+                get: 'let user = kv.get("user:123")'
+            }
+        },
+        random: {
+            description: 'Random number generation',
+            functions: ['int', 'float', 'choice', 'shuffle', 'uuid'],
+            examples: {
+                int: 'let num = random.int(1, 100)',
+                choice: 'let item = random.choice(["a", "b", "c"])'
+            }
+        }
+    },
 };
 
 connection.onInitialize(params => {
@@ -452,10 +802,42 @@ async function validateTextDocument(textDocument) {
             symbolTable.addSymbol(varMatch[1], 'variable', i);
         }
 
-        // Collect imports
+        // Collect imports and validate modules
         const importMatch = line.match(/import\s+(\w+)/);
         if (importMatch) {
-            symbolTable.addSymbol(importMatch[1], 'import', i);
+            const moduleName = importMatch[1];
+            symbolTable.addSymbol(moduleName, 'import', i);
+            
+            // Validate the imported module
+            const validation = moduleResolver.validateModule(moduleName, textDocument.uri);
+            if (!validation.valid) {
+                const range = {
+                    start: { line: i, character: importMatch.index + 7 }, // After "import "
+                    end: { line: i, character: importMatch.index + 7 + moduleName.length },
+                };
+
+                const diagnostic = {
+                    severity: DiagnosticSeverity.Error,
+                    range: range,
+                    message: `Unknown module '${moduleName}'`,
+                    source: 'vintlang',
+                    code: 'unknown-module',
+                };
+
+                // Add suggestion if available
+                if (validation.suggestion) {
+                    diagnostic.message += `. Did you mean '${validation.suggestion}'?`;
+                    diagnostic.data = {
+                        suggestion: validation.suggestion,
+                        type: 'module-suggestion'
+                    };
+                }
+
+                diagnostics.push(diagnostic);
+            } else {
+                // Track import dependency
+                moduleResolver.addImportDependency(textDocument.uri, moduleName);
+            }
         }
     }
 
@@ -591,16 +973,103 @@ function validateLine(line, lineNumber, document, diagnostics, symbolTable) {
     }
 }
 
-// This handler provides the initial list of the completion items.
-connection.onCompletion(_textDocumentPosition => {
+// Enhanced completion handler with auto-import suggestions
+connection.onCompletion(textDocumentPosition => {
+    const document = documents.get(textDocumentPosition.textDocument.uri);
+    if (!document) {
+        return [];
+    }
+
+    const text = document.getText();
+    const position = textDocumentPosition.position;
+    const line = text.split('\n')[position.line];
     const items = [];
 
+    // Check if we're in an import statement
+    const importContext = line.match(/import\s+(\w*)$/);
+    if (importContext) {
+        // Provide module completions
+        vintlangConfig.modules.forEach((module, index) => {
+            const moduleInfo = vintlangConfig.moduleInfo[module];
+            items.push({
+                label: module,
+                kind: CompletionItemKind.Module,
+                data: { type: 'module', index: index },
+                detail: moduleInfo ? moduleInfo.description : 'VintLang module',
+                documentation: moduleInfo ? `Functions: ${moduleInfo.functions.join(', ')}` : undefined,
+                insertText: module,
+            });
+        });
+        return items;
+    }
+
+    // Check if we're accessing module functions (e.g., "time.")
+    const moduleAccessMatch = line.match(/(\w+)\.(\w*)$/);
+    if (moduleAccessMatch) {
+        const moduleName = moduleAccessMatch[1];
+        const partialFunction = moduleAccessMatch[2];
+        const moduleInfo = vintlangConfig.moduleInfo[moduleName];
+
+        if (moduleInfo && moduleInfo.functions) {
+            moduleInfo.functions
+                .filter(func => func.startsWith(partialFunction))
+                .forEach((func, index) => {
+                    const example = moduleInfo.examples[func];
+                    items.push({
+                        label: func,
+                        kind: CompletionItemKind.Function,
+                        data: { type: 'module-function', module: moduleName, function: func },
+                        detail: `${moduleName}.${func}()`,
+                        documentation: example || `Function from ${moduleName} module`,
+                        insertText: `${func}($1)`,
+                        insertTextFormat: 2, // Snippet format
+                    });
+                });
+        }
+        return items;
+    }
+
+    // Check for function calls that might need auto-import
+    const functionCallMatch = line.match(/(\w+)\s*\(/);
+    if (functionCallMatch) {
+        const functionName = functionCallMatch[1];
+        const existingImports = moduleResolver.getExistingImports(text);
+        const suggestions = moduleResolver.getImportSuggestions(functionName, text);
+
+        suggestions.forEach((suggestion, index) => {
+            items.push({
+                label: `${suggestion.functionName} (import ${suggestion.moduleName})`,
+                kind: CompletionItemKind.Function,
+                data: { 
+                    type: 'auto-import', 
+                    module: suggestion.moduleName,
+                    function: suggestion.functionName,
+                    index: index 
+                },
+                detail: suggestion.description,
+                documentation: suggestion.example,
+                insertText: suggestion.functionName,
+                additionalTextEdits: [{
+                    range: {
+                        start: { line: 0, character: 0 },
+                        end: { line: 0, character: 0 }
+                    },
+                    newText: `import ${suggestion.moduleName}\n`
+                }],
+                sortText: `z${index}` // Sort these suggestions last
+            });
+        });
+    }
+
+    // Add standard completions
+    
     // Add keywords
     vintlangConfig.keywords.forEach((keyword, index) => {
         items.push({
             label: keyword,
             kind: CompletionItemKind.Keyword,
-            data: index,
+            data: { type: 'keyword', index: index },
+            sortText: `a${index}` // Sort keywords first
         });
     });
 
@@ -609,41 +1078,109 @@ connection.onCompletion(_textDocumentPosition => {
         items.push({
             label: builtin,
             kind: CompletionItemKind.Function,
-            data: vintlangConfig.keywords.length + index,
+            data: { type: 'builtin', index: index },
             insertText: `${builtin}($1)`,
             insertTextFormat: 2, // Snippet format
+            sortText: `b${index}` // Sort builtins second
         });
     });
 
-    // Add modules
+    // Add modules for general completion
     vintlangConfig.modules.forEach((module, index) => {
+        const moduleInfo = vintlangConfig.moduleInfo[module];
         items.push({
             label: module,
             kind: CompletionItemKind.Module,
-            data: vintlangConfig.keywords.length + vintlangConfig.builtins.length + index,
+            data: { type: 'module', index: index },
+            detail: moduleInfo ? moduleInfo.description : 'VintLang module',
+            sortText: `c${index}` // Sort modules third
         });
     });
+
+    // Add variables and functions from current document
+    const symbolTable = documentSymbols.get(textDocumentPosition.textDocument.uri);
+    if (symbolTable) {
+        let symbolIndex = 0;
+        for (const [name, symbol] of symbolTable.symbols.entries()) {
+            if (symbol.type === 'variable' || symbol.type === 'function') {
+                items.push({
+                    label: name,
+                    kind: symbol.type === 'function' ? CompletionItemKind.Function : CompletionItemKind.Variable,
+                    data: { type: 'symbol', name: name },
+                    detail: `${symbol.type} (line ${symbol.line + 1})`,
+                    sortText: `d${symbolIndex++}` // Sort symbols fourth
+                });
+            }
+        }
+    }
 
     return items;
 });
 
-// This handler resolves additional information for the item selected in
-// the completion list.
+// Enhanced completion resolve handler
 connection.onCompletionResolve(item => {
     const data = item.data;
 
-    if (data < vintlangConfig.keywords.length) {
-        // It's a keyword
-        item.detail = 'VintLang keyword';
-        item.documentation = `The '${item.label}' keyword in VintLang`;
-    } else if (data < vintlangConfig.keywords.length + vintlangConfig.builtins.length) {
-        // It's a built-in function
-        item.detail = 'VintLang built-in function';
-        item.documentation = `Built-in function: ${item.label}()`;
-    } else {
-        // It's a module
-        item.detail = 'VintLang module';
-        item.documentation = `VintLang module: ${item.label}`;
+    if (!data || typeof data !== 'object') {
+        return item;
+    }
+
+    switch (data.type) {
+        case 'keyword':
+            item.detail = 'VintLang keyword';
+            item.documentation = {
+                kind: 'markdown',
+                value: `**${item.label}** - VintLang keyword\n\nA core language keyword for ${item.label} operations.`
+            };
+            break;
+
+        case 'builtin':
+            item.detail = 'VintLang built-in function';
+            item.documentation = {
+                kind: 'markdown',
+                value: `**${item.label}()** - Built-in function\n\nA core VintLang function available globally.`
+            };
+            break;
+
+        case 'module':
+            const moduleInfo = vintlangConfig.moduleInfo[item.label];
+            if (moduleInfo) {
+                item.detail = moduleInfo.description;
+                item.documentation = {
+                    kind: 'markdown',
+                    value: `**${item.label}** - ${moduleInfo.description}\n\n**Available functions:**\n${moduleInfo.functions.map(f => `- \`${f}()\``).join('\n')}\n\n**Usage:**\n\`\`\`js\nimport ${item.label}\n${Object.values(moduleInfo.examples)[0] || `${item.label}.function()`}\n\`\`\``
+                };
+            } else {
+                item.detail = 'VintLang module';
+                item.documentation = `VintLang module: ${item.label}`;
+            }
+            break;
+
+        case 'module-function':
+            const modInfo = vintlangConfig.moduleInfo[data.module];
+            const example = modInfo?.examples[data.function];
+            item.detail = `Function from ${data.module} module`;
+            item.documentation = {
+                kind: 'markdown',
+                value: `**${data.module}.${data.function}()** - Module function\n\n${example ? `**Example:**\n\`\`\`js\n${example}\n\`\`\`` : `Function from the ${data.module} module.`}`
+            };
+            break;
+
+        case 'auto-import':
+            item.detail = `Auto-import from ${data.module}`;
+            item.documentation = {
+                kind: 'markdown',
+                value: `**${data.function}()** - Function from ${data.module} module\n\n*This will automatically add the import statement.*\n\nFrom module: \`${data.module}\``
+            };
+            break;
+
+        case 'symbol':
+            // Already handled in completion
+            break;
+
+        default:
+            // Fallback for unknown types
+            break;
     }
 
     return item;
@@ -2209,7 +2746,7 @@ connection.onCodeLens(params => {
     // Enhanced code lens for functions
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        
+
         // Function definitions with enhanced actions
         const funcMatch = line.match(/let\s+(\w+)\s*=\s*func/);
         if (funcMatch) {
@@ -2217,7 +2754,7 @@ connection.onCodeLens(params => {
             // Count references to this function
             let refCount = 0;
             const functionCalls = [];
-            
+
             for (let j = 0; j < lines.length; j++) {
                 if (j === i) continue; // Skip the definition line
                 const refRegex = new RegExp(`\\b${funcName}\\s*\\(`, 'g');
@@ -2226,7 +2763,7 @@ connection.onCodeLens(params => {
                     refCount++;
                     functionCalls.push({
                         line: j,
-                        character: match.index
+                        character: match.index,
                     });
                 }
             }
@@ -2282,7 +2819,7 @@ connection.onCodeLens(params => {
         if (importMatch) {
             const moduleName = importMatch[1];
             const isBuiltinModule = vintlangConfig.modules.includes(moduleName);
-            
+
             lenses.push({
                 range: {
                     start: { line: i, character: 0 },
@@ -2325,7 +2862,7 @@ connection.onCodeLens(params => {
         if (varMatch && !funcMatch) {
             const varName = varMatch[1];
             const varValue = varMatch[2].trim();
-            
+
             // Infer type from value
             let inferredType = 'unknown';
             if (varValue.match(/^".*"$|^'.*'$/)) {
