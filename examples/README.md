@@ -4,6 +4,43 @@ This directory contains example VintLang files demonstrating the extension's fea
 
 ## Files
 
+### async-demo.vint
+
+Demonstrates VintLang's modern async/await and concurrency features:
+
+- **Async Functions** - Define and use `async func` with promise patterns
+- **Await** - Wait for promise resolution with `await` keyword
+- **Goroutines** - Concurrent execution with `go` keyword
+- **Channels** - Communication between goroutines with `chan`, `send`, `receive`
+- **Buffered Channels** - Non-blocking channel operations with buffer
+- **Producer-Consumer Pattern** - Real-world concurrency pattern
+- **Async Error Handling** - Try/catch/finally with async operations
+- **Defer with Async** - Cleanup with defer in async context
+
+### modules-demo.vint
+
+Comprehensive demonstration of all VintLang modules (19 modules):
+
+- **argparse** - Command-line argument parsing
+- **cli** - Command-line interface tools
+- **uuid** - UUID generation and manipulation
+- **kv** - In-memory key-value storage
+- **random** - Random number generation
+- **filewatcher** - File system monitoring
+- **math** - Advanced mathematical operations
+- **string** - String manipulation utilities
+- **array** - Array processing and functional operations
+- **time** - Time and date operations
+- **json** - JSON encoding/decoding
+- **os** - Operating system interactions
+- **colors** - Terminal colors and styling
+- **term** - Terminal control operations
+- **crypto** - Cryptographic functions (hashing)
+- **encoding** - Base64 encoding/decoding
+- **regex** - Regular expression pattern matching
+- **csv** - CSV parsing and generation
+- **net** - HTTP requests and networking
+
 ### lsp-features-demo.vint
 
 A comprehensive demonstration file showcasing all modern LSP features:

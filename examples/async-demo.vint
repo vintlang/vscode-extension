@@ -1,0 +1,180 @@
+// VintLang Async/Await and Concurrency Demo
+// This file demonstrates the new async features
+
+import time
+import json
+import uuid
+
+// ============================================
+// ASYNC FUNCTIONS
+// ============================================
+
+// Define an async function
+let fetchUserData = async func(userId) {
+    println("Fetching user data for ID: " + userId)
+    // Simulate async operation
+    return {
+        "id": userId,
+        "name": "John Doe",
+        "email": "john@example.com"
+    }
+}
+
+// Using await to get the result
+let userData = await fetchUserData("user123")
+println("User data:", json.stringify(userData))
+
+// ============================================
+// GOROUTINES
+// ============================================
+
+// Execute code concurrently with go keyword
+go println("This runs in a goroutine!")
+
+// Multiple goroutines
+go func() {
+    for i in range(1, 4) {
+        println("Goroutine 1, iteration:", i)
+    }
+}()
+
+go func() {
+    for i in range(1, 4) {
+        println("Goroutine 2, iteration:", i)
+    }
+}()
+
+// ============================================
+// CHANNELS
+// ============================================
+
+// Create an unbuffered channel
+let messageChannel = chan
+
+// Producer goroutine
+go func() {
+    send(messageChannel, "Hello from producer!")
+    send(messageChannel, "Another message")
+    close(messageChannel)
+}()
+
+// Consumer
+let msg1 = receive(messageChannel)
+let msg2 = receive(messageChannel)
+println("Received:", msg1)
+println("Received:", msg2)
+
+// ============================================
+// BUFFERED CHANNELS
+// ============================================
+
+// Create a buffered channel with capacity 3
+let taskChannel = chan(3)
+
+// Send multiple items without blocking
+send(taskChannel, "Task 1")
+send(taskChannel, "Task 2")
+send(taskChannel, "Task 3")
+
+// Process tasks
+let task1 = receive(taskChannel)
+let task2 = receive(taskChannel)
+let task3 = receive(taskChannel)
+
+println("Processed:", task1, task2, task3)
+
+// ============================================
+// PRODUCER-CONSUMER PATTERN
+// ============================================
+
+let dataChannel = chan(5)
+
+// Producer goroutine
+go func() {
+    for i in range(1, 6) {
+        let data = "Data item " + i
+        send(dataChannel, data)
+        println("Produced:", data)
+    }
+    close(dataChannel)
+}()
+
+// Consumer goroutine
+go func() {
+    let item = receive(dataChannel)
+    while (item != null) {
+        println("Consumed:", item)
+        item = receive(dataChannel)
+    }
+}()
+
+// ============================================
+// ASYNC WITH ERROR HANDLING
+// ============================================
+
+let processData = async func(data) {
+    try {
+        if (data == null) {
+            throw "Data cannot be null"
+        }
+        return "Processed: " + data
+    } catch (error) {
+        println("Error in async function:", error)
+        return null
+    } finally {
+        println("Async operation completed")
+    }
+}
+
+let result = await processData("test data")
+println("Result:", result)
+
+// ============================================
+// MULTIPLE CONCURRENT ASYNC OPERATIONS
+// ============================================
+
+let task1Async = async func() {
+    println("Task 1 starting...")
+    return "Task 1 complete"
+}
+
+let task2Async = async func() {
+    println("Task 2 starting...")
+    return "Task 2 complete"
+}
+
+let task3Async = async func() {
+    println("Task 3 starting...")
+    return "Task 3 complete"
+}
+
+// Start all tasks concurrently
+let promise1 = task1Async()
+let promise2 = task2Async()
+let promise3 = task3Async()
+
+// Wait for all to complete
+let result1 = await promise1
+let result2 = await promise2
+let result3 = await promise3
+
+println("All tasks completed:")
+println(result1)
+println(result2)
+println(result3)
+
+// ============================================
+// DEFER WITH ASYNC
+// ============================================
+
+let asyncWithDefer = async func() {
+    defer println("This runs when function exits")
+    
+    println("Async function body")
+    return "Done"
+}
+
+let deferResult = await asyncWithDefer()
+println("Defer result:", deferResult)
+
+println("\n=== Demo Complete ===")
