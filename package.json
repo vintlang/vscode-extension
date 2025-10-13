@@ -2,7 +2,7 @@
     "name": "vint",
     "displayName": "VintLang",
     "description": "The official Vint language support extension with full LSP features",
-    "version": "0.2.2",
+    "version": "0.5.0",
     "publisher": "tacheraSasi",
     "repository": {
         "type": "git",
@@ -127,6 +127,31 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Enable color decorators for color values in code"
+                },
+                "vintlang.moduleResolution.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable intelligent module resolution and import suggestions"
+                },
+                "vintlang.autoImport.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable automatic import suggestions for functions"
+                },
+                "vintlang.baseUrl": {
+                    "type": "string",
+                    "default": "http://localhost:8080",
+                    "description": "Base URL for HTTP endpoint code lens actions"
+                },
+                "vintlang.compiler.path": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Path to VintLang compiler executable"
+                },
+                "vintlang.testing.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable test framework integration"
                 }
             }
         },
@@ -144,6 +169,41 @@
             {
                 "command": "vintlang.showStatus",
                 "title": "Show Extension Status",
+                "category": "VintLang"
+            },
+            {
+                "command": "vintlang.runFunction",
+                "title": "Run Function",
+                "category": "VintLang"
+            },
+            {
+                "command": "vintlang.runMain",
+                "title": "Run Main",
+                "category": "VintLang"
+            },
+            {
+                "command": "vintlang.showModuleInfo",
+                "title": "Show Module Information",
+                "category": "VintLang"
+            },
+            {
+                "command": "vintlang.showModuleUsages",
+                "title": "Show Module Usages",
+                "category": "VintLang"
+            },
+            {
+                "command": "vintlang.showVariableInfo",
+                "title": "Show Variable Information",
+                "category": "VintLang"
+            },
+            {
+                "command": "vintlang.runTest",
+                "title": "Run Test",
+                "category": "VintLang"
+            },
+            {
+                "command": "vintlang.openEndpoint",
+                "title": "Open HTTP Endpoint",
                 "category": "VintLang"
             }
         ]

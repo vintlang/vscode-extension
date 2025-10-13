@@ -1,0 +1,103 @@
+// VintLang Phase 6: Modern LSP Features Demo
+// This file demonstrates the new advanced features
+
+// Import modules - shows module info and usage count in code lens
+import time
+import net
+import json
+import math
+
+// Main function with run action
+let main = func() {
+    println("Phase 6 Features Demo")
+    
+    // Variables with type inference - shows inferred type in code lens
+    let userName = "VintLang Developer"
+    let userAge = 25
+    let isActive = true
+    let skills = ["coding", "debugging", "testing"]
+    let config = {"debug": true, "verbose": false}
+    
+    // Function definition - shows reference count and run action
+    let greetUser = func(name, age) {
+        println("Hello, " + name + "!")
+        println("Age: " + convert(age, "STRING"))
+        return "Greeting completed"
+    }
+    
+    // Function calls - greetUser should show 2 references
+    let message1 = greetUser(userName, userAge)
+    let message2 = greetUser("Alice", 30)
+    
+    // Module usage - each shows in usage count
+    let currentTime = time.now()
+    let formattedTime = time.format(currentTime, "2006-01-02 15:04:05")
+    
+    // HTTP endpoint comment - shows as clickable code lens
+    // GET /api/users
+    let apiResponse = net.get("https://api.example.com/users")
+    
+    // JSON operations
+    let jsonData = json.stringify(config)
+    let parsedData = json.parse(jsonData)
+    
+    // Math operations
+    let randomNum = math.random(1, 100)
+    let sqrtResult = math.sqrt(randomNum)
+    
+    println("Demo completed at: " + formattedTime)
+}
+
+// Test function - shows run test action
+let testMathOperations = func() {
+    let result = math.sqrt(16)
+    if result == 4 {
+        println("✓ Math test passed")
+        return true
+    } else {
+        println("✗ Math test failed")
+        return false
+    }
+}
+
+// Another test function
+let testStringOperations = func() {
+    let text = "Hello World"
+    if len(text) == 11 {
+        println("✓ String test passed")
+        return true
+    } else {
+        println("✗ String test failed") 
+        return false
+    }
+}
+
+// Async function example
+let fetchData = async func(url) {
+    let response = await net.get(url)
+    let data = await json.parse(response)
+    return data
+}
+
+// Function with unused variable (should show diagnostic)
+let unusedVariableExample = func() {
+    let usedVar = "I am used"
+    let unusedVar = "I am not used"  // Should show warning
+    
+    println(usedVar)
+    return "function completed"
+}
+
+// API endpoint functions
+// POST /api/data
+let postData = func(data) {
+    return net.post("https://api.example.com/data", data)
+}
+
+// PUT /api/users/:id
+let updateUser = func(id, userData) {
+    return net.put("https://api.example.com/users/" + convert(id, "STRING"), userData)
+}
+
+// Call main to start the demo
+main()

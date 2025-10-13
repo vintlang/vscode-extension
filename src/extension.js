@@ -191,7 +191,139 @@ function registerCommands(context) {
             });
     });
 
-    context.subscriptions.push(restartServerCommand, showReferencesCommand, showStatusCommand);
+    // Enhanced Code Lens Commands
+    
+    // Run function command
+    const runFunctionCommand = vscode.commands.registerCommand(
+        'vintlang.runFunction',
+        async (uri, functionName, line) => {
+            const document = await vscode.workspace.openTextDocument(vscode.Uri.parse(uri));
+            const terminal = vscode.window.createTerminal('VintLang Runner');
+            terminal.show();
+            
+            // Simple function execution (this would need VintLang interpreter)
+            terminal.sendText(`echo "Running function: ${functionName} at line ${line + 1}"`);
+            terminal.sendText(`echo "Note: VintLang interpreter integration needed for actual execution"`);
+        }
+    );
+
+    // Run main function command
+    const runMainCommand = vscode.commands.registerCommand(
+        'vintlang.runMain',
+        async (uri) => {
+            const document = await vscode.workspace.openTextDocument(vscode.Uri.parse(uri));
+            const terminal = vscode.window.createTerminal('VintLang Main');
+            terminal.show();
+            
+            // Run the entire file (would need VintLang interpreter)
+            terminal.sendText(`echo "Running VintLang file: ${document.fileName}"`);
+            terminal.sendText(`echo "Note: VintLang interpreter integration needed for actual execution"`);
+        }
+    );
+
+    // Show module info command
+    const showModuleInfoCommand = vscode.commands.registerCommand(
+        'vintlang.showModuleInfo',
+        async (moduleName, isBuiltin) => {
+            if (isBuiltin) {
+                // Get module information from server configuration
+                const moduleInfo = {
+                    time: 'Time and date operations - Functions: now, format, parse, sleep, etc.',
+                    net: 'HTTP requests and networking - Functions: get, post, put, delete, etc.',
+                    os: 'Operating system interactions - Functions: env, exec, mkdir, etc.',
+                    json: 'JSON parsing and stringification - Functions: parse, stringify, valid',
+                    // Add more as needed
+                };
+                
+                const info = moduleInfo[moduleName] || `Built-in module: ${moduleName}`;
+                vscode.window.showInformationMessage(
+                    `📦 ${moduleName} Module\n\n${info}`,
+                    'View Documentation'
+                ).then(selection => {
+                    if (selection === 'View Documentation') {
+                        vscode.env.openExternal(vscode.Uri.parse(`https://vintlang.ekilie.com/docs/modules/${moduleName}`));
+                    }
+                });
+            } else {
+                vscode.window.showWarningMessage(`External module: ${moduleName} (not yet supported)`);
+            }
+        }
+    );
+
+    // Show module usages command
+    const showModuleUsagesCommand = vscode.commands.registerCommand(
+        'vintlang.showModuleUsages',
+        async (uri, moduleName) => {
+            const document = await vscode.workspace.openTextDocument(vscode.Uri.parse(uri));
+            vscode.commands.executeCommand('workbench.action.findInFiles', {
+                query: `${moduleName}\\.`,
+                isRegex: true
+            });
+        }
+    );
+
+    // Show variable info command
+    const showVariableInfoCommand = vscode.commands.registerCommand(
+        'vintlang.showVariableInfo',
+        (varName, type, usageCount) => {
+            vscode.window.showInformationMessage(
+                `Variable: ${varName}\nType: ${type}\nUsages: ${usageCount}`,
+                'Find Usages'
+            ).then(selection => {
+                if (selection === 'Find Usages') {
+                    vscode.commands.executeCommand('editor.action.referenceSearch.trigger');
+                }
+            });
+        }
+    );
+
+    // Run test command
+    const runTestCommand = vscode.commands.registerCommand(
+        'vintlang.runTest',
+        async (uri, testName, line) => {
+            const document = await vscode.workspace.openTextDocument(vscode.Uri.parse(uri));
+            const terminal = vscode.window.createTerminal('VintLang Test');
+            terminal.show();
+            
+            terminal.sendText(`echo "Running test: ${testName} at line ${line + 1}"`);
+            terminal.sendText(`echo "Note: VintLang test framework integration needed"`);
+        }
+    );
+
+    // Open endpoint command
+    const openEndpointCommand = vscode.commands.registerCommand(
+        'vintlang.openEndpoint',
+        (method, endpoint) => {
+            const baseUrl = vscode.workspace.getConfiguration('vintlang').get('baseUrl', 'http://localhost:8080');
+            const fullUrl = `${baseUrl}${endpoint}`;
+            
+            vscode.window.showInformationMessage(
+                `${method} ${endpoint}`,
+                'Open in Browser',
+                'Copy URL'
+            ).then(selection => {
+                if (selection === 'Open in Browser') {
+                    vscode.env.openExternal(vscode.Uri.parse(fullUrl));
+                } else if (selection === 'Copy URL') {
+                    vscode.env.clipboard.writeText(fullUrl);
+                    vscode.window.showInformationMessage('URL copied to clipboard');
+                }
+            });
+        }
+    );
+
+    context.subscriptions.push(
+        restartServerCommand, 
+        showReferencesCommand, 
+        showStatusCommand,
+        runFunctionCommand,
+        runMainCommand,
+        showModuleInfoCommand,
+        showModuleUsagesCommand,
+        showVariableInfoCommand,
+        runTestCommand,
+        openEndpointCommand
+    );
 }
 
 /**

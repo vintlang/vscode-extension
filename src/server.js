@@ -94,18 +94,18 @@ class ModuleResolver {
                 valid: true,
                 type: 'builtin',
                 info: moduleInfo,
-                suggestion: null
+                suggestion: null,
             };
         }
 
         // Check for similar module names (typo detection)
         const suggestions = this.findSimilarModules(moduleName);
-        
+
         return {
             valid: false,
             type: 'unknown',
             info: null,
-            suggestion: suggestions.length > 0 ? suggestions[0] : null
+            suggestion: suggestions.length > 0 ? suggestions[0] : null,
         };
     }
 
@@ -123,7 +123,7 @@ class ModuleResolver {
             if (similarity >= threshold) {
                 suggestions.push({
                     name: builtinModule,
-                    similarity: similarity
+                    similarity: similarity,
                 });
             }
         }
@@ -194,7 +194,7 @@ class ModuleResolver {
                     line: i,
                     character: match.index,
                     function: functionName,
-                    context: line.trim()
+                    context: line.trim(),
                 });
             }
         }
@@ -202,7 +202,7 @@ class ModuleResolver {
         return {
             totalUsages: usages.length,
             uniqueFunctions: Array.from(functions),
-            usages: usages
+            usages: usages,
         };
     }
 
@@ -236,7 +236,7 @@ class ModuleResolver {
                         moduleName: moduleName,
                         functionName: functionName,
                         description: info.description,
-                        example: info.examples[functionName] || `${moduleName}.${functionName}()`
+                        example: info.examples[functionName] || `${moduleName}.${functionName}()`,
                     });
                 }
             }
@@ -471,153 +471,160 @@ const vintlangConfig = {
             examples: {
                 now: 'let currentTime = time.now()',
                 format: 'let formatted = time.format(time.now(), "2006-01-02 15:04:05")',
-                sleep: 'time.sleep(1000) // Sleep for 1 second'
-            }
+                sleep: 'time.sleep(1000) // Sleep for 1 second',
+            },
         },
         net: {
             description: 'HTTP requests and networking',
             functions: ['get', 'post', 'put', 'delete', 'patch', 'request'],
             examples: {
                 get: 'let response = net.get("https://api.example.com/data")',
-                post: 'let response = net.post("https://api.example.com/data", {"key": "value"})'
-            }
+                post: 'let response = net.post("https://api.example.com/data", {"key": "value"})',
+            },
         },
         os: {
             description: 'Operating system interactions',
             functions: ['env', 'setenv', 'getwd', 'chdir', 'mkdir', 'rmdir', 'exists', 'exec'],
             examples: {
                 env: 'let path = os.env("PATH")',
-                exec: 'let result = os.exec("ls", ["-la"])'
-            }
+                exec: 'let result = os.exec("ls", ["-la"])',
+            },
         },
         json: {
             description: 'JSON parsing and stringification',
             functions: ['parse', 'stringify', 'valid'],
             examples: {
                 parse: 'let data = json.parse(\'{"key": "value"}\')',
-                stringify: 'let jsonStr = json.stringify({"key": "value"})'
-            }
+                stringify: 'let jsonStr = json.stringify({"key": "value"})',
+            },
         },
         csv: {
             description: 'CSV file handling',
             functions: ['read', 'write', 'parse'],
             examples: {
                 read: 'let data = csv.read("data.csv")',
-                write: 'csv.write("output.csv", data)'
-            }
+                write: 'csv.write("output.csv", data)',
+            },
         },
         regex: {
             description: 'Regular expressions and pattern matching',
             functions: ['match', 'find', 'replace', 'split', 'compile'],
             examples: {
                 match: 'let matches = regex.match("hello world", "\\\\w+")',
-                replace: 'let result = regex.replace("hello world", "world", "VintLang")'
-            }
+                replace: 'let result = regex.replace("hello world", "world", "VintLang")',
+            },
         },
         crypto: {
             description: 'Cryptographic functions',
             functions: ['hash', 'hmac', 'encrypt', 'decrypt', 'random'],
             examples: {
                 hash: 'let hash = crypto.hash("sha256", "hello world")',
-                random: 'let randomBytes = crypto.random(32)'
-            }
+                random: 'let randomBytes = crypto.random(32)',
+            },
         },
         encoding: {
             description: 'Encoding/decoding utilities',
-            functions: ['base64Encode', 'base64Decode', 'urlEncode', 'urlDecode', 'hexEncode', 'hexDecode'],
+            functions: [
+                'base64Encode',
+                'base64Decode',
+                'urlEncode',
+                'urlDecode',
+                'hexEncode',
+                'hexDecode',
+            ],
             examples: {
                 base64Encode: 'let encoded = encoding.base64Encode("hello")',
-                urlEncode: 'let encoded = encoding.urlEncode("hello world")'
-            }
+                urlEncode: 'let encoded = encoding.urlEncode("hello world")',
+            },
         },
         colors: {
             description: 'Terminal colors and styling',
             functions: ['red', 'green', 'blue', 'yellow', 'cyan', 'magenta', 'bold', 'dim'],
             examples: {
                 red: 'println(colors.red("Error message"))',
-                bold: 'println(colors.bold("Important text"))'
-            }
+                bold: 'println(colors.bold("Important text"))',
+            },
         },
         term: {
             description: 'Terminal operations and control',
             functions: ['clear', 'moveTo', 'size', 'hide', 'show'],
             examples: {
                 clear: 'term.clear()',
-                size: 'let [width, height] = term.size()'
-            }
+                size: 'let [width, height] = term.size()',
+            },
         },
         math: {
             description: 'Advanced mathematical operations',
             functions: ['pi', 'e', 'sqrt', 'pow', 'log', 'sin', 'cos', 'tan', 'random'],
             examples: {
                 sqrt: 'let result = math.sqrt(16)',
-                random: 'let num = math.random(1, 100)'
-            }
+                random: 'let num = math.random(1, 100)',
+            },
         },
         string: {
             description: 'String manipulation utilities',
             functions: ['trim', 'split', 'join', 'replace', 'contains', 'startsWith', 'endsWith'],
             examples: {
                 trim: 'let trimmed = string.trim("  hello  ")',
-                split: 'let parts = string.split("a,b,c", ",")'
-            }
+                split: 'let parts = string.split("a,b,c", ",")',
+            },
         },
         array: {
             description: 'Array processing utilities',
             functions: ['map', 'filter', 'reduce', 'sort', 'reverse', 'unique', 'flatten'],
             examples: {
                 map: 'let doubled = array.map([1,2,3], func(x) { return x * 2 })',
-                filter: 'let evens = array.filter([1,2,3,4], func(x) { return x % 2 == 0 })'
-            }
+                filter: 'let evens = array.filter([1,2,3,4], func(x) { return x % 2 == 0 })',
+            },
         },
         argparse: {
             description: 'Command-line argument parsing',
             functions: ['parse', 'add', 'help'],
             examples: {
                 parse: 'let args = argparse.parse()',
-                add: 'argparse.add("--verbose", "Enable verbose output")'
-            }
+                add: 'argparse.add("--verbose", "Enable verbose output")',
+            },
         },
         cli: {
             description: 'Command-line interface tools',
             functions: ['prompt', 'confirm', 'select', 'progress'],
             examples: {
                 prompt: 'let name = cli.prompt("Enter your name: ")',
-                confirm: 'let proceed = cli.confirm("Continue?")'
-            }
+                confirm: 'let proceed = cli.confirm("Continue?")',
+            },
         },
         uuid: {
             description: 'UUID generation and manipulation',
             functions: ['v4', 'v1', 'parse', 'string'],
             examples: {
                 v4: 'let id = uuid.v4()',
-                parse: 'let parsed = uuid.parse("550e8400-e29b-41d4-a716-446655440000")'
-            }
+                parse: 'let parsed = uuid.parse("550e8400-e29b-41d4-a716-446655440000")',
+            },
         },
         filewatcher: {
             description: 'File system watching and monitoring',
             functions: ['watch', 'unwatch', 'events'],
             examples: {
                 watch: 'filewatcher.watch("./src", func(event) { println(event) })',
-                unwatch: 'filewatcher.unwatch("./src")'
-            }
+                unwatch: 'filewatcher.unwatch("./src")',
+            },
         },
         kv: {
             description: 'In-memory key-value storage',
             functions: ['set', 'get', 'delete', 'exists', 'keys', 'clear'],
             examples: {
                 set: 'kv.set("user:123", {"name": "John"})',
-                get: 'let user = kv.get("user:123")'
-            }
+                get: 'let user = kv.get("user:123")',
+            },
         },
         random: {
             description: 'Random number generation',
             functions: ['int', 'float', 'choice', 'shuffle', 'uuid'],
             examples: {
                 int: 'let num = random.int(1, 100)',
-                choice: 'let item = random.choice(["a", "b", "c"])'
-            }
-        }
+                choice: 'let item = random.choice(["a", "b", "c"])',
+            },
+        },
     },
 };
 
@@ -807,7 +814,7 @@ async function validateTextDocument(textDocument) {
         if (importMatch) {
             const moduleName = importMatch[1];
             symbolTable.addSymbol(moduleName, 'import', i);
-            
+
             // Validate the imported module
             const validation = moduleResolver.validateModule(moduleName, textDocument.uri);
             if (!validation.valid) {
@@ -829,7 +836,7 @@ async function validateTextDocument(textDocument) {
                     diagnostic.message += `. Did you mean '${validation.suggestion}'?`;
                     diagnostic.data = {
                         suggestion: validation.suggestion,
-                        type: 'module-suggestion'
+                        type: 'module-suggestion',
                     };
                 }
 
@@ -996,7 +1003,9 @@ connection.onCompletion(textDocumentPosition => {
                 kind: CompletionItemKind.Module,
                 data: { type: 'module', index: index },
                 detail: moduleInfo ? moduleInfo.description : 'VintLang module',
-                documentation: moduleInfo ? `Functions: ${moduleInfo.functions.join(', ')}` : undefined,
+                documentation: moduleInfo
+                    ? `Functions: ${moduleInfo.functions.join(', ')}`
+                    : undefined,
                 insertText: module,
             });
         });
@@ -1040,36 +1049,38 @@ connection.onCompletion(textDocumentPosition => {
             items.push({
                 label: `${suggestion.functionName} (import ${suggestion.moduleName})`,
                 kind: CompletionItemKind.Function,
-                data: { 
-                    type: 'auto-import', 
+                data: {
+                    type: 'auto-import',
                     module: suggestion.moduleName,
                     function: suggestion.functionName,
-                    index: index 
+                    index: index,
                 },
                 detail: suggestion.description,
                 documentation: suggestion.example,
                 insertText: suggestion.functionName,
-                additionalTextEdits: [{
-                    range: {
-                        start: { line: 0, character: 0 },
-                        end: { line: 0, character: 0 }
+                additionalTextEdits: [
+                    {
+                        range: {
+                            start: { line: 0, character: 0 },
+                            end: { line: 0, character: 0 },
+                        },
+                        newText: `import ${suggestion.moduleName}\n`,
                     },
-                    newText: `import ${suggestion.moduleName}\n`
-                }],
-                sortText: `z${index}` // Sort these suggestions last
+                ],
+                sortText: `z${index}`, // Sort these suggestions last
             });
         });
     }
 
     // Add standard completions
-    
+
     // Add keywords
     vintlangConfig.keywords.forEach((keyword, index) => {
         items.push({
             label: keyword,
             kind: CompletionItemKind.Keyword,
             data: { type: 'keyword', index: index },
-            sortText: `a${index}` // Sort keywords first
+            sortText: `a${index}`, // Sort keywords first
         });
     });
 
@@ -1081,7 +1092,7 @@ connection.onCompletion(textDocumentPosition => {
             data: { type: 'builtin', index: index },
             insertText: `${builtin}($1)`,
             insertTextFormat: 2, // Snippet format
-            sortText: `b${index}` // Sort builtins second
+            sortText: `b${index}`, // Sort builtins second
         });
     });
 
@@ -1093,7 +1104,7 @@ connection.onCompletion(textDocumentPosition => {
             kind: CompletionItemKind.Module,
             data: { type: 'module', index: index },
             detail: moduleInfo ? moduleInfo.description : 'VintLang module',
-            sortText: `c${index}` // Sort modules third
+            sortText: `c${index}`, // Sort modules third
         });
     });
 
@@ -1105,10 +1116,13 @@ connection.onCompletion(textDocumentPosition => {
             if (symbol.type === 'variable' || symbol.type === 'function') {
                 items.push({
                     label: name,
-                    kind: symbol.type === 'function' ? CompletionItemKind.Function : CompletionItemKind.Variable,
+                    kind:
+                        symbol.type === 'function'
+                            ? CompletionItemKind.Function
+                            : CompletionItemKind.Variable,
                     data: { type: 'symbol', name: name },
                     detail: `${symbol.type} (line ${symbol.line + 1})`,
-                    sortText: `d${symbolIndex++}` // Sort symbols fourth
+                    sortText: `d${symbolIndex++}`, // Sort symbols fourth
                 });
             }
         }
@@ -1130,7 +1144,7 @@ connection.onCompletionResolve(item => {
             item.detail = 'VintLang keyword';
             item.documentation = {
                 kind: 'markdown',
-                value: `**${item.label}** - VintLang keyword\n\nA core language keyword for ${item.label} operations.`
+                value: `**${item.label}** - VintLang keyword\n\nA core language keyword for ${item.label} operations.`,
             };
             break;
 
@@ -1138,7 +1152,7 @@ connection.onCompletionResolve(item => {
             item.detail = 'VintLang built-in function';
             item.documentation = {
                 kind: 'markdown',
-                value: `**${item.label}()** - Built-in function\n\nA core VintLang function available globally.`
+                value: `**${item.label}()** - Built-in function\n\nA core VintLang function available globally.`,
             };
             break;
 
@@ -1148,7 +1162,7 @@ connection.onCompletionResolve(item => {
                 item.detail = moduleInfo.description;
                 item.documentation = {
                     kind: 'markdown',
-                    value: `**${item.label}** - ${moduleInfo.description}\n\n**Available functions:**\n${moduleInfo.functions.map(f => `- \`${f}()\``).join('\n')}\n\n**Usage:**\n\`\`\`js\nimport ${item.label}\n${Object.values(moduleInfo.examples)[0] || `${item.label}.function()`}\n\`\`\``
+                    value: `**${item.label}** - ${moduleInfo.description}\n\n**Available functions:**\n${moduleInfo.functions.map(f => `- \`${f}()\``).join('\n')}\n\n**Usage:**\n\`\`\`js\nimport ${item.label}\n${Object.values(moduleInfo.examples)[0] || `${item.label}.function()`}\n\`\`\``,
                 };
             } else {
                 item.detail = 'VintLang module';
@@ -1162,7 +1176,7 @@ connection.onCompletionResolve(item => {
             item.detail = `Function from ${data.module} module`;
             item.documentation = {
                 kind: 'markdown',
-                value: `**${data.module}.${data.function}()** - Module function\n\n${example ? `**Example:**\n\`\`\`js\n${example}\n\`\`\`` : `Function from the ${data.module} module.`}`
+                value: `**${data.module}.${data.function}()** - Module function\n\n${example ? `**Example:**\n\`\`\`js\n${example}\n\`\`\`` : `Function from the ${data.module} module.`}`,
             };
             break;
 
@@ -1170,7 +1184,7 @@ connection.onCompletionResolve(item => {
             item.detail = `Auto-import from ${data.module}`;
             item.documentation = {
                 kind: 'markdown',
-                value: `**${data.function}()** - Function from ${data.module} module\n\n*This will automatically add the import statement.*\n\nFrom module: \`${data.module}\``
+                value: `**${data.function}()** - Function from ${data.module} module\n\n*This will automatically add the import statement.*\n\nFrom module: \`${data.module}\``,
             };
             break;
 
