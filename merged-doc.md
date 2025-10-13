@@ -14481,6 +14481,3 @@ config.updated = true
 let newYaml = yaml.encode(config)
 os.write("config.yaml", newYaml)
 ```
-
-```
-
